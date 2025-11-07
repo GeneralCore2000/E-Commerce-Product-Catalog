@@ -87,7 +87,7 @@ public class Utility {
     }
 
     /**
-     * This method pauses the program until any key is pressed by the user to give them time to read the display on the
+     * This method pauses the program until enter key is pressed by the user to give them time to read the display on the
      * screen before proceeding.
      */
     public static void stopper() {

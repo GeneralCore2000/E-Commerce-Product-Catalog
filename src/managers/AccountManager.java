@@ -16,6 +16,27 @@ public class AccountManager {
     private String name, password, address;
     private int userChoice;
 
+    /**
+     * Constructs an {@code AccountManager} instance by automatically reading the {@code useraccounts.txt} using
+     * {@link FilePaths#USER_ACCOUNTS} where it stores the String path of {@code user_accounts.txt}
+     *
+     * <p>
+     * The {@code user_accounts.txt} is expected to have a row containing the information of the users with
+     * {@code ##} as dividers.
+     * </p>
+     *  <ul>
+     *      <li>Index 0: Account type ("Customer" or "Admin")</li>
+     *      <li>Index 1: Account ID that is automatically incremented by 1</li>
+     *      <li>Index 2: Username</li>
+     *      <li>Index 3: Password</li>
+     *     <li>Index 4: Address</li>
+     * </ul>
+     *
+     * @see FileManager#readFile(String)
+     * @see FilePaths#USER_ACCOUNTS
+     * @see Customer
+     * @see Admin
+     */
     public AccountManager() {
         ArrayList<ArrayList<String>> useraccounts = FileManager.readFile(FilePaths.USER_ACCOUNTS);
         int USERNAME = 2, PASSWORD = 3, ADDRESS = 4;
@@ -72,10 +93,10 @@ public class AccountManager {
                 case 0:
                     return;
                 case 1:
-                    createCustomerAccount();
+                    createAccount("Customer");
                     break;
                 case 2:
-                    createAdminAccount();
+                    createAccount("Admin");
                     break;
             }
         }
@@ -116,38 +137,27 @@ public class AccountManager {
         return null;
     }
 
-    private void createCustomerAccount() {
-        Utility.centralizeHeading("REGISTER CUSTOMER ACCOUNT");
+    private void createAccount(String accountType) {
+        Utility.centralizeHeading("REGISTER " + accountType + " ACCOUNT");
         generalInformation();
-        User customer = new Customer(name, password, address, productManager);
-        accountLists.add(customer);
-        System.out.println("Successfully created customer account\n" + customer);
-        System.out.println();
-        System.out.println(customer.getClass());
+        User user;
+        if (accountType.equalsIgnoreCase("Customer")) {
+            user = new Customer(name, password, address, productManager);
+        } else if (accountType.equalsIgnoreCase("Admin")) {
+            user = new Admin(name, password, address, productManager);
+        } else {
+            System.out.println("Invalid account type.");
+            return;
+        }
+        accountLists.add(user);
+        System.out.println("Successfully created " + accountType + " account\n" + user + "\n");
         FileManager.appendToFile(FilePaths.USER_ACCOUNTS,
-                "Customer" + "##"
-                        + customer.getUserID() + "##"
+                accountType + "##"
+                        + user.getUserID() + "##"
                         + name + "##"
                         + password + "##"
                         + address);
     }
-
-    private void createAdminAccount() {
-        Utility.centralizeHeading("REGISTER ADMIN ACCOUNT");
-        generalInformation();
-        User admin = new Admin(name, password, address, productManager);
-        accountLists.add(admin);
-        System.out.println("Successfully created admin account\n" + admin);
-        System.out.println();
-        FileManager.appendToFile(FilePaths.USER_ACCOUNTS,
-                "Admin" + "##"
-                        + admin.getUserID() + "##"
-                        + name + "##"
-                        + password + "##"
-                        + address);
-    }
-
-    //User type ## ID ## Username ## Address ## Password
 
     private void generalInformation() {
         System.out.print("Enter name >>:");

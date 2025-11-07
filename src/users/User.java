@@ -53,6 +53,8 @@ abstract public class User {
     }
 
     public abstract void showMenu();
+
     protected abstract void printProducts();
+
     protected abstract void showUserInfo();
 }
