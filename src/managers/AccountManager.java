@@ -17,11 +17,11 @@ public class AccountManager {
     private int userChoice;
 
     /**
-     * Constructs an {@code AccountManager} instance by automatically reading the {@code useraccounts.txt} using
+     * Constructs an {@code AccountManager} instance and automatically reading the {@code useraccounts.txt} using
      * {@link FilePaths#USER_ACCOUNTS} where it stores the String path of {@code user_accounts.txt}
      *
      * <p>
-     * The {@code user_accounts.txt} is expected to have a row containing the information of the users with
+     * The {@code user_accounts.txt} is expected to have rows containing the information of the users with
      * {@code ##} as dividers.
      * </p>
      *  <ul>
@@ -123,12 +123,7 @@ public class AccountManager {
 
         System.out.print("Enter password >>: ");
         password = in.nextLine();
-        for (int row = 0; row < useraccounts.size(); row++) {
-            if (useraccounts.get(row).get(1).equals(id + "")) {
-                System.out.println("FINDJDIJDIJID");
-            }
 
-        }
         for (User user : accountLists) {
             if (user.getUserID() == id && user.getUsername().equals(name) && user.getPassword().equals(password)) {
                 return user;
@@ -149,8 +144,9 @@ public class AccountManager {
             System.out.println("Invalid account type.");
             return;
         }
-        accountLists.add(user);
         System.out.println("Successfully created " + accountType + " account\n" + user + "\n");
+
+        accountLists.add(user);
         FileManager.appendToFile(FilePaths.USER_ACCOUNTS,
                 accountType + "##"
                         + user.getUserID() + "##"

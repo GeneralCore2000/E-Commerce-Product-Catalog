@@ -23,29 +23,20 @@ public class Utility {
     }
 
     /**
-     * This method prompts the user and validates if the input is an integer or not.
+     * This method prompts the user and validates if the input is an integer using a predefined prompt ("Enter choice").
+     * This is an overload method of {@link #isInputInteger(String prompt)} that uses a default prompt.
      *
      * @return the integer entered by user, or {@code -1} if the input is not a valid integer.
      */
     public static int isInputInteger() {
-        System.out.println("━".repeat(25));
-        System.out.print("Enter choice >>: ");
-        try {
-            return Integer.parseInt(in.nextLine());
-        } catch (NumberFormatException ae) {
-            System.out.println("\n" + "~".repeat(42));
-            System.out.print("Invalid input: Non-integer is not allowed.\nPress enter to continue...");
-            System.out.println("\n" + "~".repeat(42));
-            in.nextLine();
-            return -1;
-        }
+        return isInputInteger("Enter choice");
     }
 
     /**
-     * This method validate the input of the user if it is an integer or not. Unlike {@link #isInputInteger()} that
-     * has predefined prompts for the user to input, this method allows for customized prompt. Take note that the
-     * {@code >>:} is already predefined, therefore, only the prompt text must be entered.
+     * This method validate the input of the user if it is an integer or not using a customizable prompt message.
+     * Take note that the {@code >>:} is already predefined, therefore, only the prompt text must be entered.
      *
+     * @param prompt the message shown before the input
      * @return the integer entered by user, or {@code -1} if the input is not a valid integer.
      */
     public static int isInputInteger(String prompt) {
@@ -74,6 +65,13 @@ public class Utility {
         }
     }
 
+    /**
+     * Validate the user input if it is within the range ({@code 0} up to the specified {@code maxRange}).
+     * This method uses {@link #isInputInteger()} to obtain user's input.
+     * @param maxRange
+     * @return the integer entered by the user if it is within the valid range, or {@code -1} if the input is invalid or
+     * out of range.
+     */
     public static int isInputInRange(int maxRange) {
         int userInput = isInputInteger();
         if (userInput > maxRange) {
