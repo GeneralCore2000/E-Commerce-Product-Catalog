@@ -347,7 +347,6 @@ public class ProductManager {
             return false;
         } else if (productIndex > maxIndex) {
             System.out.println("\nInvalid input: Not existing product for #" + productIndex);
-            System.out.println(maxIndex);
             Utility.stopper();
             return false;
         }
