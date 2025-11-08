@@ -19,3 +19,5 @@ Laptops##5017##MacBook Air M2##69999.00##4##Apple M2 chip with 8GB RAM and 256GB
 Smartphones##5018##OnePlus Nord CE 3##21499.00##10##Smooth 120Hz display with Snapdragon 782G processor.
 Tablets##5019##Xiaomi Pad 6##18999.00##14##Snapdragon 870-powered tablet with high refresh rate display.
 Accessories##5020##sad##1.0##1##dwqe
+Accessories##5021##Hellooo##213.0##324##world
+Accessories##5022##1sadasdsa##50.0##50##50

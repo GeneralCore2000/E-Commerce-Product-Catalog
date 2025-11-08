@@ -51,7 +51,7 @@ public class ProductManager {
      * @return an {@code ArrayList} containing all the products in {@code productLists} that matches the
      * {@code categoryChoice}; an empty list if none.
      */
-    public ArrayList<Product> getProductByCategory(String categoryChoice) {
+    public ArrayList<Product> getProductByCategory(ProductCategory categoryChoice) {
         ArrayList<Product> filteredProduct = new ArrayList<>();
         for (Product product : productLists) {
             if (product.getProductCategory().equals(categoryChoice)) {
@@ -173,7 +173,7 @@ public class ProductManager {
      */
     public void updateProducts(Product updateIndex) {
         while (true) {
-            String[] userChoicesList = {"Go Back", "Product Name", "Product Description", "Product Price", "Product Category", "Product Stock"};
+            String[] userChoicesList = {"Go Back", "Product Name", "Product Description", "Product Price", "Product Stock"};
             Utility.printUserChoices(userChoicesList);
             int userChoice = Utility.isInputInteger();
             switch (userChoice) {
@@ -194,10 +194,6 @@ public class ProductManager {
                     updateIndex.setProductPrice(Double.parseDouble(in.nextLine()));
                 }
                 case 4 -> {
-                    System.out.print("Enter new product category for [" + updateIndex.getProductCategory() + "] >>: ");
-                    updateIndex.setProductCategory(in.nextLine());
-                }
-                case 5 -> {
 //TODO: Add validation if the input is integer
                     System.out.print("Enter new product stock for [" + updateIndex.getProductStock() + "] >>: ");
                     updateIndex.setProductStock(Integer.parseInt(in.nextLine()));
@@ -213,9 +209,9 @@ public class ProductManager {
      *                       as well as to be deleted.
      *
      */
-    public void deleteProducts(String chosenCategory) {
+    public void deleteProducts(ProductCategory chosenCategory) {
         while (true) {
-            Utility.centralizeHeading(chosenCategory);
+            Utility.centralizeHeading(String.valueOf(chosenCategory));
             ArrayList<Product> filteredProduct = getProductByCategory(chosenCategory);
             printProductByCategory(filteredProduct, true);
             if (filteredProduct.isEmpty()) {
@@ -346,13 +342,13 @@ public class ProductManager {
         return true;
     }
 
-    public String categoryChoices(int userChoice) {
+    public ProductCategory categoryChoices(int userChoice) {
         return switch (userChoice) {
-            case 0 -> "";
-            case 1 -> "Accessories";
-            case 2 -> "Laptops";
-            case 3 -> "Smartphones";
-            case 4 -> "Tablets";
+            case 0 -> ProductCategory.NULL;
+            case 1 -> ProductCategory.ACCESSORIES;
+            case 2 -> ProductCategory.LAPTOPS;
+            case 3 -> ProductCategory.SMARTPHONES;
+            case 4 -> ProductCategory.TABLETS;
             default -> null;
         };
     }

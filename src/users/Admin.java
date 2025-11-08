@@ -2,6 +2,7 @@ package users;
 
 import managers.ProductManager;
 import products.Product;
+import products.ProductCategory;
 import utils.Utility;
 
 import java.util.ArrayList;
@@ -72,14 +73,14 @@ public class Admin extends User implements AdminPrivilege {
             Utility.centralizeHeading("📝📦 PRODUCTS CATALOG");
             Utility.printUserChoices(Utility.productChoices);
             int userChoice = Utility.isInputInteger();
-            String categoryChoice = productManager.categoryChoices(userChoice);
+            ProductCategory categoryChoice = productManager.categoryChoices(userChoice);
             if (categoryChoice == null) {
                 continue;
             }
-            if (categoryChoice.isBlank()) {
+            if (categoryChoice == ProductCategory.NULL) {
                 return;
             }
-            Utility.centralizeHeading(categoryChoice);
+            Utility.centralizeHeading(String.valueOf(categoryChoice));
             ArrayList<Product> filteredProduct = productManager.getProductByCategory(categoryChoice);
             productManager.printProductByCategory(filteredProduct, true);
             Utility.stopper();
@@ -105,11 +106,11 @@ public class Admin extends User implements AdminPrivilege {
             Utility.centralizeHeading("🗑️📦 DELETE PRODUCT");
             Utility.printUserChoices(Utility.productChoices);
             int userChoice = Utility.isInputInteger("Enter Category");
-            String chosenCategory = productManager.categoryChoices(userChoice);
+            ProductCategory chosenCategory = productManager.categoryChoices(userChoice);
             if (chosenCategory == null) {
                 continue;
             }
-            if (chosenCategory.isBlank()) {
+            if (chosenCategory == ProductCategory.NULL) {
                 return;
             }
             productManager.deleteProducts(chosenCategory);
@@ -122,14 +123,14 @@ public class Admin extends User implements AdminPrivilege {
             Utility.centralizeHeading("🔁📦 UPDATE PRODUCT");
             Utility.printUserChoices(Utility.productChoices);
             int userChoice = Utility.isInputInteger("Enter Category");
-            String chosenCategory = productManager.categoryChoices(userChoice);
+            ProductCategory chosenCategory = productManager.categoryChoices(userChoice);
             if (chosenCategory == null) {
                 continue;
             }
-            if (chosenCategory.isBlank()) {
+            if (chosenCategory == ProductCategory.NULL) {
                 return;
             }
-            Utility.centralizeHeading(chosenCategory);
+            Utility.centralizeHeading(String.valueOf(chosenCategory));
             ArrayList<Product> filteredProduct = productManager.getProductByCategory(chosenCategory);
             productManager.printProductByCategory(filteredProduct, true);
             if (filteredProduct.isEmpty()) {
