@@ -93,10 +93,10 @@ public class AccountManager {
                 case 0:
                     return;
                 case 1:
-                    createAccount("Customer");
+                    createAccount(AccountType.CUSTOMER);
                     break;
                 case 2:
-                    createAccount("Admin");
+                    createAccount(AccountType.ADMIN);
                     break;
             }
         }
@@ -132,18 +132,31 @@ public class AccountManager {
         return null;
     }
 
-    private void createAccount(String accountType) {
+    /**
+     * Creates a new account of the specified {@link AccountType}
+     * <p>
+     * This method collects {@link #generalInformation()} and create a User object of either {@link Admin}
+     * or {@link Customer} and save it to {@code accountLists}. It also appends the newly created account details to the
+     * user accounts file path defined in {@link FilePaths#USER_ACCOUNTS}
+     * </p>
+     *
+     * @param accountType should be either "Customer" or "Admin"
+     * @see AccountType
+     */
+    private void createAccount(AccountType accountType) {
         Utility.centralizeHeading("REGISTER " + accountType + " ACCOUNT");
         generalInformation();
         User user;
-        if (accountType.equalsIgnoreCase("Customer")) {
+
+        if (accountType == AccountType.CUSTOMER) {
             user = new Customer(name, password, address, productManager);
-        } else if (accountType.equalsIgnoreCase("Admin")) {
+        } else if (accountType == AccountType.ADMIN) {
             user = new Admin(name, password, address, productManager);
         } else {
             System.out.println("Invalid account type.");
             return;
         }
+        System.out.println("\n" + "━".repeat(Utility.TOTAL_WIDTH));
         System.out.println("Successfully created " + accountType + " account\n" + user + "\n");
 
         accountLists.add(user);
