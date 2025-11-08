@@ -2,7 +2,7 @@ package products;
 
 public abstract class Product {
 
-    private static int PRODUCT_ID = 50000;
+    private static int PRODUCT_ID = 5000;
     private final int productID;
     private int productStock;
     private String productName;
