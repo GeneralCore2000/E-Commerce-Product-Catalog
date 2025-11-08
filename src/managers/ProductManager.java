@@ -21,8 +21,8 @@ public class ProductManager {
      * Each line inside the file represents a product in format: <br>
      * {@code Category ## Product ID ## Name ## Price ## Stock ## Description}
      * </p>
-     * 
-     * @see FileManager#readFile(String) 
+     *
+     * @see FileManager#readFile(String)
      */
     public ProductManager() {
         ArrayList<ArrayList<String>> products = FileManager.readFile(FilePaths.PRODUCTS);
@@ -292,7 +292,8 @@ public class ProductManager {
             try {
                 productPrice = Double.parseDouble(in.nextLine());
                 if (productPrice <= 0) {
-                    System.out.println("\nInvalid input: Product price cannot be set to ₱ 0.\nPress any key to continue...");
+                    System.out.println("\nInvalid input: Product price cannot be set to negative or ₱ 0." +
+                            "\nPress any key to continue...");
                     in.nextLine();
                     continue;
                 }
