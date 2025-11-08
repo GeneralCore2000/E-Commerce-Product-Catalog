@@ -16,6 +16,10 @@ public class UserLinkedList {
         temp.next = newNode;
     }
 
+    public Node getHead() {
+        return head;
+    }
+
     public static class Node {
         public User user;
         public Node next;

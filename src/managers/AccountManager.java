@@ -3,6 +3,7 @@ package managers;
 import users.Admin;
 import users.Customer;
 import users.User;
+import users.UserLinkedList;
 import utils.FilePaths;
 import utils.Utility;
 
@@ -10,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class AccountManager {
-    private ArrayList<User> accountLists = new ArrayList<>();
+    private UserLinkedList accountLists = new UserLinkedList();
     private ProductManager productManager = new ProductManager();
     private Scanner in = new Scanner(System.in);
     private String name, password, address;
@@ -43,15 +44,9 @@ public class AccountManager {
 
         for (ArrayList<String> useraccountRow : useraccounts) {
             if (useraccountRow.getFirst().equals("Customer")) {
-                accountLists.add(new Customer(useraccountRow.get(USERNAME),
-                        useraccountRow.get(PASSWORD),
-                        useraccountRow.get(ADDRESS),
-                        productManager));
+                accountLists.add(new Customer(useraccountRow.get(USERNAME), useraccountRow.get(PASSWORD), useraccountRow.get(ADDRESS), productManager));
             } else {
-                accountLists.add(new Admin(useraccountRow.get(USERNAME),
-                        useraccountRow.get(PASSWORD),
-                        useraccountRow.get(ADDRESS),
-                        productManager));
+                accountLists.add(new Admin(useraccountRow.get(USERNAME), useraccountRow.get(PASSWORD), useraccountRow.get(ADDRESS), productManager));
             }
         }
     }
@@ -104,6 +99,7 @@ public class AccountManager {
 
     /**
      * Prompt the users for credentials and validate if it is existing or not
+     *
      * @return {@link User} object that matches all the entered credentials; {@code null} if at least one credential is
      * wrong
      */
@@ -128,10 +124,12 @@ public class AccountManager {
         System.out.print("Enter password >>: ");
         password = in.nextLine();
 
-        for (User user : accountLists) {
-            if (user.getUserID() == id && user.getUsername().equals(name) && user.getPassword().equals(password)) {
-                return user;
+        UserLinkedList.Node current = accountLists.getHead();
+        while (current != null) {
+            if (current.user.getUserID() == id && current.user.getUsername().equals(name) && current.user.getPassword().equals(password)) {
+                return current.user;
             }
+            current = current.next;
         }
         return null;
     }
@@ -164,12 +162,7 @@ public class AccountManager {
         System.out.println("Successfully created " + accountType + " account\n" + user + "\n");
 
         accountLists.add(user);
-        FileManager.appendToFile(FilePaths.USER_ACCOUNTS,
-                accountType + "##"
-                        + user.getUserID() + "##"
-                        + name + "##"
-                        + password + "##"
-                        + address);
+        FileManager.appendToFile(FilePaths.USER_ACCOUNTS, accountType + "##" + user.getUserID() + "##" + name + "##" + password + "##" + address);
     }
 
     private void generalInformation() {
