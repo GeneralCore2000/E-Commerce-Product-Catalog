@@ -77,4 +77,9 @@ public abstract class Product {
     public void setProductCategory(String productCategory) {
         this.productCategory = productCategory;
     }
+
+    @Override
+    public String toString(){
+        return productName + " - " + productDescription + "\n" + "\t₱ " + productPrice + "\n" + "\tStock: " + productStock + "x\n" + "\tProduct ID: " + productID;
+    }
 }

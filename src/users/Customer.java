@@ -2,9 +2,8 @@ package users;
 
 import managers.ProductManager;
 import products.Product;
+import products.ProductLinkedList;
 import utils.Utility;
-
-import java.util.ArrayList;
 
 public class Customer extends User {
     private ProductManager productManager;
@@ -53,13 +52,13 @@ public class Customer extends User {
                 return;
             }
             Utility.centralizeHeading(categoryChoice);
-            ArrayList<Product> filteredProduct = productManager.getProductByCategory(categoryChoice);
+            ProductLinkedList filteredProduct = productManager.getProductByCategory(categoryChoice);
             productManager.printProductByCategory(filteredProduct);
             userAction(filteredProduct);
         }
     }
 
-    private void userAction(ArrayList<Product> filteredProduct) {
+    private void userAction(ProductLinkedList filteredProduct) {
         String[] choices = {"🔙 Go Back", "Buy Product"};
         if (filteredProduct.isEmpty()) {
             Utility.stopper();
@@ -80,7 +79,7 @@ public class Customer extends User {
         }
     }
 
-    private void buyProduct(ArrayList<Product> filteredProduct) {
+    private void buyProduct(ProductLinkedList filteredProduct) {
         while (true) {
             Utility.centralizeHeading("Choose item to checkout");
             productManager.printProductByCategory(filteredProduct);

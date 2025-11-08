@@ -2,6 +2,7 @@ package users;
 
 import managers.ProductManager;
 import products.Product;
+import products.ProductLinkedList;
 import utils.Utility;
 
 import java.util.ArrayList;
@@ -80,7 +81,7 @@ public class Admin extends User implements AdminPrivilege {
                 return;
             }
             Utility.centralizeHeading(categoryChoice);
-            ArrayList<Product> filteredProduct = productManager.getProductByCategory(categoryChoice);
+            ProductLinkedList filteredProduct = productManager.getProductByCategory(categoryChoice);
             productManager.printProductByCategory(filteredProduct, true);
             Utility.stopper();
         }
@@ -130,7 +131,7 @@ public class Admin extends User implements AdminPrivilege {
                 return;
             }
             Utility.centralizeHeading(chosenCategory);
-            ArrayList<Product> filteredProduct = productManager.getProductByCategory(chosenCategory);
+            ProductLinkedList filteredProduct = productManager.getProductByCategory(chosenCategory);
             productManager.printProductByCategory(filteredProduct, true);
             if (filteredProduct.isEmpty()) {
                 break;

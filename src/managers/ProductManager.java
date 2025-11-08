@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class ProductManager {
-    private final ArrayList<Product> productLists = new ArrayList<>();
+    private final ProductLinkedList productLists = new ProductLinkedList();
     private final Scanner in = new Scanner(System.in);
     private double productPrice;
     private int productStock;
@@ -51,14 +51,17 @@ public class ProductManager {
      * @return an {@code ArrayList} containing all the products in {@code productLists} that matches the
      * {@code categoryChoice}; an empty list if none.
      */
-    public ArrayList<Product> getProductByCategory(String categoryChoice) {
-        ArrayList<Product> filteredProduct = new ArrayList<>();
-        for (Product product : productLists) {
-            if (product.getProductCategory().equals(categoryChoice)) {
-                filteredProduct.add(product);
+    public ProductLinkedList getProductByCategory(String categoryChoice) {
+        ProductLinkedList filteredProducts = new ProductLinkedList();
+        ProductLinkedList.Node current = productLists.getHead();
+
+        while (current != null) {
+            if (current.product.getProductCategory().equalsIgnoreCase(categoryChoice)) {
+                filteredProducts.add(current.product);
             }
+            current = current.next;
         }
-        return filteredProduct;
+        return filteredProducts;
     }
 
     /**
@@ -68,10 +71,12 @@ public class ProductManager {
      * @return {@code Product} object if is existing; {@code null} if non-existing
      */
     private Product findProduct(String productName) {
-        for (Product product : productLists) {
-            if (product.getProductName().equalsIgnoreCase(productName)) {
-                return product;
+        ProductLinkedList.Node current = productLists.getHead();
+        while (current != null) {
+            if (current.product.getProductName().equalsIgnoreCase(productName)) {
+                return current.product;
             }
+            current = current.next;
         }
         return null;
     }
@@ -86,35 +91,40 @@ public class ProductManager {
      *
      * @param filteredProduct the list of products to display specified by category
      * @param showID          {@code true} to include product IDs, otherwise {@code false} for customer display
+     * @see #printProductByCategory(ProductLinkedList)
      */
-    public void printProductByCategory(ArrayList<Product> filteredProduct, boolean showID) {
-        if (filteredProduct.isEmpty()) {
+    public void printProductByCategory(ProductLinkedList filteredProduct, boolean showID) {
+        ProductLinkedList.Node current = filteredProduct.getHead();
+        if (productLists.isEmpty()) {
             System.out.println("There is nothing to see here. 🫣");
             return;
         }
+
         int productNumber = 0;
-        for (Product product : filteredProduct) {
+
+        while (current != null) {
             productNumber++;
             if (showID) {
-                System.out.println(productNumber + ". " + product.adminDisplay());
+                System.out.println(productNumber + ". " + current.product.adminDisplay());
             } else {
-                System.out.println(productNumber + ". " + product.customerDisplay());
+                System.out.println(productNumber + ". " + current.product.customerDisplay());
             }
+            current = current.next;
         }
     }
 
     /**
-     * This is an overload method of {@link #printProductByCategory(ArrayList, boolean)} and is use for Customer menu
+     * This is an overload method of {@link #printProductByCategory(ProductLinkedList, boolean)} and is use for Customer menu
      * hiding the product IDs.
      *
      * <p>
-     * This is a convenience method that calls {@link #printProductByCategory(ArrayList, boolean)} with {@code showID}
+     * This is a convenience method that calls {@link #printProductByCategory(ProductLinkedList)} with {@code showID}
      * is set to {@code false}.
      * </p>
      *
      * @param filteredProduct arraylist of products of a specified category to be printed
      */
-    public void printProductByCategory(ArrayList<Product> filteredProduct) {
+    public void printProductByCategory(ProductLinkedList filteredProduct) {
         printProductByCategory(filteredProduct, false);
     }
 
@@ -209,14 +219,14 @@ public class ProductManager {
     /**
      * Delete the product from the specified category.
      *
-     * @param chosenCategory the category of the products to be display using {@link #printProductByCategory(ArrayList, boolean)}
+     * @param chosenCategory the category of the products to be display using {@link #printProductByCategory(ProductLinkedList, boolean)}
      *                       as well as to be deleted.
      *
      */
     public void deleteProducts(String chosenCategory) {
         while (true) {
             Utility.centralizeHeading(chosenCategory);
-            ArrayList<Product> filteredProduct = getProductByCategory(chosenCategory);
+            ProductLinkedList filteredProduct = getProductByCategory(chosenCategory);
             printProductByCategory(filteredProduct, true);
             if (filteredProduct.isEmpty()) {
                 Utility.stopper();
@@ -340,6 +350,7 @@ public class ProductManager {
             return false;
         } else if (productIndex > maxIndex) {
             System.out.println("\nInvalid input: Not existing product for #" + productIndex);
+            System.out.println(maxIndex);
             Utility.stopper();
             return false;
         }
