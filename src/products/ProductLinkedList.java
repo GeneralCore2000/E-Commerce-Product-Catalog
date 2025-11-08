@@ -67,12 +67,12 @@ public class ProductLinkedList {
         return head == null;
     }
 
-    public ProductLinkedList getProductByCategory(String categoryChoice) {
+    public ProductLinkedList getProductByCategory(ProductCategory categoryChoice) {
         ProductLinkedList filteredProducts = new ProductLinkedList();
         Node current = head;
 
         while (current != null) {
-            if (current.product.getProductCategory().equalsIgnoreCase(categoryChoice)) {
+            if (current.product.getProductCategory() == categoryChoice) {
                 filteredProducts.add(current.product);
             }
             current = current.next;

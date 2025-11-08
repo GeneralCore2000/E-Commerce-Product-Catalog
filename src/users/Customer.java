@@ -2,6 +2,7 @@ package users;
 
 import managers.ProductManager;
 import products.Product;
+import products.ProductCategory;
 import products.ProductLinkedList;
 import utils.Utility;
 
@@ -44,14 +45,14 @@ public class Customer extends User {
             Utility.centralizeHeading("🛒 BROWSE SHOP");
             Utility.printUserChoices(Utility.productChoices);
             int userChoice = Utility.isInputInteger();
-            String categoryChoice = productManager.categoryChoices(userChoice);
+            ProductCategory categoryChoice = productManager.categoryChoices(userChoice);
             if (categoryChoice == null) {
                 continue;
             }
-            if (categoryChoice.isBlank()) {
+            if (categoryChoice == ProductCategory.NULL) {
                 return;
             }
-            Utility.centralizeHeading(categoryChoice);
+            Utility.centralizeHeading(String.valueOf(categoryChoice));
             ProductLinkedList filteredProduct = productManager.getProductByCategory(categoryChoice);
             productManager.printProductByCategory(filteredProduct);
             userAction(filteredProduct);
