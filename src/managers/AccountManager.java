@@ -102,8 +102,12 @@ public class AccountManager {
         }
     }
 
+    /**
+     * Prompt the users for credentials and validate if it is existing or not
+     * @return {@link User} object that matches all the entered credentials; {@code null} if at least one credential is
+     * wrong
+     */
     private User validateCredentials() {
-        ArrayList<ArrayList<String>> useraccounts = FileManager.readFile(FilePaths.USER_ACCOUNTS);
         int id;
         while (true) {
             System.out.print("Enter user ID >>: ");
