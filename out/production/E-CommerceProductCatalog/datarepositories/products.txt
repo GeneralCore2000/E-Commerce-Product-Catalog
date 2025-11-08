@@ -18,3 +18,4 @@ Accessories##5016##Noise-Cancelling Headphones##2499.00##10##Comfortable over-ea
 Laptops##5017##MacBook Air M2##69999.00##4##Apple M2 chip with 8GB RAM and 256GB SSD, ultra-thin build.
 Smartphones##5018##OnePlus Nord CE 3##21499.00##10##Smooth 120Hz display with Snapdragon 782G processor.
 Tablets##5019##Xiaomi Pad 6##18999.00##14##Snapdragon 870-powered tablet with high refresh rate display.
+Accessories##5020##sad##1.0##1##dwqe
