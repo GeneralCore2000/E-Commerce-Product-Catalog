@@ -14,6 +14,16 @@ public class ProductManager {
     private int productStock;
     private String productName, productDescription;
 
+    /**
+     * Construct a {@code ProductManager} and initializes the {@code productLists} from the file {@code products.txt}
+     * path defined in {@link FilePaths#PRODUCTS}
+     * <p>
+     * Each line inside the file represents a product in format: <br>
+     * {@code Category ## Product ID ## Name ## Price ## Stock ## Description}
+     * </p>
+     * 
+     * @see FileManager#readFile(String) 
+     */
     public ProductManager() {
         ArrayList<ArrayList<String>> products = FileManager.readFile(FilePaths.PRODUCTS);
         int NAME = 2, PRICE = 3, STOCK = 4, DESCRIPTION = 5;
@@ -34,8 +44,13 @@ public class ProductManager {
         }
     }
 
-    //Product Category ## ID ## Product Name ## Product Price ## Product Stock ## Product Description
-
+    /**
+     * Return a list of product object in an arraylist that belongs to the specified group.
+     *
+     * @param categoryChoice the name of the category to filter the products
+     * @return an {@code ArrayList} containing all the products in {@code productLists} that matches the
+     * {@code categoryChoice}; an empty list if none.
+     */
     public ArrayList<Product> getProductByCategory(String categoryChoice) {
         ArrayList<Product> filteredProduct = new ArrayList<>();
         for (Product product : productLists) {
@@ -46,6 +61,12 @@ public class ProductManager {
         return filteredProduct;
     }
 
+    /**
+     * Searches for a specific product inside {@code productLists} by its name ignoring case sensitivity.
+     *
+     * @param productName the name of the product to find
+     * @return {@code Product} object if is existing; {@code null} if non-existing
+     */
     private Product findProduct(String productName) {
         for (Product product : productLists) {
             if (product.getProductName().equalsIgnoreCase(productName)) {
@@ -55,6 +76,17 @@ public class ProductManager {
         return null;
     }
 
+    /**
+     * Prints out the products filtered by the chosen category. This method is used in {@link users.Admin} to include
+     * product IDs at print.
+     * <p>
+     * If {@code showID} is {@code true}, each products is displayed using {@link Product#adminDisplay()}, otherwise
+     * {@link Product#customerDisplay()}.
+     * </p>
+     *
+     * @param filteredProduct the list of products to display specified by category
+     * @param showID          {@code true} to include product IDs, otherwise {@code false} for customer display
+     */
     public void printProductByCategory(ArrayList<Product> filteredProduct, boolean showID) {
         if (filteredProduct.isEmpty()) {
             System.out.println("There is nothing to see here. 🫣");
@@ -71,10 +103,33 @@ public class ProductManager {
         }
     }
 
+    /**
+     * This is an overload method of {@link #printProductByCategory(ArrayList, boolean)} and is use for Customer menu
+     * hiding the product IDs.
+     *
+     * <p>
+     * This is a convenience method that calls {@link #printProductByCategory(ArrayList, boolean)} with {@code showID}
+     * is set to {@code false}.
+     * </p>
+     *
+     * @param filteredProduct arraylist of products of a specified category to be printed
+     */
     public void printProductByCategory(ArrayList<Product> filteredProduct) {
         printProductByCategory(filteredProduct, false);
     }
 
+    /**
+     * Add product to a specified category,
+     * <p>
+     * Calls {@link #addProductQuestions()} internally to gather the product information.
+     * </p>
+     * <p>
+     * If the adding process is successful, the new Product will be added to the {@code productLists} as well as to
+     * the {@code products.txt}
+     * </p>
+     *
+     * @param addToProductCategory represents the product category
+     */
     public void addProducts(int addToProductCategory) {
         if (!addProductQuestions()) {
             return;
@@ -104,17 +159,18 @@ public class ProductManager {
             }
         }
 
-        FileManager.appendToFile(FilePaths.PRODUCTS,
-                category + "##"
-                        + product.getProductID() + "##"
-                        + productName + "##"
-                        + productPrice + "##"
-                        + productStock + "##"
-                        + productDescription);
+        FileManager.appendToFile(FilePaths.PRODUCTS, category + "##" + product.getProductID() + "##" + productName + "##" + productPrice + "##" + productStock + "##" + productDescription);
         productLists.add(product);
-
     }
 
+    /**
+     * Allows the user to update the details of a given product
+     * <p>
+     * The user can choose to update the Product's name, description, price, category, or stock.
+     * </p>
+     *
+     * @param updateIndex the {@link Product} object to be updated
+     */
     public void updateProducts(Product updateIndex) {
         while (true) {
             String[] userChoicesList = {"Go Back", "Product Name", "Product Description", "Product Price", "Product Category", "Product Stock"};
@@ -150,6 +206,13 @@ public class ProductManager {
         }
     }
 
+    /**
+     * Delete the product from the specified category.
+     *
+     * @param chosenCategory the category of the products to be display using {@link #printProductByCategory(ArrayList, boolean)}
+     *                       as well as to be deleted.
+     *
+     */
     public void deleteProducts(String chosenCategory) {
         while (true) {
             Utility.centralizeHeading(chosenCategory);
@@ -173,6 +236,12 @@ public class ProductManager {
         }
     }
 
+    /**
+     * This method is used to ask whether the user would like to continue to add the product if it is existing, or stop.
+     *
+     * @param product the existing product that conflicts with the new product to be created.
+     * @return {@code true} to continue adding the product; {@code false} to discontinue
+     */
     private boolean continueAddProduct(Product product) {
         while (true) {
             Utility.centralizeHeading("Product existing already");
@@ -194,6 +263,20 @@ public class ProductManager {
         }
     }
 
+    /**
+     * Queries the user for the information of the product to be added and performs input validation.
+     * <p>
+     * If product name entered already exist {@link #continueAddProduct(Product)} is called to ask the user whether
+     * to continue. Will return {@code false} if the user chooses not to.
+     * </p>
+     * <p>
+     * The price must be positive number and cannot be set to {@code 0}.
+     * If invalid, the user is prompted to enter a valid price.
+     * </p>
+     *
+     * @return {@code true} to continue the adding process;
+     * {@code false} to discontinue the adding process
+     */
     private boolean addProductQuestions() {
         System.out.print("Enter product name >>: ");
         productName = in.nextLine();
@@ -237,6 +320,18 @@ public class ProductManager {
         return true;
     }
 
+    /**
+     * Checks whether an inputted product index is within the allowed range.
+     * <p>
+     * A product index is considered invalid if it is less than 1, or exceed the specified maximum index.
+     * If it exceeds the maximum index, a warning is prompted and {@link Utility#stopper()} is called to pause the
+     * program.
+     * </p>
+     *
+     * @param productIndex the product number to validate
+     * @param maxIndex     the size of an arraylist
+     * @return {@code true} if the product index is valid; {@code false} if invalid
+     */
     public boolean isProductNumberValid(int productIndex, int maxIndex) {
         if (productIndex < 0) {
             return false;
