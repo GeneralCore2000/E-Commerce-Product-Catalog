@@ -199,16 +199,16 @@ public class ProductManager {
                     updateIndex.setProductStock(Integer.parseInt(in.nextLine()));
                 }
             }
-            ArrayList<ArrayList<String>> productLists2D = convertProductTo2DList();
-            FileManager.updateFile(FilePaths.PRODUCTS, productLists2D);
+            FileManager.updateFile(FilePaths.PRODUCTS, convertProductTo2DList());
         }
     }
 
     /**
      * This method converts {@code productLists} into 2D ArrayList.
      * <p>
-     *     This is use in combination of {@link FileManager#updateFile(String, ArrayList)} as it has an param of 2D arraylist.
+     * This is use in combination of {@link FileManager#updateFile(String, ArrayList)} as it has an param of 2D arraylist.
      * </p>
+     *
      * @return 2D arraylist version of productLists
      */
     private ArrayList<ArrayList<String>> convertProductTo2DList() {
@@ -253,6 +253,7 @@ public class ProductManager {
             Product removeIndex = filteredProduct.get(deleteProduct - 1);
             System.out.println("Deleting: " + " " + removeIndex);
             productLists.remove((removeIndex));
+            FileManager.updateFile(FilePaths.PRODUCTS, convertProductTo2DList());
             Utility.stopper();
         }
     }
