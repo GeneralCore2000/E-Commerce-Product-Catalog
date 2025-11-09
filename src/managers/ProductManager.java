@@ -199,7 +199,32 @@ public class ProductManager {
                     updateIndex.setProductStock(Integer.parseInt(in.nextLine()));
                 }
             }
+            ArrayList<ArrayList<String>> productLists2D = convertProductTo2DList();
+            FileManager.updateFile(FilePaths.PRODUCTS, productLists2D);
         }
+    }
+
+    /**
+     * This method converts {@code productLists} into 2D ArrayList.
+     * <p>
+     *     This is use in combination of {@link FileManager#updateFile(String, ArrayList)} as it has an param of 2D arraylist.
+     * </p>
+     * @return 2D arraylist version of productLists
+     */
+    private ArrayList<ArrayList<String>> convertProductTo2DList() {
+        ArrayList<ArrayList<String>> data = new ArrayList<>();
+
+        for (Product product : productLists) {
+            ArrayList<String> row = new ArrayList<>();
+            row.add(product.getProductCategory() + "");
+            row.add(product.getProductID() + "");
+            row.add(product.getProductName());
+            row.add(product.getProductPrice() + "");
+            row.add(product.getProductStock() + "");
+            row.add(product.getProductDescription());
+            data.add(row);
+        }
+        return data;
     }
 
     /**
