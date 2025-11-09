@@ -39,7 +39,6 @@ public class QueueOrders {
             System.out.println(orderNumber + ". " + temp.orderID
                     + " | " + temp.customer.getUserID()
                     + " | " + temp.product.getProductID()
-                    + " | " + temp.product.getProductName()
                     + " | " + temp.product.getProductPrice()
                     + temp.quantity
                     + " | " + temp.product.getProductPrice() * temp.quantity);
