@@ -37,7 +37,6 @@ public class QueueOrders {
         int orderNumber = 1;
         while (temp != null) {
             System.out.println(orderNumber + ". " + temp.orderID
-                    + " | " + temp.customer.getUsername()
                     + " | " + temp.customer.getUserID()
                     + " | " + temp.product.getProductID()
                     + " | " + temp.product.getProductName()
