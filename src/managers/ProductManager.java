@@ -192,25 +192,84 @@ public class ProductManager {
                     return;
                 }
                 case 1 -> {
-                    System.out.print("Enter new product name for [" + updateIndex.getProductName() + "] >>: ");
-                    updateIndex.setProductName(in.nextLine());
+                    updateProductName(updateIndex);
                 }
                 case 2 -> {
-                    System.out.print("Enter new product description for [" + updateIndex.getProductDescription() + "] >>: ");
-                    updateIndex.setProductDescription(in.nextLine());
+                    updateProductDescription(updateIndex);
                 }
                 case 3 -> {
-//TODO: Add validation if the input is integer
-                    System.out.print("Enter new product price for [" + updateIndex.getProductPrice() + "] >>: ");
-                    updateIndex.setProductPrice(Double.parseDouble(in.nextLine()));
+                    updateProductPrice(updateIndex);
                 }
                 case 4 -> {
-//TODO: Add validation if the input is integer
-                    System.out.print("Enter new product stock for [" + updateIndex.getProductStock() + "] >>: ");
-                    updateIndex.setProductStock(Integer.parseInt(in.nextLine()));
+                    updateProductStock(updateIndex);
                 }
             }
+            FileManager.updateFile(FilePaths.PRODUCTS, convertProductTo2DList());
         }
+    }
+
+    private void updateProductName(Product updateIndex) {
+        System.out.print("Enter new product name for [" + updateIndex.getProductName() + "] >>: ");
+        updateIndex.setProductName(in.nextLine());
+    }
+
+    private void updateProductDescription(Product updateIndex) {
+        System.out.print("Enter new product description for [" + updateIndex.getProductDescription() + "] >>: ");
+        updateIndex.setProductDescription(in.nextLine());
+    }
+
+    private void updateProductPrice(Product updateIndex) {
+        while (true) {
+            int newPrice = Utility.isInputInteger("Enter new product price for [" + updateIndex.getProductPrice() + "]");
+            if (newPrice < 0) {
+                System.out.println("\n" + "~".repeat(42));
+                System.out.println("Invalid input: Cannot be negative stock.");
+                System.out.println("~".repeat(42));
+                continue;
+            }
+            updateIndex.setProductPrice(newPrice);
+            break;
+        }
+    }
+
+    private void updateProductStock(Product updateIndex) {
+        while (true) {
+            int newStock = Utility.isInputInteger("Enter new product stock for [" + updateIndex.getProductStock() + "]");
+            if (newStock < 0) {
+                System.out.println("\n" + "~".repeat(42));
+                System.out.println("Invalid input: Cannot be negative stock.");
+                System.out.println("~".repeat(42));
+                continue;
+            }
+            updateIndex.setProductStock(newStock);
+            break;
+        }
+    }
+
+    /**
+     * This method converts {@code productLists} into 2D ArrayList.
+     * <p>
+     * This is use in combination of {@link FileManager#updateFile(String, ArrayList)} as it has an param of 2D arraylist.
+     * </p>
+     *
+     * @return 2D arraylist version of productLists
+     */
+    private ArrayList<ArrayList<String>> convertProductTo2DList() {
+        ArrayList<ArrayList<String>> data = new ArrayList<>();
+        ProductLinkedList.Node current = productLists.getHead();
+
+        while (current != null) {
+            ArrayList<String> row = new ArrayList<>();
+            row.add(current.product.getProductCategory() + "");
+            row.add(current.product.getProductID() + "");
+            row.add(current.product.getProductName());
+            row.add(current.product.getProductPrice() + "");
+            row.add(current.product.getProductStock() + "");
+            row.add(current.product.getProductDescription());
+            data.add(row);
+            current = current.next;
+        }
+        return data;
     }
 
     /**
@@ -239,6 +298,7 @@ public class ProductManager {
             Product removeIndex = filteredProduct.get(deleteProduct - 1);
             System.out.println("Deleting: " + " " + removeIndex);
             productLists.remove((removeIndex));
+            FileManager.updateFile(FilePaths.PRODUCTS, convertProductTo2DList());
             Utility.stopper();
         }
     }
