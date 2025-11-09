@@ -46,7 +46,6 @@ public class QueueOrders {
         }
     }
 
-    //Order ID, Customer name, Customer ID, Product ID, product name, product price, quantity, total price
     public static class Queue {
         public static int NEXT_ORDER_ID = 4000;
         public int orderID;
