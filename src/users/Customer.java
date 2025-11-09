@@ -1,10 +1,12 @@
 package users;
 
+import managers.FileManager;
 import managers.ProductManager;
 import managers.QueueOrders;
 import products.Product;
 import products.ProductCategory;
 import products.ProductLinkedList;
+import utils.FilePaths;
 import utils.Utility;
 
 public class Customer extends User {
@@ -132,8 +134,14 @@ public class Customer extends User {
             }
             System.out.println("You order is being processed. Thank you, dear Customer!");
 //            chosenProduct.setProductStock(chosenProduct.getProductStock() - quantity);
-            queueOrders.enqueue(chosenProduct, this, quantity);
-            queueOrders.display();
+            QueueOrders.Queue queue = queueOrders.enqueue(chosenProduct, this, quantity);
+            FileManager.appendToFile(FilePaths.PENDING_ORDERS,
+                    queue.orderID + Utility.DIVIDER
+                            + this.getUserID() + Utility.DIVIDER
+                            + chosenProduct.getProductID() + Utility.DIVIDER
+                            + chosenProduct.getProductPrice() + Utility.DIVIDER
+                            + quantity + Utility.DIVIDER
+                            + (quantity * chosenProduct.getProductPrice()));
             return;
         }
     }

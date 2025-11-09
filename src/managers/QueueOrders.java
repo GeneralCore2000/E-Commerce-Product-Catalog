@@ -6,17 +6,18 @@ import users.Customer;
 public class QueueOrders {
     Queue head;
 
-    public void enqueue(Product product, Customer customer, int quantity) {
+    public Queue enqueue(Product product, Customer customer, int quantity) {
         Queue queue = new Queue(product, customer, quantity);
         if (head == null) {
             head = queue;
-            return;
+        } else {
+            Queue temp = head;
+            while (temp.next != null) {
+                temp = temp.next;
+            }
+            temp.next = queue;
         }
-        Queue temp = head;
-        while (temp.next != null) {
-            temp = temp.next;
-        }
-        temp.next = queue;
+        return queue;
     }
 
     public void dequeue() {
