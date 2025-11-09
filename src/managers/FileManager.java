@@ -12,18 +12,19 @@ public class FileManager {
     /**
      * Read and store the content of the files in an ArrayList
      * <p>
-     *     The file must contain a {@code ##} as a divider of information
+     * The file must contain a {@code ##} as a divider of information
      * </p>
      * <p>
-     *     Prompts an error if the file does not exist
+     * Prompts an error if the file does not exist
      * </p>
+     *
      * @param filePath The path of the file to read
      * @return {@code 2D ArrayList} containing all content of the file whether it's empty or not
      */
     public static ArrayList<ArrayList<String>> readFile(String filePath) {
         ArrayList<ArrayList<String>> fileArray = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
-            String line;
+            String line = br.readLine();
             while ((line = br.readLine()) != null) {
                 fileArray.add(new ArrayList<>(Arrays.asList(line.split(Utility.DIVIDER))));
             }
@@ -35,7 +36,8 @@ public class FileManager {
 
     /**
      * Update the whole file. This method is convenient for updating a row that is within the first and last row
-     * @param filePath The path of the file to be updated or append to
+     *
+     * @param filePath       The path of the file to be updated or append to
      * @param updatedContent The {@code 2D ArrayList} of the content to replace the current content of the file
      */
     public static void updateFile(String filePath, ArrayList<ArrayList<String>> updatedContent) {
@@ -66,7 +68,7 @@ public class FileManager {
             bw.write(appendText);
             bw.newLine();
         } catch (IOException e) {
-            System.out.println("Error appending to fil: " + e.getMessage());
+            System.out.println("Error appending to file: " + e.getMessage());
         }
     }
 

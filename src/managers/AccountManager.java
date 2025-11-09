@@ -162,7 +162,11 @@ public class AccountManager {
         System.out.println("Successfully created " + accountType + " account\n" + user + "\n");
 
         accountLists.add(user);
-        FileManager.appendToFile(FilePaths.USER_ACCOUNTS, accountType + Utility.DIVIDER + user.getUserID() + Utility.DIVIDER + name + Utility.DIVIDER + password + Utility.DIVIDER + address);
+        FileManager.appendToFile(FilePaths.USER_ACCOUNTS, accountType + Utility.DIVIDER
+                + user.getUserID() + Utility.DIVIDER
+                + "\"" + name + "\"" + Utility.DIVIDER
+                + password + Utility.DIVIDER
+                + "\"" + address + "\"");
     }
 
     private void generalInformation() {

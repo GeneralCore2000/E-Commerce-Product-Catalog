@@ -170,7 +170,12 @@ public class ProductManager {
             }
         }
 
-        FileManager.appendToFile(FilePaths.PRODUCTS, category + Utility.DIVIDER + product.getProductID() + Utility.DIVIDER + productName + Utility.DIVIDER + productPrice + Utility.DIVIDER + productStock + Utility.DIVIDER + productDescription);
+        FileManager.appendToFile(FilePaths.PRODUCTS, category + Utility.DIVIDER
+                + product.getProductID() + Utility.DIVIDER
+                + "\"" + productName + "\"" + Utility.DIVIDER
+                + productPrice + Utility.DIVIDER
+                + productStock + Utility.DIVIDER
+                + "\"" + productDescription + "\"");
         productLists.add(product);
     }
 
@@ -359,8 +364,7 @@ public class ProductManager {
             try {
                 productPrice = Double.parseDouble(in.nextLine());
                 if (productPrice <= 0) {
-                    System.out.println("\nInvalid input: Product price cannot be set to negative or ₱ 0." +
-                            "\nPress any key to continue...");
+                    System.out.println("\nInvalid input: Product price cannot be set to negative or ₱ 0." + "\nPress any key to continue...");
                     in.nextLine();
                     continue;
                 }
