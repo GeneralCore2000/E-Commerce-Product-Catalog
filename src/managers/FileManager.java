@@ -1,6 +1,7 @@
 package managers;
 
 import utils.FilePaths;
+import utils.Utility;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -24,7 +25,7 @@ public class FileManager {
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line;
             while ((line = br.readLine()) != null) {
-                fileArray.add(new ArrayList<>(Arrays.asList(line.split("##"))));
+                fileArray.add(new ArrayList<>(Arrays.asList(line.split(Utility.DIVIDER))));
             }
         } catch (Exception e) {
             System.out.println("Error reading file: " + e.getMessage());
@@ -42,7 +43,7 @@ public class FileManager {
             for (int row = 0; row < updatedContent.size(); row++) {
                 ArrayList<String> updatedContentArray = updatedContent.get(row);
                 for (String column : updatedContentArray) {
-                    bw.write(column + "##");
+                    bw.write(column + Utility.DIVIDER);
                 }
                 bw.newLine();
             }

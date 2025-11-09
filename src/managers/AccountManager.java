@@ -43,7 +43,7 @@ public class AccountManager {
         int USERNAME = 2, PASSWORD = 3, ADDRESS = 4;
 
         for (ArrayList<String> useraccountRow : useraccounts) {
-            if (useraccountRow.getFirst().equals("Customer")) {
+            if (useraccountRow.getFirst().equalsIgnoreCase("Customer")) {
                 accountLists.add(new Customer(useraccountRow.get(USERNAME), useraccountRow.get(PASSWORD), useraccountRow.get(ADDRESS), productManager));
             } else {
                 accountLists.add(new Admin(useraccountRow.get(USERNAME), useraccountRow.get(PASSWORD), useraccountRow.get(ADDRESS), productManager));
@@ -162,7 +162,7 @@ public class AccountManager {
         System.out.println("Successfully created " + accountType + " account\n" + user + "\n");
 
         accountLists.add(user);
-        FileManager.appendToFile(FilePaths.USER_ACCOUNTS, accountType + "##" + user.getUserID() + "##" + name + "##" + password + "##" + address);
+        FileManager.appendToFile(FilePaths.USER_ACCOUNTS, accountType + Utility.DIVIDER + user.getUserID() + Utility.DIVIDER + name + Utility.DIVIDER + password + Utility.DIVIDER + address);
     }
 
     private void generalInformation() {

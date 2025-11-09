@@ -3,6 +3,7 @@ package utils;
 import java.util.Scanner;
 
 public class Utility {
+    public static final String DIVIDER = ",";
     public static final int TOTAL_WIDTH = 58;
     public static final int SHORT_WIDTH = 25;
     public static String[] productChoices = {"🔙 Go Back", "🎧 Accessories", "💻 Laptops", "📱 Smartphones", "📲 Tablets"};
@@ -69,6 +70,7 @@ public class Utility {
     /**
      * Validate the user input if it is within the range ({@code 0} up to the specified {@code maxRange}).
      * This method uses {@link #isInputInteger()} to obtain user's input.
+     *
      * @param maxRange
      * @return the integer entered by the user if it is within the valid range, or {@code -1} if the input is invalid or
      * out of range.

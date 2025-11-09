@@ -170,7 +170,7 @@ public class ProductManager {
             }
         }
 
-        FileManager.appendToFile(FilePaths.PRODUCTS, category + "##" + product.getProductID() + "##" + productName + "##" + productPrice + "##" + productStock + "##" + productDescription);
+        FileManager.appendToFile(FilePaths.PRODUCTS, category + Utility.DIVIDER + product.getProductID() + Utility.DIVIDER + productName + Utility.DIVIDER + productPrice + Utility.DIVIDER + productStock + Utility.DIVIDER + productDescription);
         productLists.add(product);
     }
 
