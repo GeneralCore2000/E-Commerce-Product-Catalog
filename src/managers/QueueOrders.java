@@ -1,12 +1,13 @@
 package managers;
 
 import products.Product;
+import users.Customer;
 
 public class QueueOrders {
     Queue head;
 
-    public void enqueue(Product product) {
-        Queue queue = new Queue(product);
+    public void enqueue(Product product, Customer customer, int quantity) {
+        Queue queue = new Queue(product, customer, quantity);
         if (head == null) {
             head = queue;
             return;
@@ -26,12 +27,16 @@ public class QueueOrders {
         head = head.next;
     }
 
-    public class Queue {
+    public static class Queue {
         public Product product;
         public Queue next;
+        public int quantity;
+        public Customer customer;
 
-        public Queue(Product product) {
+        public Queue(Product product, Customer customer, int quantity) {
             this.product = product;
+            this.quantity = quantity;
+            this.customer = customer;
             next = null;
         }
     }

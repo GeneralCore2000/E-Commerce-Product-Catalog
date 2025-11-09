@@ -1,6 +1,7 @@
 package users;
 
 import managers.ProductManager;
+import managers.QueueOrders;
 import products.Product;
 import products.ProductCategory;
 import products.ProductLinkedList;
@@ -8,6 +9,7 @@ import utils.Utility;
 
 public class Customer extends User {
     private ProductManager productManager;
+    private QueueOrders queueOrders = new QueueOrders();
 
     public Customer(String username, String password, String address, ProductManager productManager) {
         super(username, password, address);
@@ -34,7 +36,7 @@ public class Customer extends User {
     }
 
     @Override
-    public void showUserInfo() {
+    protected void showUserInfo() {
         System.out.println("Username: " + username + " (ID #" + userID + ")");
         System.out.println("-".repeat(Utility.TOTAL_WIDTH));
     }
@@ -112,8 +114,8 @@ public class Customer extends User {
             System.out.println("Stock left: " + chosenProduct.getProductStock());
 
             int quantity = Utility.isInputInteger("Enter quantity to buy");
-            if (quantity < 0) {
-                System.out.println("\nOops! You tried to buy in negative integer. Please input a positive integer.");
+            if (quantity <= 0) {
+                System.out.println("\nOops! You tried to buy in negative integer or zero. Please input a positive integer.");
                 Utility.stopper();
                 continue;
             }
@@ -127,8 +129,9 @@ public class Customer extends User {
                 return;
 
             }
-            System.out.println("Thank you for your purchase, dear Customer!");
-            chosenProduct.setProductStock(chosenProduct.getProductStock() - quantity);
+            System.out.println("You order is being processed. Thank you, dear Customer!");
+//            chosenProduct.setProductStock(chosenProduct.getProductStock() - quantity);
+            queueOrders.enqueue(chosenProduct, this, quantity);
             return;
         }
     }
