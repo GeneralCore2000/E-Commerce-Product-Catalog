@@ -27,7 +27,30 @@ public class QueueOrders {
         head = head.next;
     }
 
+    public void display() {
+        if (head == null) {
+            System.out.println("No orders currently.");
+            return;
+        }
+        Queue temp = head;
+        int orderNumber = 1;
+        while (temp != null) {
+            System.out.println(orderNumber + ". " + temp.orderID
+                    + " | " + temp.customer.getUsername()
+                    + " | " + temp.customer.getUserID()
+                    + " | " + temp.product.getProductID()
+                    + " | " + temp.product.getProductName()
+                    + " | " + temp.product.getProductPrice()
+                    + temp.quantity
+                    + " | " + temp.product.getProductPrice() * temp.quantity);
+            temp = temp.next;
+        }
+    }
+
+    //Order ID, Customer name, Customer ID, Product ID, product name, product price, quantity, total price
     public static class Queue {
+        public static int NEXT_ORDER_ID = 4000;
+        public int orderID;
         public Product product;
         public Queue next;
         public int quantity;
@@ -38,6 +61,7 @@ public class QueueOrders {
             this.quantity = quantity;
             this.customer = customer;
             next = null;
+            orderID = NEXT_ORDER_ID++;
         }
     }
 

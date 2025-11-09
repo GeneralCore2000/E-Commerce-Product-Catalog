@@ -11,11 +11,12 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class AccountManager {
-    private UserLinkedList accountLists = new UserLinkedList();
-    private ProductManager productManager = new ProductManager();
-    private Scanner in = new Scanner(System.in);
+    private final UserLinkedList accountLists = new UserLinkedList();
+    private final ProductManager productManager = new ProductManager();
+    private final Scanner in = new Scanner(System.in);
     private String name, password, address;
     private int userChoice;
+    private final QueueOrders queueOrders = new QueueOrders();
 
     /**
      * Constructs an {@code AccountManager} instance and automatically reading the {@code useraccounts.txt} using
@@ -44,9 +45,9 @@ public class AccountManager {
 
         for (ArrayList<String> useraccountRow : useraccounts) {
             if (useraccountRow.getFirst().equalsIgnoreCase("Customer")) {
-                accountLists.add(new Customer(useraccountRow.get(USERNAME), useraccountRow.get(PASSWORD), useraccountRow.get(ADDRESS), productManager));
+                accountLists.add(new Customer(useraccountRow.get(USERNAME), useraccountRow.get(PASSWORD), useraccountRow.get(ADDRESS), productManager, queueOrders));
             } else {
-                accountLists.add(new Admin(useraccountRow.get(USERNAME), useraccountRow.get(PASSWORD), useraccountRow.get(ADDRESS), productManager));
+                accountLists.add(new Admin(useraccountRow.get(USERNAME), useraccountRow.get(PASSWORD), useraccountRow.get(ADDRESS), productManager, queueOrders));
             }
         }
     }
@@ -151,9 +152,9 @@ public class AccountManager {
         User user;
 
         if (accountType == AccountType.CUSTOMER) {
-            user = new Customer(name, password, address, productManager);
+            user = new Customer(name, password, address, productManager, queueOrders);
         } else if (accountType == AccountType.ADMIN) {
-            user = new Admin(name, password, address, productManager);
+            user = new Admin(name, password, address, productManager, queueOrders);
         } else {
             System.out.println("Invalid account type.");
             return;
@@ -162,11 +163,7 @@ public class AccountManager {
         System.out.println("Successfully created " + accountType + " account\n" + user + "\n");
 
         accountLists.add(user);
-        FileManager.appendToFile(FilePaths.USER_ACCOUNTS, accountType + Utility.DIVIDER
-                + user.getUserID() + Utility.DIVIDER
-                + "\"" + name + "\"" + Utility.DIVIDER
-                + password + Utility.DIVIDER
-                + "\"" + address + "\"");
+        FileManager.appendToFile(FilePaths.USER_ACCOUNTS, accountType + Utility.DIVIDER + user.getUserID() + Utility.DIVIDER + "\"" + name + "\"" + Utility.DIVIDER + password + Utility.DIVIDER + "\"" + address + "\"");
     }
 
     private void generalInformation() {

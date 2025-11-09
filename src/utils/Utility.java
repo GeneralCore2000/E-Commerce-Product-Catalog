@@ -7,7 +7,7 @@ public class Utility {
     public static final int TOTAL_WIDTH = 58;
     public static final int SHORT_WIDTH = 25;
     public static String[] productChoices = {"🔙 Go Back", "🎧 Accessories", "💻 Laptops", "📱 Smartphones", "📲 Tablets"};
-    private static Scanner in = new Scanner(System.in);
+    private static final Scanner in = new Scanner(System.in);
 
     /**
      * This method centralizes the text {@code heading} by subtracting the length of {@code heading} from the predefined

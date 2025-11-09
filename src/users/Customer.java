@@ -8,12 +8,13 @@ import products.ProductLinkedList;
 import utils.Utility;
 
 public class Customer extends User {
-    private ProductManager productManager;
-    private QueueOrders queueOrders = new QueueOrders();
+    private final ProductManager productManager;
+    private final QueueOrders queueOrders;
 
-    public Customer(String username, String password, String address, ProductManager productManager) {
+    public Customer(String username, String password, String address, ProductManager productManager, QueueOrders queueOrders) {
         super(username, password, address);
         this.productManager = productManager;
+        this.queueOrders = queueOrders;
     }
 
     @Override
@@ -132,6 +133,7 @@ public class Customer extends User {
             System.out.println("You order is being processed. Thank you, dear Customer!");
 //            chosenProduct.setProductStock(chosenProduct.getProductStock() - quantity);
             queueOrders.enqueue(chosenProduct, this, quantity);
+            queueOrders.display();
             return;
         }
     }

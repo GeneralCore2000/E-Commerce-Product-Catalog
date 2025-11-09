@@ -1,6 +1,7 @@
 package users;
 
 import managers.ProductManager;
+import managers.QueueOrders;
 import products.Product;
 import products.ProductCategory;
 import products.ProductLinkedList;
@@ -8,15 +9,17 @@ import utils.Utility;
 
 public class Admin extends User implements AdminPrivilege {
     private final ProductManager productManager;
+    private final QueueOrders queueOrders;
 
-    public Admin(String username, String password, String address, ProductManager productManager) {
+    public Admin(String username, String password, String address, ProductManager productManager, QueueOrders queueOrders) {
         super(username, password, address);
         this.productManager = productManager;
+        this.queueOrders = queueOrders;
     }
 
     @Override
     public void showMenu() {
-        String[] choices = {"🔙 Log Out", "📦 Manage Inventory"};
+        String[] choices = {"🔙 Log Out", "📦 Manage Inventory", "📃 See Orders"};
         while (true) {
             Utility.centralizeHeading("ADMIN MENU");
             showUserInfo();
@@ -29,8 +32,14 @@ public class Admin extends User implements AdminPrivilege {
                     return;
                 case 1:
                     manageInventory();
+                case 2:
+                    seeOrders();
             }
         }
+    }
+
+    private void seeOrders() {
+        queueOrders.display();
     }
 
     @Override

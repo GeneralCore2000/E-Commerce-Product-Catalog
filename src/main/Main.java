@@ -7,8 +7,8 @@ import utils.Utility;
 import java.util.Scanner;
 
 public class Main {
-    private Scanner in = new Scanner(System.in);
-    private AccountManager accountManager = new AccountManager();
+    private final Scanner in = new Scanner(System.in);
+    private final AccountManager accountManager = new AccountManager();
 
     static void main() {
         FileManager.initializeFiles();
@@ -59,8 +59,7 @@ public class Main {
     }
 
     private void banner() {
-        System.out.println("" +
-                "╔═══╗   ╔════╗  ╔═════╗  ╔════╗    ╔═════╗    ╔════╗   ╔═╗\n" +
+        System.out.println("╔═══╗   ╔════╗  ╔═════╗  ╔════╗    ╔═════╗    ╔════╗   ╔═╗\n" +
                 "║   ╚═══╝    ╚══╝     ╚══╝    ╚════╝     ╚════╝    ╚═══╝ ║\n" +
                 "║                                                        ║\n" +
                 "║  ██████╗ ██████╗  ██████╗    ██████╗ ███████╗██╗  ██╗  ║\n" +
