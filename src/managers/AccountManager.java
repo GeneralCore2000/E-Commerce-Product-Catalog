@@ -1,11 +1,11 @@
 package managers;
 
 import data.FileManager;
+import data.FilePaths;
+import data_structures.UserLinkedList;
 import models.users.Admin;
 import models.users.Customer;
 import models.users.User;
-import data_structures.UserLinkedList;
-import data.FilePaths;
 import utils.Utility;
 
 import java.util.ArrayList;
@@ -14,10 +14,12 @@ import java.util.Scanner;
 public class AccountManager {
     private final UserLinkedList accountLists = new UserLinkedList();
     private final ProductManager productManager = new ProductManager();
+    private final OrderManager orderManager = new OrderManager();
+    private final QueueOrders queueOrders = new QueueOrders();
+
     private final Scanner in = new Scanner(System.in);
     private String name, password, address;
     private int userChoice;
-    private final QueueOrders queueOrders = new QueueOrders();
 
     /**
      * Constructs an {@code AccountManager} instance and automatically reading the {@code useraccounts.txt} using
@@ -46,9 +48,11 @@ public class AccountManager {
 
         for (ArrayList<String> useraccountRow : useraccounts) {
             if (useraccountRow.getFirst().equalsIgnoreCase("Customer")) {
-                accountLists.add(new Customer(useraccountRow.get(USERNAME), useraccountRow.get(PASSWORD), useraccountRow.get(ADDRESS), productManager, queueOrders));
+                accountLists.add(new Customer(useraccountRow.get(USERNAME), useraccountRow.get(PASSWORD),
+                        useraccountRow.get(ADDRESS), productManager, queueOrders, orderManager));
             } else {
-                accountLists.add(new Admin(useraccountRow.get(USERNAME), useraccountRow.get(PASSWORD), useraccountRow.get(ADDRESS), productManager, queueOrders));
+                accountLists.add(new Admin(useraccountRow.get(USERNAME), useraccountRow.get(PASSWORD),
+                        useraccountRow.get(ADDRESS), productManager, queueOrders, orderManager));
             }
         }
     }
@@ -153,9 +157,9 @@ public class AccountManager {
         User user;
 
         if (accountType == AccountType.CUSTOMER) {
-            user = new Customer(name, password, address, productManager, queueOrders);
+            user = new Customer(name, password, address, productManager, queueOrders, orderManager);
         } else if (accountType == AccountType.ADMIN) {
-            user = new Admin(name, password, address, productManager, queueOrders);
+            user = new Admin(name, password, address, productManager, queueOrders, orderManager);
         } else {
             System.out.println("Invalid account type.");
             return;

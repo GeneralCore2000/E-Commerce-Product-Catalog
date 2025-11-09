@@ -1,22 +1,25 @@
 package models.users;
 
 import data.FileManager;
+import data.FilePaths;
+import data_structures.ProductLinkedList;
+import managers.OrderManager;
 import managers.ProductManager;
 import managers.QueueOrders;
 import models.products.Product;
 import models.products.ProductCategory;
-import data_structures.ProductLinkedList;
-import data.FilePaths;
 import utils.Utility;
 
 public class Customer extends User {
     private final ProductManager productManager;
     private final QueueOrders queueOrders;
+    private final OrderManager orderManager;
 
-    public Customer(String username, String password, String address, ProductManager productManager, QueueOrders queueOrders) {
+    public Customer(String username, String password, String address, ProductManager productManager, QueueOrders queueOrders, OrderManager orderManager) {
         super(username, password, address);
         this.productManager = productManager;
         this.queueOrders = queueOrders;
+        this.orderManager = orderManager;
     }
 
     @Override
@@ -134,14 +137,7 @@ public class Customer extends User {
             }
             System.out.println("You order is being processed. Thank you, dear Customer!");
 //            chosenProduct.setProductStock(chosenProduct.getProductStock() - quantity);
-            QueueOrders.Queue queue = queueOrders.enqueue(chosenProduct, this, quantity);
-            FileManager.appendToFile(FilePaths.PENDING_ORDERS,
-                    queue.orderID + Utility.DIVIDER
-                            + this.getUserID() + Utility.DIVIDER
-                            + chosenProduct.getProductID() + Utility.DIVIDER
-                            + chosenProduct.getProductPrice() + Utility.DIVIDER
-                            + quantity + Utility.DIVIDER
-                            + (quantity * chosenProduct.getProductPrice()));
+            orderManager.addOrder(chosenProduct, this, quantity);
             return;
         }
     }

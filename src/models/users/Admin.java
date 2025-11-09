@@ -1,5 +1,6 @@
 package models.users;
 
+import managers.OrderManager;
 import managers.ProductManager;
 import managers.QueueOrders;
 import models.products.Product;
@@ -10,11 +11,13 @@ import utils.Utility;
 public class Admin extends User implements AdminPrivilege {
     private final ProductManager productManager;
     private final QueueOrders queueOrders;
+    private final OrderManager orderManager;
 
-    public Admin(String username, String password, String address, ProductManager productManager, QueueOrders queueOrders) {
+    public Admin(String username, String password, String address, ProductManager productManager, QueueOrders queueOrders, OrderManager orderManager) {
         super(username, password, address);
         this.productManager = productManager;
         this.queueOrders = queueOrders;
+        this.orderManager = orderManager;
     }
 
     @Override
