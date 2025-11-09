@@ -1,10 +1,11 @@
 package managers;
 
-import users.Admin;
-import users.Customer;
-import users.User;
-import users.UserLinkedList;
-import utils.FilePaths;
+import data.FileManager;
+import models.users.Admin;
+import models.users.Customer;
+import models.users.User;
+import data_structures.UserLinkedList;
+import data.FilePaths;
 import utils.Utility;
 
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ public class AccountManager {
      * {@link FilePaths#USER_ACCOUNTS} where it stores the String path of {@code user_accounts.txt}
      *
      * <p>
-     * The {@code user_accounts.txt} is expected to have rows containing the information of the users with
+     * The {@code user_accounts.txt} is expected to have rows containing the information of the models.users with
      * {@code ##} as dividers.
      * </p>
      *  <ul>
@@ -99,7 +100,7 @@ public class AccountManager {
     }
 
     /**
-     * Prompt the users for credentials and validate if it is existing or not
+     * Prompt the models.users for credentials and validate if it is existing or not
      *
      * @return {@link User} object that matches all the entered credentials; {@code null} if at least one credential is
      * wrong

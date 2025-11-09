@@ -1,7 +1,9 @@
 package managers;
 
-import products.*;
-import utils.FilePaths;
+import data.FileManager;
+import data_structures.ProductLinkedList;
+import models.products.*;
+import data.FilePaths;
 import utils.Utility;
 
 import java.util.ArrayList;
@@ -15,7 +17,7 @@ public class ProductManager {
     private String productName, productDescription;
 
     /**
-     * Construct a {@code ProductManager} and initializes the {@code productLists} from the file {@code products.txt}
+     * Construct a {@code ProductManager} and initializes the {@code productLists} from the file {@code models.products.txt}
      * path defined in {@link FilePaths#PRODUCTS}
      * <p>
      * Each line inside the file represents a product in format: <br>
@@ -47,8 +49,8 @@ public class ProductManager {
     /**
      * Return a list of product object in an arraylist that belongs to the specified group.
      *
-     * @param categoryChoice the name of the category to filter the products
-     * @return an {@code ArrayList} containing all the products in {@code productLists} that matches the
+     * @param categoryChoice the name of the category to filter the models.products
+     * @return an {@code ArrayList} containing all the models.products in {@code productLists} that matches the
      * {@code categoryChoice}; an empty list if none.
      */
 
@@ -83,14 +85,14 @@ public class ProductManager {
     }
 
     /**
-     * Prints out the products filtered by the chosen category. This method is used in {@link users.Admin} to include
+     * Prints out the models.products filtered by the chosen category. This method is used in {@link models.users.Admin} to include
      * product IDs at print.
      * <p>
-     * If {@code showID} is {@code true}, each products is displayed using {@link Product#adminDisplay()}, otherwise
+     * If {@code showID} is {@code true}, each models.products is displayed using {@link Product#adminDisplay()}, otherwise
      * {@link Product#customerDisplay()}.
      * </p>
      *
-     * @param filteredProduct the list of products to display specified by category
+     * @param filteredProduct the list of models.products to display specified by category
      * @param showID          {@code true} to include product IDs, otherwise {@code false} for customer display
      * @see #printProductByCategory(ProductLinkedList)
      */
@@ -123,7 +125,7 @@ public class ProductManager {
      * is set to {@code false}.
      * </p>
      *
-     * @param filteredProduct arraylist of products of a specified category to be printed
+     * @param filteredProduct arraylist of models.products of a specified category to be printed
      */
     public void printProductByCategory(ProductLinkedList filteredProduct) {
         printProductByCategory(filteredProduct, false);
@@ -136,7 +138,7 @@ public class ProductManager {
      * </p>
      * <p>
      * If the adding process is successful, the new Product will be added to the {@code productLists} as well as to
-     * the {@code products.txt}
+     * the {@code models.products.txt}
      * </p>
      *
      * @param addToProductCategory represents the product category
@@ -280,7 +282,7 @@ public class ProductManager {
     /**
      * Delete the product from the specified category.
      *
-     * @param chosenCategory the category of the products to be display using {@link #printProductByCategory(ProductLinkedList, boolean)}
+     * @param chosenCategory the category of the models.products to be display using {@link #printProductByCategory(ProductLinkedList, boolean)}
      *                       as well as to be deleted.
      *
      */

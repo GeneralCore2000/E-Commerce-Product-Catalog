@@ -1,7 +1,7 @@
 package managers;
 
-import products.Product;
-import users.Customer;
+import models.products.Product;
+import models.users.Customer;
 
 public class QueueOrders {
     Queue head;

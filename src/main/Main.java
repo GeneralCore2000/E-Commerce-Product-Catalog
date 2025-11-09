@@ -1,7 +1,7 @@
 package main;
 
 import managers.AccountManager;
-import managers.FileManager;
+import data.FileManager;
 import utils.Utility;
 
 import java.util.Scanner;
@@ -44,11 +44,11 @@ public class Main {
         System.out.println("\n" + "~".repeat(112));
         System.out.println("About PRODEX\n" +
                 "\n" +
-                "Welcome to PRODEX, an E-commerce products.Product Catalog made by John Lloyd E. Vargas for OOP 1 under Sir " +
+                "Welcome to PRODEX, an E-commerce models.products.Product Catalog made by John Lloyd E. Vargas for OOP 1 under Sir " +
                 "Jayson Batoon.\n" +
                 "This project was developed as a two-week individual activity for the A.Y. 2025–2026, 1st Semester.\n" +
                 "\n" +
-                "PRODEX lets you view, organize, and manage products easily — just like in a real online store!\n" +
+                "PRODEX lets you view, organize, and manage models.products easily — just like in a real online store!\n" +
                 "It’s built in Java and showcases Object-Oriented Programming concepts such as classes, inheritance, " +
                 "and abstraction.\n" +
                 "\n" +
