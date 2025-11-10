@@ -17,12 +17,20 @@ public class QueueOrders {
         return queue;
     }
 
+    public Queue getHead() {
+        return head;
+    }
+
     public void dequeue() {
         if (head == null) {
             System.out.println("Order queue is empty.");
             return;
         }
         head = head.next;
+    }
+
+    public Queue peek() {
+        return head;
     }
 
     public void display() {
@@ -34,10 +42,20 @@ public class QueueOrders {
         int orderNumber = 1;
         while (temp != null) {
             System.out.println(orderNumber + ". " + temp.orderID + " | " + temp.customerID + " | " + temp.productID
-                    + " | " + temp.productPrice + temp.quantity + " | " + temp.productPrice * temp.quantity);
+                    + " | " + temp.productPrice + " | " + temp.quantity + " | " + temp.productPrice * temp.quantity);
             temp = temp.next;
             orderNumber++;
         }
+    }
+
+    public int size() {
+        int size = 0;
+        Queue temp = head;
+        while (temp != null) {
+            size++;
+            temp = temp.next;
+        }
+        return size;
     }
 
     public static class Queue {
@@ -60,6 +78,12 @@ public class QueueOrders {
 
             next = null;
             orderID = NEXT_ORDER_ID++;
+        }
+
+        @Override
+        public String toString() {
+            return orderID + " | " + customerID + " | " + productID
+                    + " | " + productPrice + " | " + quantity + " | " + productPrice * quantity;
         }
     }
 

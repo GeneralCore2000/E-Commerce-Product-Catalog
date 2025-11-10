@@ -42,7 +42,47 @@ public class Admin extends User implements AdminPrivilege {
     }
 
     private void seeOrders() {
-        orderManager.seeOrders();
+        String[] choices = {"Go Back", "Fulfill Orders"};
+        while (true) {
+            Utility.centralizeHeading("ORDERS QUEUE");
+            orderManager.seeOrders();
+            System.out.println("━".repeat(Utility.TOTAL_WIDTH));
+            Utility.printUserChoices(choices);
+            int userChoice = Utility.isInputInteger();
+            switch (userChoice) {
+                case -1:
+                    continue;
+                case 0:
+                    return;
+                case 1:
+                    fulfillOrders();
+                    break;
+                default:
+                    System.err.println("Invalid input: Not in the choices.");
+                    Utility.stopper();
+            }
+        }
+    }
+
+    private void fulfillOrders() {
+        String[] choices = {"Go back", "Continue fulfill order"};
+        while (true) {
+            Utility.centralizeHeading("FULFILL ORDERS");
+            orderManager.seeOrders();
+            Utility.centralizeHeading("Fulfill Current Order");
+            orderManager.seeFrontOrder();
+            System.out.println("━".repeat(Utility.TOTAL_WIDTH));
+            Utility.printUserChoices(choices);
+            int userChoice = Utility.isInputInteger();
+            switch (userChoice) {
+                case -1:
+                    continue;
+                case 0:
+                    return;
+                case 1:
+                    orderManager.fulfillOrder();
+            }
+        }
     }
 
     @Override
