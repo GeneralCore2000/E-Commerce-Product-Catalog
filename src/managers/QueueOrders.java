@@ -1,14 +1,14 @@
 package managers;
 
 public class QueueOrders {
-    Queue head;
+    Queue order;
 
     public Queue enqueue(int customerID, int productID, double productPrice, int quantity, double subtotal) {
         Queue queue = new Queue(customerID, productID, productPrice, quantity, subtotal);
-        if (head == null) {
-            head = queue;
+        if (order == null) {
+            order = queue;
         } else {
-            Queue temp = head;
+            Queue temp = order;
             while (temp.next != null) {
                 temp = temp.next;
             }
@@ -17,28 +17,28 @@ public class QueueOrders {
         return queue;
     }
 
-    public Queue getHead() {
-        return head;
+    public Queue getOrder() {
+        return order;
     }
 
     public void dequeue() {
-        if (head == null) {
+        if (order == null) {
             System.out.println("Order queue is empty.");
             return;
         }
-        head = head.next;
+        order = order.next;
     }
 
     public Queue peek() {
-        return head;
+        return order;
     }
 
     public void display() {
-        if (head == null) {
+        if (order == null) {
             System.out.println("No orders currently.");
             return;
         }
-        Queue temp = head;
+        Queue temp = order;
         int orderNumber = 1;
         while (temp != null) {
             System.out.println(orderNumber + ". " + temp.orderID + " | " + temp.customerID + " | " + temp.productID
@@ -50,7 +50,7 @@ public class QueueOrders {
 
     public int size() {
         int size = 0;
-        Queue temp = head;
+        Queue temp = order;
         while (temp != null) {
             size++;
             temp = temp.next;

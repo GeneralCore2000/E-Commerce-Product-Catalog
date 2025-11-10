@@ -1,9 +1,9 @@
 package managers;
 
 import data.FileManager;
+import data.FilePaths;
 import data_structures.ProductLinkedList;
 import models.products.*;
-import data.FilePaths;
 import utils.Utility;
 
 import java.util.ArrayList;
@@ -73,10 +73,21 @@ public class ProductManager {
      * @param productName the name of the product to find
      * @return {@code Product} object if is existing; {@code null} if non-existing
      */
-    private Product findProduct(String productName) {
+    public Product findProduct(String productName) {
         ProductLinkedList.Node current = productLists.getHead();
         while (current != null) {
             if (current.product.getProductName().equalsIgnoreCase(productName)) {
+                return current.product;
+            }
+            current = current.next;
+        }
+        return null;
+    }
+
+    public Product findProduct(int productID) {
+        ProductLinkedList.Node current = productLists.getHead();
+        while (current != null) {
+            if (current.product.getProductID() == productID) {
                 return current.product;
             }
             current = current.next;

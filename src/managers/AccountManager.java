@@ -48,7 +48,7 @@ public class AccountManager {
         orderManager = new OrderManager();
         queueOrders = new QueueOrders();
         orderManager.setAccountManager(this);
-
+        orderManager.setProductManager(productManager);
         ArrayList<ArrayList<String>> userAccounts = FileManager.readFile(FilePaths.USER_ACCOUNTS);
         int USERNAME = 2, PASSWORD = 3, ADDRESS = 4;
 

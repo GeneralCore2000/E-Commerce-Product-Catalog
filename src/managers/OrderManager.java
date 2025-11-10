@@ -10,6 +10,7 @@ import java.util.Arrays;
 public class OrderManager {
     private final QueueOrders queueOrders = new QueueOrders();
     private AccountManager accountManager;
+    private ProductManager productManager;
 
     public OrderManager() {
         ArrayList<ArrayList<String>> pendingOrders = FileManager.readFile(FilePaths.PENDING_ORDERS);
@@ -33,13 +34,41 @@ public class OrderManager {
         this.accountManager = accountManager;
     }
 
+    public void setProductManager(ProductManager productManager) {
+        this.productManager = productManager;
+    }
+
     public void seeOrders() {
         queueOrders.display();
     }
 
     public void fulfillOrder() {
+        QueueOrders.Queue currentQueueOrder = queueOrders.getOrder();
+        if (currentQueueOrder == null) {
+            System.out.println("No orders to fulfill.");
+            return;
+        }
+        boolean enoughStock = validateStock(currentQueueOrder);
+        int productStock = productManager.findProduct(currentQueueOrder.productID).getProductStock();
+        if (!enoughStock) {
+            System.out.println("Uh oh! Unable to fulfill order: Not enough stock for quantity [" + currentQueueOrder.quantity + "]");
+            System.out.println("Product ID: " + currentQueueOrder.productID + " only has [" + productStock + "]");
+            Utility.stopper();
+            return;
+        }
         queueOrders.dequeue();
         FileManager.updateFile(FilePaths.PENDING_ORDERS, convertQueueOrderTo2D());
+    }
+
+    private boolean validateStock(QueueOrders.Queue current) {
+        ArrayList<ArrayList<String>> products = FileManager.readFile(FilePaths.PENDING_ORDERS);
+        for (ArrayList<String> row : products) {
+            if (Integer.parseInt(row.get(2)) == current.productID) {
+                int stock = productManager.findProduct(current.productID).getProductStock();
+                return stock >= current.quantity;
+            }
+        }
+        return false;
     }
 
     public void seeFrontOrder() {
@@ -59,7 +88,7 @@ public class OrderManager {
     private ArrayList<ArrayList<String>> convertQueueOrderTo2D() {
         ArrayList<ArrayList<String>> data = new ArrayList<>();
         data.add(new ArrayList<>(Arrays.asList("Order ID", "Customer ID", "Product ID", "Product Price", "Quantity", "Subtotal")));
-        QueueOrders.Queue current = queueOrders.getHead();
+        QueueOrders.Queue current = queueOrders.getOrder();
 
         while (current != null) {
             ArrayList<String> row = new ArrayList<>();
