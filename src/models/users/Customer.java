@@ -1,7 +1,5 @@
 package models.users;
 
-import data.FileManager;
-import data.FilePaths;
 import data_structures.ProductLinkedList;
 import managers.OrderManager;
 import managers.ProductManager;
@@ -137,7 +135,8 @@ public class Customer extends User {
             }
             System.out.println("You order is being processed. Thank you, dear Customer!");
 //            chosenProduct.setProductStock(chosenProduct.getProductStock() - quantity);
-            orderManager.addOrder(chosenProduct, this, quantity);
+            double subtotal = chosenProduct.getProductPrice() * quantity;
+            orderManager.addOrder(this.getUserID(), chosenProduct.getProductID(), chosenProduct.getProductPrice(), quantity, subtotal);
             return;
         }
     }

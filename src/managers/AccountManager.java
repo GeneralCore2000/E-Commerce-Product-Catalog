@@ -12,12 +12,13 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class AccountManager {
-    private final UserLinkedList accountLists = new UserLinkedList();
-    private final ProductManager productManager = new ProductManager();
-    private final OrderManager orderManager = new OrderManager();
-    private final QueueOrders queueOrders = new QueueOrders();
 
     private final Scanner in = new Scanner(System.in);
+    private final UserLinkedList accountLists = new UserLinkedList();
+    private final ProductManager productManager;
+    private final OrderManager orderManager;
+    private final QueueOrders queueOrders;
+
     private String name, password, address;
     private int userChoice;
 
@@ -43,16 +44,19 @@ public class AccountManager {
      * @see Admin
      */
     public AccountManager() {
-        ArrayList<ArrayList<String>> useraccounts = FileManager.readFile(FilePaths.USER_ACCOUNTS);
+        productManager = new ProductManager();
+        orderManager = new OrderManager();
+        queueOrders = new QueueOrders();
+        orderManager.setAccountManager(this);
+
+        ArrayList<ArrayList<String>> userAccounts = FileManager.readFile(FilePaths.USER_ACCOUNTS);
         int USERNAME = 2, PASSWORD = 3, ADDRESS = 4;
 
-        for (ArrayList<String> useraccountRow : useraccounts) {
-            if (useraccountRow.getFirst().equalsIgnoreCase("Customer")) {
-                accountLists.add(new Customer(useraccountRow.get(USERNAME), useraccountRow.get(PASSWORD),
-                        useraccountRow.get(ADDRESS), productManager, queueOrders, orderManager));
+        for (ArrayList<String> userAccountRow : userAccounts) {
+            if (userAccountRow.getFirst().equalsIgnoreCase("Customer")) {
+                accountLists.add(new Customer(userAccountRow.get(USERNAME), userAccountRow.get(PASSWORD), userAccountRow.get(ADDRESS), productManager, queueOrders, orderManager));
             } else {
-                accountLists.add(new Admin(useraccountRow.get(USERNAME), useraccountRow.get(PASSWORD),
-                        useraccountRow.get(ADDRESS), productManager, queueOrders, orderManager));
+                accountLists.add(new Admin(userAccountRow.get(USERNAME), userAccountRow.get(PASSWORD), userAccountRow.get(ADDRESS), productManager, queueOrders, orderManager));
             }
         }
     }

@@ -1,13 +1,10 @@
 package managers;
 
-import models.products.Product;
-import models.users.Customer;
-
 public class QueueOrders {
     Queue head;
 
-    public Queue enqueue(Product product, Customer customer, int quantity) {
-        Queue queue = new Queue(product, customer, quantity);
+    public Queue enqueue(int customerID, int productID, double productPrice, int quantity, double subtotal) {
+        Queue queue = new Queue(customerID, productID, productPrice, quantity, subtotal);
         if (head == null) {
             head = queue;
         } else {
@@ -36,28 +33,30 @@ public class QueueOrders {
         Queue temp = head;
         int orderNumber = 1;
         while (temp != null) {
-            System.out.println(orderNumber + ". " + temp.orderID
-                    + " | " + temp.customer.getUserID()
-                    + " | " + temp.product.getProductID()
-                    + " | " + temp.product.getProductPrice()
-                    + temp.quantity
-                    + " | " + temp.product.getProductPrice() * temp.quantity);
+            System.out.println(orderNumber + ". " + temp.orderID + " | " + temp.customerID + " | " + temp.productID
+                    + " | " + temp.productPrice + temp.quantity + " | " + temp.productPrice * temp.quantity);
             temp = temp.next;
         }
     }
 
     public static class Queue {
         public static int NEXT_ORDER_ID = 4000;
-        public int orderID;
-        public Product product;
         public Queue next;
-        public int quantity;
-        public Customer customer;
+        public int orderID;
 
-        public Queue(Product product, Customer customer, int quantity) {
-            this.product = product;
+        public int customerID;
+        public int productID;
+        public double productPrice;
+        public int quantity;
+        public double subtotal;
+
+        public Queue(int customerID, int productID, double productPrice, int quantity, double subtotal) {
+            this.customerID = customerID;
+            this.productID = productID;
+            this.productPrice = productPrice;
             this.quantity = quantity;
-            this.customer = customer;
+            this.subtotal = subtotal;
+
             next = null;
             orderID = NEXT_ORDER_ID++;
         }
