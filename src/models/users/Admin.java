@@ -1,11 +1,11 @@
 package models.users;
 
+import data_structures.ProductLinkedList;
 import managers.OrderManager;
 import managers.ProductManager;
 import managers.QueueOrders;
 import models.products.Product;
 import models.products.ProductCategory;
-import data_structures.ProductLinkedList;
 import utils.Utility;
 
 public class Admin extends User implements AdminPrivilege {
@@ -42,7 +42,7 @@ public class Admin extends User implements AdminPrivilege {
     }
 
     private void seeOrders() {
-        queueOrders.display();
+        orderManager.seeOrders();
     }
 
     @Override

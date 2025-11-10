@@ -14,6 +14,10 @@ public class OrderManager {
         saveToFile(queue, quantity);
     }
 
+    public void seeOrders() {
+        queueOrders.display();
+    }
+
     private void saveToFile(QueueOrders.Queue order, int quantity) {
         FileManager.appendToFile(FilePaths.PENDING_ORDERS,
                 order.orderID + Utility.DIVIDER
