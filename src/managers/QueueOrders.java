@@ -36,6 +36,7 @@ public class QueueOrders {
             System.out.println(orderNumber + ". " + temp.orderID + " | " + temp.customerID + " | " + temp.productID
                     + " | " + temp.productPrice + temp.quantity + " | " + temp.productPrice * temp.quantity);
             temp = temp.next;
+            orderNumber++;
         }
     }
 
