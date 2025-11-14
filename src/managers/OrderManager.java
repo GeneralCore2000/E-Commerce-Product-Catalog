@@ -2,6 +2,7 @@ package managers;
 
 import data.FileManager;
 import data.FilePaths;
+import data_structures.ProductLinkedList;
 import utils.Utility;
 
 import java.util.ArrayList;
@@ -52,7 +53,9 @@ public class OrderManager {
             return;
         }
         queueOrders.dequeue();
+        updateProductStock(currentQueueOrder);
         FileManager.updateFile(FilePaths.PENDING_ORDERS, convertQueueOrderTo2D());
+        FileManager.updateFile(FilePaths.PRODUCTS, productManager.convertProductListTo2D());
     }
 
     private boolean validateStock(QueueOrders.Queue current) {
@@ -97,5 +100,16 @@ public class OrderManager {
                         + order.productPrice + Utility.DIVIDER
                         + quantity + Utility.DIVIDER
                         + (quantity * order.productPrice));
+    }
+
+    private void updateProductStock(QueueOrders.Queue currentQueueOrder) {
+        ProductLinkedList.Node currentProduct = productManager.getProductLists().getHead();
+        while (currentProduct != null) {
+            if (currentQueueOrder.productID == currentProduct.product.getProductID()) {
+                int newProductStock = currentProduct.product.getProductStock() - currentQueueOrder.quantity;
+                currentProduct.product.setProductStock(newProductStock);
+            }
+            currentProduct = currentProduct.next;
+        }
     }
 }

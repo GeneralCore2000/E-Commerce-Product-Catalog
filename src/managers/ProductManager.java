@@ -7,6 +7,7 @@ import models.products.*;
 import utils.Utility;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class ProductManager {
@@ -439,5 +440,27 @@ public class ProductManager {
             case 4 -> ProductCategory.TABLETS;
             default -> null;
         };
+    }
+
+    public ProductLinkedList getProductLists() {
+        return productLists;
+    }
+
+    public ArrayList<ArrayList<String>> convertProductListTo2D() {
+        ArrayList<ArrayList<String>> data = new ArrayList<>();
+        data.add(new ArrayList<>(Arrays.asList("CATEGORY", "ID", "NAME", "PRICE", "STOCK", "DESCRIPTION")));
+        ProductLinkedList.Node current = productLists.getHead();
+        while (current != null) {
+            ArrayList<String> row = new ArrayList<>();
+            row.add(current.product.getProductCategory() + "");
+            row.add(current.product.getProductID() + "");
+            row.add(current.product.getProductName());
+            row.add(current.product.getProductPrice() + "");
+            row.add(current.product.getProductStock() + "");
+            row.add(current.product.getProductDescription());
+            data.add(row);
+            current = current.next;
+        }
+        return data;
     }
 }

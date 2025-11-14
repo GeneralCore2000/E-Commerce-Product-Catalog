@@ -27,12 +27,7 @@ public abstract class Product {
         return productName + " - " + productDescription + "\n" + "\t₱ " + productPrice + "\n" + "\tStock: " + productStock + "x\n" + "\tProduct ID: " + productID;
     }
 
-    /****
-     * LENOVO ACER NITRO V15 | The Acer Nitro V 15 offers the perfect blend of gaming power and portability. With up to an Intel® Core™ 7 processor and a GeForce RTX™ 5060 Laptop GPU, it’s built for seamless multitasking and fast-paced gaming
-     *      Price: ₱ 60,000.65
-     *      Stock: 50x
-     */
-    //------------------------------------ GETTERS ------------------------------------
+
     public int getProductID() {
         return productID;
     }
@@ -49,7 +44,6 @@ public abstract class Product {
         return productName;
     }
 
-    //------------------------------------ SETTERS ------------------------------------
     public void setProductName(String productName) {
         this.productName = productName;
     }
