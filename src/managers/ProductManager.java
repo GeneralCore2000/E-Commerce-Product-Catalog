@@ -102,8 +102,9 @@ public class ProductManager {
         Search.linearSearch(productName, productLists);
     }
 
-    public void findAllProduct(int productID) {
-        Search.linearSearch(productID, productLists);
+    public void findProductSKU(int productSKU) {
+        sortByID();
+        Search.binarySearch(productSKU, productLists);
     }
 
     public void sortByName() {
@@ -351,7 +352,7 @@ public class ProductManager {
     /**
      * This method converts {@code productLists} into 2D ArrayList.
      * <p>
-     * This is use in combination of {@link FileManager#updateFile(String, ArrayList)} as it has an param of 2D arraylist.
+     * This is use in combination of {@link FileManager#updateFile(String, String, ArrayList)} as it has an param of 2D arraylist.
      * </p>
      *
      * @return 2D arraylist version of productLists

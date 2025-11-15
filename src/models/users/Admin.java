@@ -212,7 +212,7 @@ public class Admin extends User implements AdminPrivilege {
     public void searchProduct() {
         while (true) {
             Utility.centralizeHeading("SEARCH PRODUCT");
-            Utility.printUserChoices("Go back", "Search by SKU", "Search by name");
+            Utility.printUserChoices("Go back", "Search by SKU (Binary)", "Search by name (Linear)");
             int userChoice = Utility.isInputInteger();
             switch (userChoice) {
                 case -1:
@@ -220,15 +220,29 @@ public class Admin extends User implements AdminPrivilege {
                 case 0:
                     return;
                 case 1:
+                    searchSKU();
                     break;
                 case 2:
-                    System.out.print("Enter product name >>: ");
-                    String findProductName = in.nextLine();
-                    System.out.println();
-                    productManager.findAllProduct(findProductName);
-                    Utility.stopper();
+                    searchName();
 
             }
         }
+    }
+
+    private void searchName() {
+        System.out.print("Enter product name >>: ");
+        String findProductName = in.nextLine();
+        System.out.println();
+        productManager.findAllProduct(findProductName);
+        Utility.stopper();
+    }
+
+    private void searchSKU() {
+        int findProductSKU;
+        do {
+            findProductSKU = Utility.isInputInteger("Enter SKU");
+            System.out.println();
+        } while (findProductSKU == -1);
+        productManager.findProductSKU(findProductSKU);
     }
 }
