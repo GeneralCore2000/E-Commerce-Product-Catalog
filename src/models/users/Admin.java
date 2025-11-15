@@ -192,7 +192,7 @@ public class Admin extends User implements AdminPrivilege {
                 continue;
             }
             LogHistory.addLog(userID, username, ActionType.PRODUCT_DELETE, TargetType.PRODUCT, filteredProduct.get(deleteProduct - 1).getProductID() + "", null, null);
-            productManager.deleteProducts(chosenCategory, filteredProduct, deleteProduct);
+            productManager.deleteProducts(filteredProduct, deleteProduct);
             return;
         }
     }

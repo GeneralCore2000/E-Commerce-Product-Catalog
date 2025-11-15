@@ -378,11 +378,9 @@ public class ProductManager {
     /**
      * Delete the product from the specified category.
      *
-     * @param chosenCategory the category of the models.products to be display using {@link #printProductByCategory(ProductLinkedList, boolean)}
-     *                       as well as to be deleted.
      *
      */
-    public void deleteProducts(ProductCategory chosenCategory, ProductLinkedList filteredProduct, int deleteProduct) {
+    public void deleteProducts(ProductLinkedList filteredProduct, int deleteProduct) {
         Product removeIndex = filteredProduct.get(deleteProduct - 1);
         System.out.println("Deleting: " + " " + removeIndex);
         productLists.remove((removeIndex));
