@@ -82,6 +82,7 @@ public class AccountManager {
                     if (user != null) {
                         LogHistory.addLog(user.getUserID(), user.getUsername(), ActionType.LOGIN, TargetType.ACCOUNT);
                         user.showMenu();
+                        LogHistory.addLog(user.getUserID(), user.getUsername(), ActionType.LOGOUT, TargetType.ACCOUNT);
                     } else {
                         System.out.println("\nInvalid credentials. Try again");
                         Utility.stopper();
