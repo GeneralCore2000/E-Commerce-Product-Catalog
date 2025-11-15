@@ -1,7 +1,6 @@
 package managers;
 
-import data.FileManager;
-import data.FilePaths;
+import data.*;
 import data_structures.ProductLinkedList;
 import data_structures.Search;
 import data_structures.Sort;
@@ -18,6 +17,8 @@ public class ProductManager {
     private double productPrice;
     private int productStock;
     private String productName, productDescription;
+    private String adminUsername;
+    private int adminUserID;
 
     /**
      * Construct a {@code ProductManager} and initializes the {@code productLists} from the file {@code models.products.txt}
@@ -47,6 +48,14 @@ public class ProductManager {
                 case "tablets" -> productLists.add(new Tablets(name, desc, price, stock));
             }
         }
+    }
+
+    public void setAdminUsername(String adminUsername) {
+        this.adminUsername = adminUsername;
+    }
+
+    public void setAdminUserID(int adminUserID) {
+        this.adminUserID = adminUserID;
     }
 
     /**
@@ -285,7 +294,7 @@ public class ProductManager {
      *
      * @param updateIndex the {@link Product} object to be updated
      */
-    public void updateProducts(Product updateIndex) {
+    public void updateProducts(Product updateIndex, int userID, String username) {
         while (true) {
             String[] userChoicesList = {"Go Back", "Product Name", "Product Description", "Product Price", "Product Stock"};
             Utility.printUserChoices(userChoicesList);
@@ -308,17 +317,23 @@ public class ProductManager {
                 }
             }
             FileManager.updateFile(FilePaths.PRODUCTS, FileManager.productHeader, convertProductTo2DList());
+
         }
     }
 
     private void updateProductName(Product updateIndex) {
         System.out.print("Enter new product name for [" + updateIndex.getProductName() + "] >>: ");
-        updateIndex.setProductName(in.nextLine());
+        String productName = in.nextLine();
+        LogHistory.addLog(adminUserID, adminUsername, ActionType.PRODUCT_UPDATE, TargetType.PRODUCT, updateIndex.getProductID() + "", updateIndex.getProductName(), productName);
+        updateIndex.setProductName(productName);
+
     }
 
     private void updateProductDescription(Product updateIndex) {
         System.out.print("Enter new product description for [" + updateIndex.getProductDescription() + "] >>: ");
-        updateIndex.setProductDescription(in.nextLine());
+        String productDescription = in.nextLine();
+        LogHistory.addLog(adminUserID, adminUsername, ActionType.PRODUCT_UPDATE, TargetType.PRODUCT, updateIndex.getProductID() + "", updateIndex.getProductDescription(), productDescription);
+        updateIndex.setProductDescription(productDescription);
     }
 
     private void updateProductPrice(Product updateIndex) {
@@ -330,6 +345,7 @@ public class ProductManager {
                 System.out.println("~".repeat(42));
                 continue;
             }
+            LogHistory.addLog(adminUserID, adminUsername, ActionType.PRODUCT_UPDATE, TargetType.PRODUCT, updateIndex.getProductID() + "", updateIndex.getProductPrice() + "", newPrice + "");
             updateIndex.setProductPrice(newPrice);
             break;
         }
@@ -344,6 +360,7 @@ public class ProductManager {
                 System.out.println("~".repeat(42));
                 continue;
             }
+            LogHistory.addLog(adminUserID, adminUsername, ActionType.PRODUCT_UPDATE, TargetType.PRODUCT, updateIndex.getProductID() + "", updateIndex.getProductStock() + "", newStock + "");
             updateIndex.setProductStock(newStock);
             break;
         }
@@ -380,10 +397,10 @@ public class ProductManager {
      *
      *
      */
-    public void deleteProducts(ProductLinkedList filteredProduct, int deleteProduct) {
-        Product removeIndex = filteredProduct.get(deleteProduct - 1);
-        System.out.println("Deleting: " + " " + removeIndex);
-        productLists.remove((removeIndex));
+    public void deleteProducts(Product deleteIndex, int userID, String username) {
+        System.out.println("Deleting: " + " " + deleteIndex);
+        LogHistory.addLog(userID, username, ActionType.PRODUCT_DELETE, TargetType.PRODUCT, deleteIndex.getProductID() + "", null, null);
+        productLists.remove((deleteIndex));
         FileManager.updateFile(FilePaths.PRODUCTS, FileManager.productHeader, convertProductTo2DList());
         Utility.stopper();
     }

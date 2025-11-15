@@ -28,6 +28,8 @@ public class Admin extends User implements AdminPrivilege {
 
     @Override
     public void showMenu() {
+        productManager.setAdminUsername(username);
+        productManager.setAdminUserID(userID);
         String[] choices = {"🔙 Log Out", "📦 Manage Inventory", "📃 See Orders"};
         while (true) {
             Utility.centralizeHeading("ADMIN MENU");
@@ -191,8 +193,8 @@ public class Admin extends User implements AdminPrivilege {
             if (!productManager.isProductNumberValid(deleteProduct, filteredProduct.size())) {
                 continue;
             }
-            LogHistory.addLog(userID, username, ActionType.PRODUCT_DELETE, TargetType.PRODUCT, filteredProduct.get(deleteProduct - 1).getProductID() + "", null, null);
-            productManager.deleteProducts(filteredProduct, deleteProduct);
+            Product deleteIndex = filteredProduct.get(deleteProduct - 1);
+            productManager.deleteProducts(deleteIndex, userID, username);
             return;
         }
     }
@@ -224,7 +226,7 @@ public class Admin extends User implements AdminPrivilege {
                 continue;
             }
             Product updateIndex = filteredProduct.get(updateProduct - 1);
-            productManager.updateProducts(updateIndex);
+            productManager.updateProducts(updateIndex, userID, username);
         }
     }
 
