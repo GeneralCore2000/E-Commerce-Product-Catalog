@@ -181,25 +181,57 @@ public class ProductManager {
                     return;
                 }
                 case 1 -> {
-                    System.out.print("Enter new product name for [" + updateIndex.getProductName() + "] >>: ");
-                    updateIndex.setProductName(in.nextLine());
+                    updateProductName(updateIndex);
                 }
                 case 2 -> {
-                    System.out.print("Enter new product description for [" + updateIndex.getProductDescription() + "] >>: ");
-                    updateIndex.setProductDescription(in.nextLine());
+                    updateProductDescription(updateIndex);
                 }
                 case 3 -> {
-//TODO: Add validation if the input is integer
-                    System.out.print("Enter new product price for [" + updateIndex.getProductPrice() + "] >>: ");
-                    updateIndex.setProductPrice(Double.parseDouble(in.nextLine()));
+                    updateProductPrice(updateIndex);
                 }
                 case 4 -> {
-//TODO: Add validation if the input is integer
-                    System.out.print("Enter new product stock for [" + updateIndex.getProductStock() + "] >>: ");
-                    updateIndex.setProductStock(Integer.parseInt(in.nextLine()));
+                    updateProductStock(updateIndex);
                 }
             }
             FileManager.updateFile(FilePaths.PRODUCTS, convertProductTo2DList());
+        }
+    }
+
+    private void updateProductName(Product updateIndex) {
+        System.out.print("Enter new product name for [" + updateIndex.getProductName() + "] >>: ");
+        updateIndex.setProductName(in.nextLine());
+    }
+
+    private void updateProductDescription(Product updateIndex) {
+        System.out.print("Enter new product description for [" + updateIndex.getProductDescription() + "] >>: ");
+        updateIndex.setProductDescription(in.nextLine());
+    }
+
+    private void updateProductPrice(Product updateIndex) {
+        while (true) {
+            int newPrice = Utility.isInputInteger("Enter new product price for [" + updateIndex.getProductPrice() + "]");
+            if (newPrice < 0) {
+                System.out.println("\n" + "~".repeat(42));
+                System.out.println("Invalid input: Cannot be negative stock.");
+                System.out.println("~".repeat(42));
+                continue;
+            }
+            updateIndex.setProductPrice(newPrice);
+            break;
+        }
+    }
+
+    private void updateProductStock(Product updateIndex) {
+        while (true) {
+            int newStock = Utility.isInputInteger("Enter new product stock for [" + updateIndex.getProductStock() + "]");
+            if (newStock < 0) {
+                System.out.println("\n" + "~".repeat(42));
+                System.out.println("Invalid input: Cannot be negative stock.");
+                System.out.println("~".repeat(42));
+                continue;
+            }
+            updateIndex.setProductStock(newStock);
+            break;
         }
     }
 
