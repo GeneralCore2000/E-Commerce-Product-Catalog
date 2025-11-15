@@ -5,6 +5,10 @@ import models.users.User;
 public class UserLinkedList {
     private Node head;
 
+    public void clear() {
+        head = null;
+    }
+
     public void add(User user) {
         Node newNode = new Node(user);
         if (head == null) {

@@ -52,7 +52,8 @@ public class AccountManager {
         loadAccounts();
     }
 
-    public void loadAccounts(){
+    public void loadAccounts() {
+        accountLists.clear();
         ArrayList<ArrayList<String>> userAccounts = FileManager.readFile(FilePaths.USER_ACCOUNTS);
         int USERNAME = 2, PASSWORD = 3, ADDRESS = 4;
 
