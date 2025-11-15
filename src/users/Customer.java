@@ -1,8 +1,10 @@
 package users;
 
+import managers.FileManager;
 import managers.ProductManager;
 import products.Product;
 import products.ProductCategory;
+import utils.FilePaths;
 import utils.Utility;
 
 import java.util.ArrayList;
@@ -130,6 +132,7 @@ public class Customer extends User {
             }
             System.out.println("Thank you for your purchase, dear Customer!");
             chosenProduct.setProductStock(chosenProduct.getProductStock() - quantity);
+            FileManager.updateFile(FilePaths.PRODUCTS, productManager.convertProductTo2DList());
             return;
         }
     }

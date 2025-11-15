@@ -243,7 +243,7 @@ public class ProductManager {
      *
      * @return 2D arraylist version of productLists
      */
-    private ArrayList<ArrayList<String>> convertProductTo2DList() {
+    public ArrayList<ArrayList<String>> convertProductTo2DList() {
         ArrayList<ArrayList<String>> data = new ArrayList<>();
 
         for (Product product : productLists) {
