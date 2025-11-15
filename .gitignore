@@ -1,1 +1,2 @@
-src/data/repositories/*.txt
+src/data/*.txt
+src/data/repositories/*.csv
