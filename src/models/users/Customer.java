@@ -3,7 +3,7 @@ package models.users;
 import data_structures.ProductLinkedList;
 import managers.OrderManager;
 import managers.ProductManager;
-import managers.QueueOrders;
+import data_structures.QueueOrders;
 import models.products.Product;
 import models.products.ProductCategory;
 import utils.Utility;

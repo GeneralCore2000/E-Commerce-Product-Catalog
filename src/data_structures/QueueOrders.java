@@ -1,4 +1,4 @@
-package managers;
+package data_structures;
 
 public class QueueOrders {
     Queue order;
