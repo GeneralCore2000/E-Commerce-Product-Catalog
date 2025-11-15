@@ -8,7 +8,7 @@ import java.util.Arrays;
 
 public class FileManager {
     public static String productHeader = "CATEGORY,ID,NAME,PRICE,STOCK,DESCRIPTION";
-    public static String pendingOrderHeader = "Order ID,Customer ID,Product ID,Product Price,Quantity,Subtotal";
+    public static String pendingOrderHeader = "ORDER ID,CUSTOMER ID,PRODUCT ID,PRODUCT PRICE,QUANTITY,SUBTOTAL";
 
     /**
      * Read and store the content of the files in an ArrayList

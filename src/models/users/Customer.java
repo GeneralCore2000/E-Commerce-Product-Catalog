@@ -1,9 +1,12 @@
 package models.users;
 
+import data.ActionType;
+import data.LogHistory;
+import data.TargetType;
 import data_structures.ProductLinkedList;
+import data_structures.QueueOrders;
 import managers.OrderManager;
 import managers.ProductManager;
-import data_structures.QueueOrders;
 import models.products.Product;
 import models.products.ProductCategory;
 import utils.Utility;
@@ -137,6 +140,7 @@ public class Customer extends User {
 //            chosenProduct.setProductStock(chosenProduct.getProductStock() - quantity);
             double subtotal = chosenProduct.getProductPrice() * quantity;
             orderManager.addOrder(this.getUserID(), chosenProduct.getProductID(), chosenProduct.getProductPrice(), quantity, subtotal);
+            LogHistory.addLog(userID, username, ActionType.ORDER_CREATE, TargetType.ORDER);
             return;
         }
     }

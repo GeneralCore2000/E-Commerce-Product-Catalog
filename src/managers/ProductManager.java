@@ -531,7 +531,6 @@ public class ProductManager {
 
     public ArrayList<ArrayList<String>> convertProductListTo2D() {
         ArrayList<ArrayList<String>> data = new ArrayList<>();
-        data.add(new ArrayList<>(Arrays.asList("CATEGORY", "ID", "NAME", "PRICE", "STOCK", "DESCRIPTION")));
         ProductLinkedList.Node current = productLists.getHead();
         while (current != null) {
             ArrayList<String> row = new ArrayList<>();

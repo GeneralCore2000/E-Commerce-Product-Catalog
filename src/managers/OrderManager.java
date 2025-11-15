@@ -1,7 +1,6 @@
 package managers;
 
-import data.FileManager;
-import data.FilePaths;
+import data.*;
 import data_structures.ProductLinkedList;
 import data_structures.QueueOrders;
 import utils.Utility;
@@ -12,6 +11,8 @@ import java.util.Arrays;
 public class OrderManager {
     private final QueueOrders queueOrders = new QueueOrders();
     private ProductManager productManager;
+    private String adminUsername;
+    private int adminUserID;
 
     public OrderManager() {
         ArrayList<ArrayList<String>> pendingOrders = FileManager.readFile(FilePaths.PENDING_ORDERS);
@@ -24,6 +25,14 @@ public class OrderManager {
 
             queueOrders.enqueue(customerID, productID, productPrice, quantity, subtotal);
         }
+    }
+
+    public void setAdminUserID(int adminUserID) {
+        this.adminUserID = adminUserID;
+    }
+
+    public void setAdminUsername(String adminUsername) {
+        this.adminUsername = adminUsername;
     }
 
     public void addOrder(int customerID, int productID, double productPrice, int quantity, double subtotal) {
@@ -53,6 +62,7 @@ public class OrderManager {
             Utility.stopper();
             return;
         }
+        LogHistory.addLog(adminUserID, adminUsername, ActionType.ORDER_FULFILLED, TargetType.ORDER, queueOrders.getOrder().orderID + "", null, null);
         queueOrders.dequeue();
         updateProductStock(currentQueueOrder);
         FileManager.updateFile(FilePaths.PENDING_ORDERS, FileManager.pendingOrderHeader, convertQueueOrderTo2D());
@@ -76,7 +86,6 @@ public class OrderManager {
 
     private ArrayList<ArrayList<String>> convertQueueOrderTo2D() {
         ArrayList<ArrayList<String>> data = new ArrayList<>();
-        data.add(new ArrayList<>(Arrays.asList("Order ID", "Customer ID", "Product ID", "Product Price", "Quantity", "Subtotal")));
         QueueOrders.Queue current = queueOrders.getOrder();
 
         while (current != null) {
