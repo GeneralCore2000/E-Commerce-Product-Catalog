@@ -1,2 +1,0 @@
-Admin##1000##admin1##admin##Admin Address 1
-Customer##1001##customer1##customer##Customer Address 1
