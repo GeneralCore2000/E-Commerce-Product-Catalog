@@ -3,6 +3,7 @@ package managers;
 import data.FileManager;
 import data.FilePaths;
 import data_structures.ProductLinkedList;
+import data_structures.Search;
 import models.products.*;
 import utils.Utility;
 
@@ -96,20 +97,8 @@ public class ProductManager {
         return null;
     }
 
-    public void findAllProduct(String productName) {
-        ProductLinkedList.Node current = productLists.getHead();
-        int counter = 1;
-        while (current != null) {
-            if (current.product.getProductName().contains(productName)) {
-                System.out.println("[" + counter + "]\nProduct name: " + current.product.getProductName());
-                System.out.println("ID: " + current.product.getProductID());
-                System.out.println("Price: " + current.product.getProductPrice());
-                System.out.println("Stock : " + current.product.getProductStock());
-                counter++;
-                System.out.println("-".repeat(Utility.TOTAL_WIDTH));
-            }
-            current = current.next;
-        }
+    public void findAllProductByName(String productName) {
+        Search.linearSearch(productName, productLists);
     }
 
     /**

@@ -222,7 +222,7 @@ public class Admin extends User implements AdminPrivilege {
                     System.out.print("Enter product name >>: ");
                     String findProductName = in.nextLine();
                     System.out.println();
-                    productManager.findAllProduct(findProductName);
+                    productManager.findAllProductByName(findProductName);
                     Utility.stopper();
 
             }
