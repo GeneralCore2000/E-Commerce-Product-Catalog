@@ -1,7 +1,7 @@
 package main;
 
-import managers.AccountManager;
 import data.FileManager;
+import managers.AccountManager;
 import utils.Utility;
 
 import java.util.Scanner;
@@ -11,12 +11,11 @@ public class Main {
     private final AccountManager accountManager = new AccountManager();
 
     static void main() {
-        FileManager.initializeFiles();
         new Main().menu();
     }
 
     private void menu() {
-        String[] choices = {"🔙 Exit", "🔑 Log In", "📝 Register", "❔ About"};
+        String[] choices = {"🔙 Exit", "🔑 Log In", "📝 Register", "📂 Load Files", "❔ About"};
         while (true) {
             banner();
             Utility.centralizeHeading("MAIN MENU");
@@ -29,12 +28,19 @@ public class Main {
                 case 0:
                     return;
                 case 1:
-                    accountManager.login();
+                    if (FileManager.areFilesExisting()) {
+                        accountManager.login();
+                    }
                     break;
                 case 2:
-                    accountManager.register();
+                    if (FileManager.areFilesExisting()) {
+                        accountManager.register();
+                    }
                     break;
                 case 3:
+                    FileManager.initializeFiles();
+                    break;
+                case 4:
                     aboutPage();
             }
         }
