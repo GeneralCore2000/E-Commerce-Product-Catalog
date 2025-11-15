@@ -11,7 +11,7 @@ public class FileManager {
     /**
      * Read and store the content of the files in an ArrayList
      * <p>
-     *     The file must contain a {@code ##} as a divider of information
+     *     The file must contain a {@code ,} as a divider of information
      * </p>
      * <p>
      *     Prompts an error if the file does not exist
@@ -24,7 +24,7 @@ public class FileManager {
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line;
             while ((line = br.readLine()) != null) {
-                fileArray.add(new ArrayList<>(Arrays.asList(line.split("##"))));
+                fileArray.add(new ArrayList<>(Arrays.asList(line.split(","))));
             }
         } catch (Exception e) {
             System.out.println("Error reading file: " + e.getMessage());
@@ -42,7 +42,7 @@ public class FileManager {
             for (int row = 0; row < updatedContent.size(); row++) {
                 ArrayList<String> updatedContentArray = updatedContent.get(row);
                 for (String column : updatedContentArray) {
-                    bw.write(column + "##");
+                    bw.write(column + ",");
                 }
                 bw.newLine();
             }

@@ -22,7 +22,7 @@ public class AccountManager {
      *
      * <p>
      * The {@code user_accounts.txt} is expected to have rows containing the information of the users with
-     * {@code ##} as dividers.
+     * {@code ,} as dividers.
      * </p>
      *  <ul>
      *      <li>Index 0: Account type ("Customer" or "Admin")</li>
@@ -42,7 +42,8 @@ public class AccountManager {
         int USERNAME = 2, PASSWORD = 3, ADDRESS = 4;
 
         for (ArrayList<String> useraccountRow : useraccounts) {
-            if (useraccountRow.getFirst().equals("Customer")) {
+            AccountType accountType = AccountType.valueOf(useraccountRow.getFirst());
+            if (accountType == AccountType.CUSTOMER) {
                 accountLists.add(new Customer(useraccountRow.get(USERNAME),
                         useraccountRow.get(PASSWORD),
                         useraccountRow.get(ADDRESS),
@@ -104,6 +105,7 @@ public class AccountManager {
 
     /**
      * Prompt the users for credentials and validate if it is existing or not
+     *
      * @return {@link User} object that matches all the entered credentials; {@code null} if at least one credential is
      * wrong
      */
@@ -165,10 +167,10 @@ public class AccountManager {
 
         accountLists.add(user);
         FileManager.appendToFile(FilePaths.USER_ACCOUNTS,
-                accountType + "##"
-                        + user.getUserID() + "##"
-                        + name + "##"
-                        + password + "##"
+                accountType + ","
+                        + user.getUserID() + ","
+                        + name + ","
+                        + password + ","
                         + address);
     }
 

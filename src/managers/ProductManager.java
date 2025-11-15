@@ -19,7 +19,7 @@ public class ProductManager {
      * path defined in {@link FilePaths#PRODUCTS}
      * <p>
      * Each line inside the file represents a product in format: <br>
-     * {@code Category ## Product ID ## Name ## Price ## Stock ## Description}
+     * {@code Category , Product ID , Name , Price , Stock , Description}
      * </p>
      *
      * @see FileManager#readFile(String)
@@ -159,7 +159,7 @@ public class ProductManager {
             }
         }
 
-        FileManager.appendToFile(FilePaths.PRODUCTS, category + "##" + product.getProductID() + "##" + productName + "##" + productPrice + "##" + productStock + "##" + productDescription);
+        FileManager.appendToFile(FilePaths.PRODUCTS, category + "," + product.getProductID() + "," + productName + "," + productPrice + "," + productStock + "," + productDescription);
         productLists.add(product);
     }
 
