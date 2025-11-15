@@ -94,6 +94,9 @@ public class FileManager {
                     if (path.equals(FilePaths.PRODUCTS)) {
                         initializeProductsContent();
                     }
+                    if (path.equals(FilePaths.USER_ACCOUNTS)) {
+                        initializeAccountsContent();
+                    }
                 }
             } catch (IOException ae) {
                 System.out.println("Problem creating the file: " + ae.getMessage());
@@ -137,7 +140,16 @@ public class FileManager {
             bw.write("SMARTPHONES,5018,OnePlus Nord CE 3,21499.0,10,\"Smooth 120Hz display with Snapdragon 782G processor.\"\n");
             bw.write("TABLETS,5019,Xiaomi Pad 6,18999.0,14,\"Snapdragon 870-powered tablet with high refresh rate display.\"\n");
         } catch (IOException ae) {
-            System.out.println("Error adding content to products.txt: " + ae.getMessage());
+            System.out.println("Error adding content to products.csv: " + ae.getMessage());
+        }
+    }
+
+    private static void initializeAccountsContent() {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(FilePaths.USER_ACCOUNTS, true))) {
+            bw.write("ADMIN,1000,admin1,admin,\"admin address 1\"\n");
+            bw.write("CUSTOMER,1001,customer1,customer,\"customer address 1\"\n");
+        } catch (IOException ae) {
+            System.out.println("Error adding content to user_accounts.csv: " + ae.getMessage());
         }
     }
 
@@ -153,6 +165,10 @@ public class FileManager {
             }
             if (filePath.equals(FilePaths.PENDING_ORDERS)) {
                 bw.write("ORDER ID,CUSTOMER ID,PRODUCT ID,PRODUCT PRICE,QUANTITY,SUBTOTAL");
+                bw.newLine();
+            }
+            if (filePath.equals(FilePaths.LOG_HISTORY)) {
+                bw.write("TIMESTAMP,USER ID,USERNAME,ACTION TYPE,TARGET TYPE,TARGET ID,OLD VALUE,NEW VALUE");
                 bw.newLine();
             }
         } catch (IOException ae) {

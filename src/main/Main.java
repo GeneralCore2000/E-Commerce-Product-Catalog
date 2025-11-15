@@ -39,6 +39,7 @@ public class Main {
                     break;
                 case 3:
                     FileManager.initializeFiles();
+                    accountManager.loadAccounts();
                     break;
                 case 4:
                     aboutPage();
