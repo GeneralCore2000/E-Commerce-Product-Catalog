@@ -208,6 +208,7 @@ public class ProductManager {
                 }
             }
         }
+        Utility.stopper();
     }
 
     /**
@@ -305,7 +306,7 @@ public class ProductManager {
                     updateProductStock(updateIndex);
                 }
             }
-            FileManager.updateFile(FilePaths.PRODUCTS, convertProductTo2DList());
+            FileManager.updateFile(FilePaths.PRODUCTS, FileManager.productHeader, convertProductTo2DList());
         }
     }
 
@@ -399,7 +400,7 @@ public class ProductManager {
             Product removeIndex = filteredProduct.get(deleteProduct - 1);
             System.out.println("Deleting: " + " " + removeIndex);
             productLists.remove((removeIndex));
-            FileManager.updateFile(FilePaths.PRODUCTS, convertProductTo2DList());
+            FileManager.updateFile(FilePaths.PRODUCTS, FileManager.productHeader, convertProductTo2DList());
             Utility.stopper();
         }
     }

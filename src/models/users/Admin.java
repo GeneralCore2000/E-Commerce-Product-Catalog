@@ -129,7 +129,6 @@ public class Admin extends User implements AdminPrivilege {
     @Override
     protected void printProducts() {
         productManager.displayAllProduct(true);
-        Utility.stopper();
 //        while (true) {
 //            Utility.centralizeHeading("📝📦 PRODUCTS CATALOG");
 //            Utility.printUserChoices(Utility.productChoices);

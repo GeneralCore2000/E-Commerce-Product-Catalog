@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class FileManager {
+    public static String productHeader = "CATEGORY,ID,NAME,PRICE,STOCK,DESCRIPTION";
+    public static String pendingOrderHeader = "Order ID,Customer ID,Product ID,Product Price,Quantity,Subtotal";
 
     /**
      * Read and store the content of the files in an ArrayList
@@ -39,8 +41,10 @@ public class FileManager {
      * @param filePath       The path of the file to be updated or append to
      * @param updatedContent The {@code 2D ArrayList} of the content to replace the current content of the file
      */
-    public static void updateFile(String filePath, ArrayList<ArrayList<String>> updatedContent) {
+    public static void updateFile(String filePath, String header, ArrayList<ArrayList<String>> updatedContent) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath, false))) {
+            bw.write(header);
+            bw.newLine();
             for (int row = 0; row < updatedContent.size(); row++) {
                 ArrayList<String> updatedContentArray = updatedContent.get(row);
                 for (String column : updatedContentArray) {

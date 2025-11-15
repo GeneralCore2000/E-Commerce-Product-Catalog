@@ -55,8 +55,8 @@ public class OrderManager {
         }
         queueOrders.dequeue();
         updateProductStock(currentQueueOrder);
-        FileManager.updateFile(FilePaths.PENDING_ORDERS, convertQueueOrderTo2D());
-        FileManager.updateFile(FilePaths.PRODUCTS, productManager.convertProductListTo2D());
+        FileManager.updateFile(FilePaths.PENDING_ORDERS, FileManager.pendingOrderHeader, convertQueueOrderTo2D());
+        FileManager.updateFile(FilePaths.PRODUCTS, FileManager.productHeader, productManager.convertProductListTo2D());
     }
 
     private boolean validateStock(QueueOrders.Queue current) {
