@@ -38,6 +38,7 @@ public class Admin extends User implements AdminPrivilege {
                     return;
                 case 1:
                     manageInventory();
+                    break;
                 case 2:
                     seeOrders();
             }
@@ -222,7 +223,7 @@ public class Admin extends User implements AdminPrivilege {
                     System.out.print("Enter product name >>: ");
                     String findProductName = in.nextLine();
                     System.out.println();
-                    productManager.findAllProductByName(findProductName);
+                    productManager.findAllProduct(findProductName);
                     Utility.stopper();
 
             }

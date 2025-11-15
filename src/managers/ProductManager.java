@@ -97,8 +97,12 @@ public class ProductManager {
         return null;
     }
 
-    public void findAllProductByName(String productName) {
+    public void findAllProduct(String productName) {
         Search.linearSearch(productName, productLists);
+    }
+
+    public void findAllProduct(int productID) {
+        Search.linearSearch(productID, productLists);
     }
 
     /**
