@@ -122,6 +122,7 @@ public class ProductManager {
         if (productLists.isEmpty()) {
             System.out.println("There is nothing to see here. 🫣");
             return;
+
         }
 
         int productNumber = 0;
@@ -134,6 +135,45 @@ public class ProductManager {
                 System.out.println(productNumber + ". " + current.product.customerDisplay());
             }
             current = current.next;
+        }
+    }
+
+    public void displayAllProduct(boolean showID) {
+        ProductLinkedList.Node current = productLists.getHead();
+        int pageNumber = 0;
+        int productNumber = 0;
+
+        if (productLists.isEmpty()) {
+            System.out.println("There is nothing to see here. 🫣");
+            return;
+        }
+        while (current != null) {
+            productNumber++;
+            if (showID) {
+                System.out.println(productNumber + ". " + current.product.adminDisplay());
+            } else {
+                System.out.println(productNumber + ". " + current.product.customerDisplay());
+            }
+            current = current.next;
+            if (productNumber % 5 == 0 && productNumber != productLists.size()) {
+                pageNumber++;
+                System.out.println("\nPg. " + pageNumber + " of " + productLists.size() / 5);
+                outerloop:
+                while (true) {
+                    System.out.println("-".repeat(Utility.TOTAL_WIDTH));
+                    Utility.printUserChoices("Go Back", ">> Next page");
+                    int userChoice = Utility.isInputInteger();
+                    switch (userChoice) {
+                        case -1:
+                            continue;
+                        case 0:
+                            return;
+                        case 1:
+                            System.out.println();
+                            break outerloop;
+                    }
+                }
+            }
         }
     }
 

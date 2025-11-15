@@ -127,22 +127,24 @@ public class Admin extends User implements AdminPrivilege {
 
     @Override
     protected void printProducts() {
-        while (true) {
-            Utility.centralizeHeading("📝📦 PRODUCTS CATALOG");
-            Utility.printUserChoices(Utility.productChoices);
-            int userChoice = Utility.isInputInteger();
-            ProductCategory categoryChoice = productManager.categoryChoices(userChoice);
-            if (categoryChoice == null) {
-                continue;
-            }
-            if (categoryChoice == ProductCategory.NULL) {
-                return;
-            }
-            Utility.centralizeHeading(String.valueOf(categoryChoice));
-            ProductLinkedList filteredProduct = productManager.getProductByCategory(categoryChoice);
-            productManager.printProductByCategory(filteredProduct, true);
-            Utility.stopper();
-        }
+        productManager.displayAllProduct(true);
+        Utility.stopper();
+//        while (true) {
+//            Utility.centralizeHeading("📝📦 PRODUCTS CATALOG");
+//            Utility.printUserChoices(Utility.productChoices);
+//            int userChoice = Utility.isInputInteger();
+//            ProductCategory categoryChoice = productManager.categoryChoices(userChoice);
+//            if (categoryChoice == null) {
+//                continue;
+//            }
+//            if (categoryChoice == ProductCategory.NULL) {
+//                return;
+//            }
+//            Utility.centralizeHeading(String.valueOf(categoryChoice));
+//            ProductLinkedList filteredProduct = productManager.getProductByCategory(categoryChoice);
+//            productManager.printProductByCategory(filteredProduct, true);
+//            Utility.stopper();
+//        }
     }
 
     @Override
