@@ -4,6 +4,7 @@ import data.FileManager;
 import data.FilePaths;
 import data_structures.ProductLinkedList;
 import data_structures.Search;
+import data_structures.Sort;
 import models.products.*;
 import utils.Utility;
 
@@ -105,6 +106,18 @@ public class ProductManager {
         Search.linearSearch(productID, productLists);
     }
 
+    public void sortByName() {
+        Sort.bubbleSortByName(productLists);
+    }
+
+    public void sortByID() {
+        Sort.bubbleSortByID(productLists);
+    }
+
+    public void sortByPrice() {
+        Sort.bubbleSortByPrice(productLists);
+    }
+
     /**
      * Prints out the models.products filtered by the chosen category. This method is used in {@link models.users.Admin} to include
      * product IDs at print.
@@ -140,13 +153,14 @@ public class ProductManager {
 
     public void displayAllProduct(boolean showID) {
         ProductLinkedList.Node current = productLists.getHead();
-        int pageNumber = 0;
+        int pageNumber = 1;
         int productNumber = 0;
 
         if (productLists.isEmpty()) {
             System.out.println("There is nothing to see here. 🫣");
             return;
         }
+
         while (current != null) {
             productNumber++;
             if (showID) {
@@ -156,12 +170,12 @@ public class ProductManager {
             }
             current = current.next;
             if (productNumber % 5 == 0 && productNumber != productLists.size()) {
-                pageNumber++;
                 System.out.println("\nPg. " + pageNumber + " of " + productLists.size() / 5);
                 outerloop:
                 while (true) {
                     System.out.println("-".repeat(Utility.TOTAL_WIDTH));
-                    Utility.printUserChoices("Go Back", ">> Next page");
+                    Utility.printUserChoices("🔙 Go Back", "⏭️ Next page", "\uD83D\uDD00 Sort by name",
+                            "\uD83D\uDD00 Sort by ID", "\uD83D\uDD00 Sort by Price");
                     int userChoice = Utility.isInputInteger();
                     switch (userChoice) {
                         case -1:
@@ -170,6 +184,25 @@ public class ProductManager {
                             return;
                         case 1:
                             System.out.println();
+                            pageNumber++;
+                            break outerloop;
+                        case 2:
+                            sortByName();
+                            current = productLists.getHead();
+                            productNumber = 0;
+                            pageNumber = 1;
+                            break outerloop;
+                        case 3:
+                            sortByID();
+                            current = productLists.getHead();
+                            productNumber = 0;
+                            pageNumber = 1;
+                            break outerloop;
+                        case 4:
+                            sortByPrice();
+                            current = productLists.getHead();
+                            productNumber = 0;
+                            pageNumber = 1;
                             break outerloop;
                     }
                 }

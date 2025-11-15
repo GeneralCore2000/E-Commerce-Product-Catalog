@@ -42,6 +42,10 @@ public class ProductLinkedList {
         }
     }
 
+    public void setHead(Node head) {
+        this.head = head;
+    }
+
     public int size() {
         int count = 0;
         Node current = head;

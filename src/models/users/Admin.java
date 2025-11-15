@@ -96,7 +96,8 @@ public class Admin extends User implements AdminPrivilege {
     }
 
     private void manageInventory() {
-        String[] choices = {"🔙 Go Back", "🔍 View All Products", "🔍 Search product", "➕ Add Products", "✏️ Update Products", "🗑️ Delete Products"};
+        String[] choices = {"🔙 Go Back", "🔍 View All Products", "🔍 Search product", "➕ Add Products",
+                "✏️ Update Products", "🗑️ Delete Products"};
 
         while (true) {
             Utility.centralizeHeading("MANAGE INVENTORY");
