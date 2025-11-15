@@ -1,17 +1,20 @@
 package models.users;
 
 import data_structures.ProductLinkedList;
+import data_structures.QueueOrders;
 import managers.OrderManager;
 import managers.ProductManager;
-import data_structures.QueueOrders;
 import models.products.Product;
 import models.products.ProductCategory;
 import utils.Utility;
+
+import java.util.Scanner;
 
 public class Admin extends User implements AdminPrivilege {
     private final ProductManager productManager;
     private final QueueOrders queueOrders;
     private final OrderManager orderManager;
+    private final Scanner in = new Scanner(System.in);
 
     public Admin(String username, String password, String address, ProductManager productManager, QueueOrders queueOrders, OrderManager orderManager) {
         super(username, password, address);
@@ -92,7 +95,7 @@ public class Admin extends User implements AdminPrivilege {
     }
 
     private void manageInventory() {
-        String[] choices = {"🔙 Go Back", "🔍 View Products", "➕ Add Products", "✏️ Update Products", "🗑️ Delete Products"};
+        String[] choices = {"🔙 Go Back", "🔍 View All Products", "🔍 Search product", "➕ Add Products", "✏️ Update Products", "🗑️ Delete Products"};
 
         while (true) {
             Utility.centralizeHeading("MANAGE INVENTORY");
@@ -106,12 +109,15 @@ public class Admin extends User implements AdminPrivilege {
                     printProducts();
                 }
                 case 2 -> {
-                    addProduct();
+                    searchProduct();
                 }
                 case 3 -> {
-                    updateProduct();
+                    addProduct();
                 }
                 case 4 -> {
+                    updateProduct();
+                }
+                case 5 -> {
                     deleteProduct();
                 }
             }
@@ -196,6 +202,30 @@ public class Admin extends User implements AdminPrivilege {
             }
             Product updateIndex = filteredProduct.get(updateProduct - 1);
             productManager.updateProducts(updateIndex);
+        }
+    }
+
+    @Override
+    public void searchProduct() {
+        while (true) {
+            Utility.centralizeHeading("SEARCH PRODUCT");
+            Utility.printUserChoices("Go back", "Search by SKU", "Search by name");
+            int userChoice = Utility.isInputInteger();
+            switch (userChoice) {
+                case -1:
+                    continue;
+                case 0:
+                    return;
+                case 1:
+                    break;
+                case 2:
+                    System.out.print("Enter product name >>: ");
+                    String findProductName = in.nextLine();
+                    System.out.println();
+                    productManager.findAllProduct(findProductName);
+                    Utility.stopper();
+
+            }
         }
     }
 }

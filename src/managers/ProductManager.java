@@ -96,6 +96,22 @@ public class ProductManager {
         return null;
     }
 
+    public void findAllProduct(String productName) {
+        ProductLinkedList.Node current = productLists.getHead();
+        int counter = 1;
+        while (current != null) {
+            if (current.product.getProductName().contains(productName)) {
+                System.out.println("[" + counter + "]\nProduct name: " + current.product.getProductName());
+                System.out.println("ID: " + current.product.getProductID());
+                System.out.println("Price: " + current.product.getProductPrice());
+                System.out.println("Stock : " + current.product.getProductStock());
+                counter++;
+                System.out.println("-".repeat(Utility.TOTAL_WIDTH));
+            }
+            current = current.next;
+        }
+    }
+
     /**
      * Prints out the models.products filtered by the chosen category. This method is used in {@link models.users.Admin} to include
      * product IDs at print.

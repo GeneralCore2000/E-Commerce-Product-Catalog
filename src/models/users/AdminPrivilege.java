@@ -6,4 +6,6 @@ public interface AdminPrivilege {
     void deleteProduct();
 
     void updateProduct();
+
+    void searchProduct();
 }
