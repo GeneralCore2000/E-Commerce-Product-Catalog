@@ -1,0 +1,14 @@
+package data;
+
+public enum ActionType {
+    LOGIN,
+    LOGOUT,
+    ACCOUNT_CREATE,
+    ACCOUNT_UPDATE,
+    ACCOUNT_DELETE,
+    PRODUCT_ADD,
+    PRODUCT_UPDATE,
+    PRODUCT_DELETE,
+    ORDER_CREATE,
+    ORDER_CHECKOUT;
+}

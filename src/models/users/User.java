@@ -1,5 +1,9 @@
 package models.users;
 
+import data.ActionType;
+import data.LogHistory;
+import data.TargetType;
+
 abstract public class User {
 
     protected static int NEXT_ID = 1000;

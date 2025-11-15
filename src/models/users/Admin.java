@@ -1,5 +1,8 @@
 package models.users;
 
+import data.ActionType;
+import data.LogHistory;
+import data.TargetType;
 import data_structures.ProductLinkedList;
 import data_structures.QueueOrders;
 import managers.OrderManager;

@@ -1,7 +1,6 @@
 package managers;
 
-import data.FileManager;
-import data.FilePaths;
+import data.*;
 import data_structures.QueueOrders;
 import data_structures.UserLinkedList;
 import models.users.Admin;
@@ -81,6 +80,7 @@ public class AccountManager {
                 case 1:
                     User user = validateCredentials();
                     if (user != null) {
+                        LogHistory.addLog(user.getUserID(), user.getUsername(), ActionType.LOGIN, TargetType.ACCOUNT);
                         user.showMenu();
                     } else {
                         System.out.println("\nInvalid credentials. Try again");
@@ -178,6 +178,7 @@ public class AccountManager {
 
         accountLists.add(user);
         FileManager.appendToFile(FilePaths.USER_ACCOUNTS, accountType + Utility.DIVIDER + user.getUserID() + Utility.DIVIDER + "\"" + name + "\"" + Utility.DIVIDER + password + Utility.DIVIDER + "\"" + address + "\"");
+        LogHistory.addLog(user.getUserID(), user.getUsername(), ActionType.ACCOUNT_CREATE, TargetType.SYSTEM);
     }
 
     private void generalInformation() {
