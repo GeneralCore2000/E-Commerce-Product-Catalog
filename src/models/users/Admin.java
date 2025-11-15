@@ -160,6 +160,7 @@ public class Admin extends User implements AdminPrivilege {
                 return;
             }
             productManager.addProducts(userChoice);
+            LogHistory.addLog(userID, username, ActionType.PRODUCT_ADD, TargetType.PRODUCT);
         }
     }
 
@@ -176,7 +177,23 @@ public class Admin extends User implements AdminPrivilege {
             if (chosenCategory == ProductCategory.NULL) {
                 return;
             }
-            productManager.deleteProducts(chosenCategory);
+            Utility.centralizeHeading(String.valueOf(chosenCategory));
+            ProductLinkedList filteredProduct = productManager.getProductByCategory(chosenCategory);
+            productManager.printProductByCategory(filteredProduct, true);
+            if (filteredProduct.isEmpty()) {
+                Utility.stopper();
+                break;
+            }
+            int deleteProduct = Utility.isInputInteger("Enter product number to delete [0 to go back]");
+            if (deleteProduct == 0) {
+                break;
+            }
+            if (!productManager.isProductNumberValid(deleteProduct, filteredProduct.size())) {
+                continue;
+            }
+            LogHistory.addLog(userID, username, ActionType.PRODUCT_DELETE, TargetType.PRODUCT, filteredProduct.get(deleteProduct - 1).getProductID() + "", null, null);
+            productManager.deleteProducts(chosenCategory, filteredProduct, deleteProduct);
+            return;
         }
     }
 

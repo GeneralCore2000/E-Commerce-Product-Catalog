@@ -382,28 +382,12 @@ public class ProductManager {
      *                       as well as to be deleted.
      *
      */
-    public void deleteProducts(ProductCategory chosenCategory) {
-        while (true) {
-            Utility.centralizeHeading(String.valueOf(chosenCategory));
-            ProductLinkedList filteredProduct = getProductByCategory(chosenCategory);
-            printProductByCategory(filteredProduct, true);
-            if (filteredProduct.isEmpty()) {
-                Utility.stopper();
-                break;
-            }
-            int deleteProduct = Utility.isInputInteger("Enter product number to delete [0 to go back]");
-            if (deleteProduct == 0) {
-                break;
-            }
-            if (!isProductNumberValid(deleteProduct, filteredProduct.size())) {
-                continue;
-            }
-            Product removeIndex = filteredProduct.get(deleteProduct - 1);
-            System.out.println("Deleting: " + " " + removeIndex);
-            productLists.remove((removeIndex));
-            FileManager.updateFile(FilePaths.PRODUCTS, FileManager.productHeader, convertProductTo2DList());
-            Utility.stopper();
-        }
+    public void deleteProducts(ProductCategory chosenCategory, ProductLinkedList filteredProduct, int deleteProduct) {
+        Product removeIndex = filteredProduct.get(deleteProduct - 1);
+        System.out.println("Deleting: " + " " + removeIndex);
+        productLists.remove((removeIndex));
+        FileManager.updateFile(FilePaths.PRODUCTS, FileManager.productHeader, convertProductTo2DList());
+        Utility.stopper();
     }
 
     /**
