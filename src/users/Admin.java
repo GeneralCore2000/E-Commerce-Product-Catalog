@@ -1,13 +1,11 @@
 package users;
 
 import managers.EditUserInfos;
+import managers.FileManager;
 import managers.ProductManager;
 import products.Product;
 import products.ProductCategory;
-import utils.ActionLog;
-import utils.LogHistory;
-import utils.RemarksLog;
-import utils.Utility;
+import utils.*;
 
 import java.util.ArrayList;
 
@@ -21,7 +19,7 @@ public class Admin extends User implements AdminPrivilege {
 
     @Override
     public void showMenu() {
-        String[] choices = {"🔙 Log Out", "📦 Manage Inventory", "📝 Edit Info"};
+        String[] choices = {"🔙 Log Out", "📦 Manage Inventory", "⌛ View Log History", "📝 Edit Info"};
         while (true) {
             Utility.centralizeHeading("ADMIN MENU");
             showUserInfo();
@@ -36,8 +34,18 @@ public class Admin extends User implements AdminPrivilege {
                     manageInventory();
                     break;
                 case 2:
+                    viewLogHistory();
+                    break;
+                case 3:
                     editInfo();
             }
+        }
+    }
+
+    public void viewLogHistory() {
+        ArrayList<ArrayList<String>> historyList = FileManager.readFile(FilePaths.LOG_HISTORY);
+        for (ArrayList<String> row : historyList) {
+            System.out.println(row);
         }
     }
 
