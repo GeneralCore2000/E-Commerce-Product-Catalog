@@ -9,7 +9,7 @@ import utils.Utility;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class AccountManager {
+public class AccountManager implements EditUserInfos {
     private ArrayList<User> accountLists = new ArrayList<>();
     private ProductManager productManager = new ProductManager();
     private Scanner in = new Scanner(System.in);
@@ -47,12 +47,12 @@ public class AccountManager {
                 accountLists.add(new Customer(useraccountRow.get(USERNAME),
                         useraccountRow.get(PASSWORD),
                         useraccountRow.get(ADDRESS),
-                        productManager));
+                        productManager, this));
             } else {
                 accountLists.add(new Admin(useraccountRow.get(USERNAME),
                         useraccountRow.get(PASSWORD),
                         useraccountRow.get(ADDRESS),
-                        productManager));
+                        productManager, this));
             }
         }
     }
@@ -155,9 +155,9 @@ public class AccountManager {
         User user;
 
         if (accountType == AccountType.CUSTOMER) {
-            user = new Customer(name, password, address, productManager);
+            user = new Customer(name, password, address, productManager, this);
         } else if (accountType == AccountType.ADMIN) {
-            user = new Admin(name, password, address, productManager);
+            user = new Admin(name, password, address, productManager, this);
         } else {
             System.out.println("Invalid account type.");
             return;
@@ -181,6 +181,40 @@ public class AccountManager {
         password = in.nextLine();
         System.out.print("Enter shipping address >>: ");
         address = in.nextLine();
+    }
+
+    private ArrayList<ArrayList<String>> convertUsersTo2D() {
+        ArrayList<ArrayList<String>> data = new ArrayList<>();
+        for (User account : accountLists) {
+            ArrayList<String> row = new ArrayList<>();
+            row.add(account.getClass().getSimpleName().toUpperCase());
+            row.add(account.getUserID() + "");
+            row.add(account.getUsername());
+            row.add(account.getPassword());
+            row.add(account.getAddress());
+            data.add(row);
+        }
+        return data;
+    }
+
+    public void updateUsername(User user) {
+        System.out.println("Current username: " + user.getUsername());
+        System.out.print("Enter new username >>: ");
+        user.setUsername(in.nextLine());
+        FileManager.updateFile(FilePaths.USER_ACCOUNTS, convertUsersTo2D());
+    }
+
+    public void updatePassword(User user) {
+        System.out.print("Enter new password >>: ");
+        user.setPassword(in.nextLine());
+        FileManager.updateFile(FilePaths.USER_ACCOUNTS, convertUsersTo2D());
+    }
+
+    public void updateAddress(User user) {
+        System.out.println("Current address: " + user.getPassword());
+        System.out.print("Enter new address >>: ");
+        user.setAddress(in.nextLine());
+        FileManager.updateFile(FilePaths.USER_ACCOUNTS, convertUsersTo2D());
     }
 }
 

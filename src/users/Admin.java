@@ -1,5 +1,6 @@
 package users;
 
+import managers.EditUserInfos;
 import managers.ProductManager;
 import products.Product;
 import products.ProductCategory;
@@ -10,14 +11,14 @@ import java.util.ArrayList;
 public class Admin extends User implements AdminPrivilege {
     private final ProductManager productManager;
 
-    public Admin(String username, String password, String address, ProductManager productManager) {
-        super(username, password, address);
+    public Admin(String username, String password, String address, ProductManager productManager, EditUserInfos editUserInfos) {
+        super(username, password, address, editUserInfos);
         this.productManager = productManager;
     }
 
     @Override
     public void showMenu() {
-        String[] choices = {"🔙 Log Out", "📦 Manage Inventory"};
+        String[] choices = {"🔙 Log Out", "📦 Manage Inventory", "📝 Edit Info"};
         while (true) {
             Utility.centralizeHeading("ADMIN MENU");
             showUserInfo();
@@ -30,6 +31,9 @@ public class Admin extends User implements AdminPrivilege {
                     return;
                 case 1:
                     manageInventory();
+                    break;
+                case 2:
+                    editInfo();
             }
         }
     }
@@ -38,6 +42,30 @@ public class Admin extends User implements AdminPrivilege {
     public void showUserInfo() {
         System.out.println("Username: " + username + " (ID #" + userID + ")");
         System.out.println("-".repeat(Utility.TOTAL_WIDTH));
+    }
+
+    @Override
+    protected void editInfo() {
+        while (true) {
+            Utility.centralizeHeading("EDIT INFO");
+            Utility.printUserChoices("Go Back", "Edit name", "Edit password", "Edit address");
+            int userChoice = Utility.isInputInteger();
+            switch (userChoice) {
+                case -1:
+                    continue;
+                case 0:
+                    return;
+                case 1:
+                    editUserInfos.updateUsername(this);
+                    break;
+                case 2:
+                    editUserInfos.updatePassword(this);
+                    break;
+                case 3:
+                    editUserInfos.updateAddress(this);
+                    break;
+            }
+        }
     }
 
     private void manageInventory() {

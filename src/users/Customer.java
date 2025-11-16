@@ -1,5 +1,6 @@
 package users;
 
+import managers.EditUserInfos;
 import managers.FileManager;
 import managers.ProductManager;
 import products.Product;
@@ -12,8 +13,8 @@ import java.util.ArrayList;
 public class Customer extends User {
     private ProductManager productManager;
 
-    public Customer(String username, String password, String address, ProductManager productManager) {
-        super(username, password, address);
+    public Customer(String username, String password, String address, ProductManager productManager, EditUserInfos editUserInfos) {
+        super(username, password, address, editUserInfos);
         this.productManager = productManager;
     }
 
@@ -32,6 +33,9 @@ public class Customer extends User {
                     return;
                 case 1:
                     printProducts();
+                    break;
+                case 2:
+                    editInfo();
             }
         }
     }
@@ -39,7 +43,32 @@ public class Customer extends User {
     @Override
     public void showUserInfo() {
         System.out.println("Username: " + username + " (ID #" + userID + ")");
+        System.out.println("Address: " + address);
         System.out.println("-".repeat(Utility.TOTAL_WIDTH));
+    }
+
+    @Override
+    protected void editInfo() {
+        while (true) {
+            Utility.centralizeHeading("EDIT INFO");
+            Utility.printUserChoices("Go Back", "Edit name", "Edit password", "Edit address");
+            int userChoice = Utility.isInputInteger();
+            switch (userChoice) {
+                case -1:
+                    continue;
+                case 0:
+                    return;
+                case 1:
+                    editUserInfos.updateUsername(this);
+                    break;
+                case 2:
+                    editUserInfos.updatePassword(this);
+                    break;
+                case 3:
+                    editUserInfos.updateAddress(this);
+                    break;
+            }
+        }
     }
 
     @Override

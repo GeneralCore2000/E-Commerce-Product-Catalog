@@ -60,7 +60,7 @@ public class Utility {
      *
      * @param choices is a {@code String} array that contains the possible choices for the user.
      */
-    public static void printUserChoices(String[] choices) {
+    public static void printUserChoices(String... choices) {
         for (int i = 0; i < choices.length; i++) {
             System.out.println("\t[" + i + "] " + choices[i]);
         }

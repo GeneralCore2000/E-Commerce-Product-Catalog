@@ -1,5 +1,8 @@
 package users;
 
+import managers.AccountManager;
+import managers.EditUserInfos;
+
 abstract public class User {
 
     protected static int NEXT_ID = 1000;
@@ -7,12 +10,14 @@ abstract public class User {
     protected String password;
     protected String address;
     protected int userID;
+    protected EditUserInfos editUserInfos;
 
-    public User(String username, String password, String address) {
+    public User(String username, String password, String address, EditUserInfos editUserInfos) {
         this.userID = NEXT_ID++;
         this.username = username;
         this.password = password;
         this.address = address;
+        this.editUserInfos = editUserInfos;
     }
 
     public String getAddress() {
@@ -57,4 +62,6 @@ abstract public class User {
     protected abstract void printProducts();
 
     protected abstract void showUserInfo();
+
+    protected abstract void editInfo();
 }
