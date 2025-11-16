@@ -174,8 +174,15 @@ public class AccountManager implements EditUserInfos {
 
     private String validateInput(String type) {
         while (true) {
-            System.out.print("Enter " + type + " >>: ");
-            String input = in.nextLine();
+            String input;
+            while (true) {
+                System.out.print("Enter " + type + " >>: ");
+                input = in.nextLine();
+                if(input.isBlank()){
+                    continue;
+                }
+                break;
+            }
             if (!startsWithLetter(input)) {
                 System.out.println("Oops! " + type + " must start with a letter");
                 Utility.stopper();
@@ -247,15 +254,13 @@ public class AccountManager implements EditUserInfos {
 
     public void updateUsername(User user) {
         System.out.println("Current username: " + user.getUsername());
-        System.out.print("Enter new username >>: ");
-        user.setUsername(in.nextLine());
+        user.setUsername(validateInput("Username"));
         FileManager.updateFile(FilePaths.USER_ACCOUNTS, convertUsersTo2D());
         LogHistory.add(user.getUserID(), user.getUsername(), ActionLog.ACCOUNT_UPDATE, "Username", RemarksLog.SUCCESSFUL);
     }
 
     public void updatePassword(User user) {
-        System.out.print("Enter new password >>: ");
-        user.setPassword(in.nextLine());
+        user.setPassword(validateInput("Password"));
         FileManager.updateFile(FilePaths.USER_ACCOUNTS, convertUsersTo2D());
         LogHistory.add(user.getUserID(), user.getUsername(), ActionLog.ACCOUNT_UPDATE, "Password", RemarksLog.SUCCESSFUL);
     }
