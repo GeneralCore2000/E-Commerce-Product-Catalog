@@ -1,20 +1,22 @@
-ACCESSORIES,5000,Wireless Mouse,599.0,35,"Ergonomic wireless mouse with silent clicks and long battery life."
-LAPTOPS,5001,Acer Aspire 5,34999.0,8,"15.6" FHD laptop with Ryzen 5 processor and 8GB RAM."
-SMARTPHONES,5002,Samsung Galaxy A54,23999.0,15,"5G smartphone with AMOLED display and triple camera setup."
-TABLETS,5003,iPad 10th Gen,27999.0,9,"10.9" Liquid Retina display with A14 Bionic chip and Touch ID."
-ACCESSORIES,5004,Laptop Sleeve 15.6",449.0,20,"Soft neoprene sleeve to protect laptops from scratches and dust."
-LAPTOPS,5005,Lenovo IdeaPad Slim 3,32499.0,10,"Lightweight laptop with Intel Core i3 and SSD storage."
-SMARTPHONES,5006,iPhone 14,56999.0,8,"Apple smartphone with A15 Bionic chip and Super Retina XDR display."
-TABLETS,5007,Samsung Galaxy Tab S9,45999.0,7,"Flagship Android tablet with AMOLED screen and S Pen support."
-ACCESSORIES,5008,USB-C Hub 6-in-1,999.0,15,"Multiport adapter with HDMI, USB 3.0, and SD card support."
-LAPTOPS,5009,ASUS TUF Gaming F15,5994.59,90,"Gaming laptop pa rin ba to?"
-SMARTPHONES,5010,Xiaomi Redmi Note 13,12499.0,20,"Mid-range phone with 108MP camera and fast charging."
-TABLETS,5011,Lenovo Tab M10 Plus,12999.0,11,"Affordable tablet for study and entertainment use."
-ACCESSORIES,5012,Mechanical Keyboard,1899.0,12,"RGB backlit mechanical keyboard with blue switches."
-LAPTOPS,5013,HP Pavilion 14,41299.0,6,"Compact laptop with Intel Core i5 and sleek aluminum design."
-SMARTPHONES,5014,Redmi note 8 Pro,-9500.0,-5,"Stylish design with 200MP camera and curved AMOLED screen."
-TABLETS,5015,Huawei MatePad 11,24499.0,10,"11" 120Hz display tablet with multi-screen collaboration."
-ACCESSORIES,5016,Noise-Cancelling Headphones,2499.0,10,"Comfortable over-ear headphones with active noise cancellation."
-LAPTOPS,5017,MacBook Air M2,69999.0,4,"Apple M2 chip with 8GB RAM and 256GB SSD, ultra-thin build."
-SMARTPHONES,5018,OnePlus Nord CE 3,21499.0,10,"Smooth 120Hz display with Snapdragon 782G processor."
-TABLETS,5019,Xiaomi Pad 6,18999.0,14,"Snapdragon 870-powered tablet with high refresh rate display."
+ACCESSORIES,5000,Wireless Mouse,599.0,35,"Ergonomic wireless mouse with silent clicks and long battery life.",
+LAPTOPS,5001,Acer Aspire 5,34999.0,8,"15.6" FHD laptop with Ryzen 5 processor and 8GB RAM.",
+SMARTPHONES,5002,Samsung Galaxy A54,23999.0,15,"5G smartphone with AMOLED display and triple camera setup.",
+TABLETS,5003,iPad 10th Gen,27999.0,9,"10.9" Liquid Retina display with A14 Bionic chip and Touch ID.",
+ACCESSORIES,5004,Laptop Sleeve 15.6",449.0,15,"Soft neoprene sleeve to protect laptops from scratches and dust.",
+LAPTOPS,5005,Lenovo IdeaPad Slim 3,32499.0,10,"Lightweight laptop with Intel Core i3 and SSD storage.",
+SMARTPHONES,5006,iPhone 14,56999.0,8,"Apple smartphone with A15 Bionic chip and Super Retina XDR display.",
+TABLETS,5007,Samsung Galaxy Tab S9,45999.0,7,"Flagship Android tablet with AMOLED screen and S Pen support.",
+ACCESSORIES,5008,USB-C Hub 6-in-1,999.0,15,"Multiport adapter with HDMI,
+LAPTOPS,5009,ASUS TUF Gaming F15,5994.59,90,"Gaming laptop pa rin ba to?",
+SMARTPHONES,5010,Xiaomi Redmi Note 13,12499.0,20,"Mid-range phone with 108MP camera and fast charging.",
+TABLETS,5011,Lenovo Tab M10 Plus,12999.0,11,"Affordable tablet for study and entertainment use.",
+ACCESSORIES,5012,Mechanical Keyboard,1899.0,12,"RGB backlit mechanical keyboard with blue switches.",
+LAPTOPS,5013,HP Pavilion 14,41299.0,6,"Compact laptop with Intel Core i5 and sleek aluminum design.",
+SMARTPHONES,5014,OPPO A5,59784.0,100,Capture the real you,
+TABLETS,5015,Huawei MatePad 11,24499.0,10,"11" 120Hz display tablet with multi-screen collaboration.",
+ACCESSORIES,5016,Noise-Cancelling Headphones,2499.0,10,"Comfortable over-ear headphones with active noise cancellation.",
+LAPTOPS,5017,MacBook Air M2,69999.0,4,"Apple M2 chip with 8GB RAM and 256GB SSD,
+SMARTPHONES,5018,OnePlus Nord CE 3,21499.0,10,"Smooth 120Hz display with Snapdragon 782G processor.",
+TABLETS,5019,Xiaomi Pad 6,18999.0,14,"Snapdragon 870-powered tablet with high refresh rate display.",
+ACCESSORIES,5020,Headphone noise-cancelling,798.0,1,Good for gaming,
+LAPTOPS,5021,Predator,19888.0,500,Good for editing,

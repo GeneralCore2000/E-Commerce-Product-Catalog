@@ -212,7 +212,7 @@ public class ProductManager {
             int newPrice = Utility.isInputInteger("Enter new product price for [" + updateIndex.getProductPrice() + "]");
             if (newPrice < 0) {
                 System.out.println("\n" + "~".repeat(42));
-                System.out.println("Invalid input: Cannot be negative stock.");
+                System.out.println("Invalid input: Price cannot be negative.");
                 System.out.println("~".repeat(42));
                 continue;
             }
