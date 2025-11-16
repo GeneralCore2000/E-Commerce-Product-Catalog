@@ -4,6 +4,9 @@ import managers.EditUserInfos;
 import managers.ProductManager;
 import products.Product;
 import products.ProductCategory;
+import utils.ActionLog;
+import utils.LogHistory;
+import utils.RemarksLog;
 import utils.Utility;
 
 import java.util.ArrayList;
@@ -124,7 +127,10 @@ public class Admin extends User implements AdminPrivilege {
             if (userChoice == 0) {
                 return;
             }
-            productManager.addProducts(userChoice);
+            if (productManager.addProducts(userChoice)) {
+                LogHistory.add(userID, username, ActionLog.PRODUCT_ADD, RemarksLog.SUCCESSFUL);
+                return;
+            }
         }
     }
 
@@ -141,7 +147,10 @@ public class Admin extends User implements AdminPrivilege {
             if (chosenCategory == ProductCategory.NULL) {
                 return;
             }
-            productManager.deleteProducts(chosenCategory);
+            if (productManager.deleteProducts(chosenCategory)) {
+                LogHistory.add(userID, username, ActionLog.PRODUCT_DELETE, RemarksLog.SUCCESSFUL);
+                return;
+            }
         }
     }
 
@@ -172,7 +181,10 @@ public class Admin extends User implements AdminPrivilege {
                 continue;
             }
             Product updateIndex = filteredProduct.get(updateProduct - 1);
-            productManager.updateProducts(updateIndex);
+            if (productManager.updateProducts(updateIndex)) {
+                LogHistory.add(userID, username, ActionLog.PRODUCT_UPDATE, RemarksLog.SUCCESSFUL);
+                return;
+            }
         }
     }
 }

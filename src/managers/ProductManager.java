@@ -130,9 +130,9 @@ public class ProductManager {
      *
      * @param addToProductCategory represents the product category
      */
-    public void addProducts(int addToProductCategory) {
+    public boolean addProducts(int addToProductCategory) {
         if (!addProductQuestions()) {
-            return;
+            return false;
         }
         Product product;
         String category;
@@ -155,12 +155,12 @@ public class ProductManager {
             }
             default -> {
                 System.out.println("Invalid Input: Not in the choices.");
-                return;
+                return false;
             }
         }
-
         FileManager.appendToFile(FilePaths.PRODUCTS, category + "," + product.getProductID() + "," + productName + "," + productPrice + "," + productStock + "," + productDescription);
         productLists.add(product);
+        return true;
     }
 
     /**
@@ -171,14 +171,17 @@ public class ProductManager {
      *
      * @param updateIndex the {@link Product} object to be updated
      */
-    public void updateProducts(Product updateIndex) {
+    public boolean updateProducts(Product updateIndex) {
         while (true) {
             String[] userChoicesList = {"Go Back", "Product Name", "Product Description", "Product Price", "Product Stock"};
             Utility.printUserChoices(userChoicesList);
             int userChoice = Utility.isInputInteger();
             switch (userChoice) {
+                case -1 -> {
+                    continue;
+                }
                 case 0 -> {
-                    return;
+                    return false;
                 }
                 case 1 -> {
                     updateProductName(updateIndex);
@@ -194,6 +197,7 @@ public class ProductManager {
                 }
             }
             FileManager.updateFile(FilePaths.PRODUCTS, convertProductTo2DList());
+            return true;
         }
     }
 
@@ -266,7 +270,7 @@ public class ProductManager {
      *                       as well as to be deleted.
      *
      */
-    public void deleteProducts(ProductCategory chosenCategory) {
+    public boolean deleteProducts(ProductCategory chosenCategory) {
         while (true) {
             Utility.centralizeHeading(String.valueOf(chosenCategory));
             ArrayList<Product> filteredProduct = getProductByCategory(chosenCategory);
@@ -277,7 +281,7 @@ public class ProductManager {
             }
             int deleteProduct = Utility.isInputInteger("Enter product number to delete [0 to go back]");
             if (deleteProduct == 0) {
-                break;
+                return false;
             }
             if (!isProductNumberValid(deleteProduct, filteredProduct.size())) {
                 continue;
@@ -287,7 +291,9 @@ public class ProductManager {
             productLists.remove((removeIndex));
             FileManager.updateFile(FilePaths.PRODUCTS, convertProductTo2DList());
             Utility.stopper();
+            return true;
         }
+        return true;
     }
 
     /**

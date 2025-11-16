@@ -5,8 +5,7 @@ import managers.FileManager;
 import managers.ProductManager;
 import products.Product;
 import products.ProductCategory;
-import utils.FilePaths;
-import utils.Utility;
+import utils.*;
 
 import java.util.ArrayList;
 
@@ -155,12 +154,13 @@ public class Customer extends User {
                 continue;
             }
             if (!isPurchasedConfirm(chosenProduct, quantity)) {
+                LogHistory.add(userID, username, ActionLog.CHECKOUT, RemarksLog.CANCELLED);
                 System.out.println("\nPurchase cancelled by user.");
                 return;
-
             }
             System.out.println("Thank you for your purchase, dear Customer!");
             chosenProduct.setProductStock(chosenProduct.getProductStock() - quantity);
+            LogHistory.add(userID, username, ActionLog.CHECKOUT, RemarksLog.SUCCESSFUL);
             FileManager.updateFile(FilePaths.PRODUCTS, productManager.convertProductTo2DList());
             return;
         }

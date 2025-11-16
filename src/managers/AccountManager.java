@@ -3,8 +3,7 @@ package managers;
 import users.Admin;
 import users.Customer;
 import users.User;
-import utils.FilePaths;
-import utils.Utility;
+import utils.*;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -72,7 +71,9 @@ public class AccountManager implements EditUserInfos {
                 case 1:
                     User user = validateCredentials();
                     if (user != null) {
+                        LogHistory.add(user.getUserID(), user.getUsername(), ActionLog.LOGIN, RemarksLog.SUCCESSFUL);
                         user.showMenu();
+                        LogHistory.add(user.getUserID(), user.getUsername(), ActionLog.LOGOUT, RemarksLog.SUCCESSFUL);
                     } else {
                         System.out.println("\nInvalid credentials. Try again");
                         Utility.stopper();
@@ -172,6 +173,7 @@ public class AccountManager implements EditUserInfos {
                         + name + ","
                         + password + ","
                         + address);
+        LogHistory.add(user.getUserID(), user.getUsername(), ActionLog.ACCOUNT_CREATE, RemarksLog.SUCCESSFUL);
     }
 
     private void generalInformation() {
@@ -202,12 +204,14 @@ public class AccountManager implements EditUserInfos {
         System.out.print("Enter new username >>: ");
         user.setUsername(in.nextLine());
         FileManager.updateFile(FilePaths.USER_ACCOUNTS, convertUsersTo2D());
+        LogHistory.add(user.getUserID(), user.getUsername(), ActionLog.ACCOUNT_UPDATE, "Username", RemarksLog.SUCCESSFUL);
     }
 
     public void updatePassword(User user) {
         System.out.print("Enter new password >>: ");
         user.setPassword(in.nextLine());
         FileManager.updateFile(FilePaths.USER_ACCOUNTS, convertUsersTo2D());
+        LogHistory.add(user.getUserID(), user.getUsername(), ActionLog.ACCOUNT_UPDATE, "Password", RemarksLog.SUCCESSFUL);
     }
 
     public void updateAddress(User user) {
@@ -215,6 +219,7 @@ public class AccountManager implements EditUserInfos {
         System.out.print("Enter new address >>: ");
         user.setAddress(in.nextLine());
         FileManager.updateFile(FilePaths.USER_ACCOUNTS, convertUsersTo2D());
+        LogHistory.add(user.getUserID(), user.getUsername(), ActionLog.ACCOUNT_UPDATE, "Address", RemarksLog.SUCCESSFUL);
     }
 }
 
