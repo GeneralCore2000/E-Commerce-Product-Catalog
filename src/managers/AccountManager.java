@@ -43,15 +43,9 @@ public class AccountManager implements EditUserInfos {
         for (ArrayList<String> useraccountRow : useraccounts) {
             AccountType accountType = AccountType.valueOf(useraccountRow.getFirst());
             if (accountType == AccountType.CUSTOMER) {
-                accountLists.add(new Customer(useraccountRow.get(USERNAME),
-                        useraccountRow.get(PASSWORD),
-                        useraccountRow.get(ADDRESS),
-                        productManager, this));
+                accountLists.add(new Customer(useraccountRow.get(USERNAME), useraccountRow.get(PASSWORD), useraccountRow.get(ADDRESS), productManager, this));
             } else {
-                accountLists.add(new Admin(useraccountRow.get(USERNAME),
-                        useraccountRow.get(PASSWORD),
-                        useraccountRow.get(ADDRESS),
-                        productManager, this));
+                accountLists.add(new Admin(useraccountRow.get(USERNAME), useraccountRow.get(PASSWORD), useraccountRow.get(ADDRESS), productManager, this));
             }
         }
     }
@@ -167,22 +161,74 @@ public class AccountManager implements EditUserInfos {
         System.out.println("Successfully created " + accountType + " account\n" + user + "\n");
 
         accountLists.add(user);
-        FileManager.appendToFile(FilePaths.USER_ACCOUNTS,
-                accountType + ","
-                        + user.getUserID() + ","
-                        + name + ","
-                        + password + ","
-                        + address);
+        FileManager.appendToFile(FilePaths.USER_ACCOUNTS, accountType + "," + user.getUserID() + "," + name + "," + password + "," + address);
         LogHistory.add(user.getUserID(), user.getUsername(), ActionLog.ACCOUNT_CREATE, RemarksLog.SUCCESSFUL);
     }
 
     private void generalInformation() {
-        System.out.print("Enter name >>:");
-        name = in.nextLine();
-        System.out.print("Enter password >>: ");
-        password = in.nextLine();
+        name = validateInput("Username");
+        password = validateInput("Password");
         System.out.print("Enter shipping address >>: ");
         address = in.nextLine();
+    }
+
+    private String validateInput(String type) {
+        while (true) {
+            System.out.print("Enter " + type + " >>: ");
+            String input = in.nextLine();
+            if (!startsWithLetter(input)) {
+                System.out.println("Oops! " + type + " must start with a letter");
+                Utility.stopper();
+                System.out.println();
+                continue;
+            }
+
+            if (withinRange(input)) {
+                System.out.println("Oops! " + type + " must be 4-16 characters.");
+                Utility.stopper();
+                System.out.println();
+                continue;
+            }
+            if (!hasOnlyValidCharacters(input)) {
+                System.out.println("Oops! Only letters, numbers, and underscore '_' are allowed.");
+                Utility.stopper();
+                System.out.println();
+                continue;
+            }
+            if (type.equalsIgnoreCase("username") && hasMatchingUsername(input)) {
+                System.out.println("Oops! Username is already taken. Please try another one.");
+                Utility.stopper();
+                System.out.println();
+                continue;
+            }
+            return input;
+        }
+    }
+
+    private boolean startsWithLetter(String username) {
+        return Character.isLetter(username.charAt(0));
+    }
+
+    private boolean withinRange(String username) {
+        return username.length() < 4 || username.length() > 16;
+    }
+
+    private boolean hasOnlyValidCharacters(String username) {
+        for (int i = 0; i < username.length(); i++) {
+            if (!(Character.isLetterOrDigit(username.charAt(i)) || username.charAt(i) == '_')) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean hasMatchingUsername(String username) {
+        for (User users : accountLists) {
+            if (users.getUsername().equalsIgnoreCase(username)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private ArrayList<ArrayList<String>> convertUsersTo2D() {
