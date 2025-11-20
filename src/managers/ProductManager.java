@@ -15,7 +15,6 @@ import java.util.Scanner;
 public class ProductManager {
     private final ProductLinkedList productLists = new ProductLinkedList();
     private final Scanner in = new Scanner(System.in);
-    private DateTimeFormatter dtf;
     private double productPrice;
     private int productStock;
     private LocalDate unavailableDate;
@@ -35,15 +34,33 @@ public class ProductManager {
      */
     public ProductManager() {
         ArrayList<ArrayList<String>> products = FileManager.readFile(FilePaths.PRODUCTS);
+        ArrayList<ArrayList<String>> activeProducts = new ArrayList<>();
+
         int NAME = 2, PRICE = 3, STOCK = 4, DESCRIPTION = 5, UNAVAILABLE_DATE = 6;
 
         for (ArrayList<String> row : products) {
+            LocalDate unavailableDate = LocalDate.parse(row.get(UNAVAILABLE_DATE));
+
             String category = row.getFirst();
             String name = row.get(NAME);
             String desc = row.get(DESCRIPTION);
             double price = Double.parseDouble(row.get(PRICE));
             int stock = Integer.parseInt(row.get(STOCK));
-            LocalDate unavailableDate = LocalDate.parse(row.get(UNAVAILABLE_DATE));
+
+            if (!LocalDate.now().isBefore(unavailableDate)) {
+                FileManager.appendToFile(FilePaths.ARCHIVE,
+                        category + "," +
+                                row.get(1) + "," +
+                                name + "," +
+                                price + "," +
+                                stock + "," +
+                                desc + "," +
+                                unavailableDate);
+                continue;
+            }
+
+            activeProducts.add(row);
+
             switch (category.toLowerCase()) {
                 case "accessories" -> productLists.add(new Accessories(name, desc, price, stock, unavailableDate));
                 case "laptops" -> productLists.add(new Laptops(name, desc, price, stock, unavailableDate));
@@ -51,7 +68,9 @@ public class ProductManager {
                 case "tablets" -> productLists.add(new Tablets(name, desc, price, stock, unavailableDate));
             }
         }
+        FileManager.updateFile(FilePaths.PRODUCTS, FileManager.productHeader, activeProducts);
     }
+
 
     public void setAdminUsername(String adminUsername) {
         this.adminUsername = adminUsername;
@@ -316,7 +335,6 @@ public class ProductManager {
         String productName = in.nextLine();
         LogHistory.addLog(adminUserID, adminUsername, ActionType.PRODUCT_UPDATE, TargetType.PRODUCT, updateIndex.getProductID() + "", updateIndex.getProductName(), productName);
         updateIndex.setProductName(productName);
-
     }
 
     private void updateProductDescription(Product updateIndex) {
@@ -391,11 +409,11 @@ public class ProductManager {
         LogHistory.addLog(userID, username, ActionType.PRODUCT_DELETE, TargetType.PRODUCT, deleteIndex.getProductID() + "", null, null);
         FileManager.appendToFile(FilePaths.ARCHIVE,
                 deleteIndex.getProductCategory() + ","
-        + deleteIndex.getProductID() + ","
-        + deleteIndex.getProductName() + ","
-        + deleteIndex.getProductPrice() + ","
-        + deleteIndex.getProductDescription() + ","
-        + deleteIndex.getUnavailableDate());
+                        + deleteIndex.getProductID() + ","
+                        + deleteIndex.getProductName() + ","
+                        + deleteIndex.getProductPrice() + ","
+                        + deleteIndex.getProductDescription() + ","
+                        + deleteIndex.getUnavailableDate());
         productLists.remove((deleteIndex));
         FileManager.updateFile(FilePaths.PRODUCTS, FileManager.productHeader, convertProductTo2DList());
         Utility.stopper();
@@ -484,7 +502,7 @@ public class ProductManager {
         }
         while (true) {
             unavailableDate = null;
-            dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             System.out.print("Enter deactivation date (yyyy-MM-dd) >>: ");
             String date = in.nextLine();
             try {
