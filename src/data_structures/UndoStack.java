@@ -21,17 +21,6 @@ public class UndoStack {
         }
     }
 
-    // Inner class for the stack nodes
-    private static class Node {
-        UndoAction action;
-        Node next;
-
-        Node(UndoAction action) {
-            this.action = action;
-            this.next = null;
-        }
-    }
-
     public void push(UndoAction action) {
         Node newNode = new Node(action);
         newNode.next = top;
@@ -63,5 +52,15 @@ public class UndoStack {
             current = current.next;
         }
         return count;
+    }
+
+    private static class Node {
+        UndoAction action;
+        Node next;
+
+        Node(UndoAction action) {
+            this.action = action;
+            this.next = null;
+        }
     }
 }

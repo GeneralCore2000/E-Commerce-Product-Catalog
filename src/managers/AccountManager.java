@@ -23,25 +23,8 @@ public class AccountManager {
     private int userChoice;
 
     /**
-     * Constructs an {@code AccountManager} instance and automatically reading the {@code useraccounts.txt} using
-     * {@link FilePaths#USER_ACCOUNTS} where it stores the String path of {@code user_accounts.txt}
-     *
-     * <p>
-     * The {@code user_accounts.txt} is expected to have rows containing the information of the models.users with
-     * {@code ,} as dividers.
-     * </p>
-     *  <ul>
-     *      <li>Index 0: Account type ("Customer" or "Admin")</li>
-     *      <li>Index 1: Account ID that is automatically incremented by 1</li>
-     *      <li>Index 2: Username</li>
-     *      <li>Index 3: Password</li>
-     *     <li>Index 4: Address</li>
-     * </ul>
-     *
-     * @see FileManager#readFile(String)
-     * @see FilePaths#USER_ACCOUNTS
-     * @see Customer
-     * @see Admin
+     * Constructs an AccountManager and initializes product, order, and queue managers.
+     * Automatically loads user accounts from the file.
      */
     public AccountManager() {
         productManager = new ProductManager();
@@ -51,6 +34,10 @@ public class AccountManager {
         loadAccounts();
     }
 
+    /**
+     * Loads user accounts from the user accounts file into the account list.
+     * Clears existing accounts to reset (just in case) and populates with Customer or Admin objects based on the file data.
+     */
     public void loadAccounts() {
         accountLists.clear();
         ArrayList<ArrayList<String>> userAccounts = FileManager.readFile(FilePaths.USER_ACCOUNTS);
@@ -65,6 +52,10 @@ public class AccountManager {
         }
     }
 
+    /**
+     * Displays the login menu and handles user authentication.
+     * Prompts for credentials and logs the user in if valid, then shows the user's menu.
+     */
     public void login() {
         String[] choices = {"🔙 Go Back", "🔑 Log In"};
 
@@ -81,6 +72,8 @@ public class AccountManager {
                     User user = validateCredentials();
                     if (user != null) {
                         LogHistory.addLog(user.getUserID(), user.getUsername(), ActionType.LOGIN, TargetType.ACCOUNT);
+                        orderManager.setAdminUserID(user.getUserID());
+                        orderManager.setAdminUsername(user.getUsername());
                         user.showMenu();
                         LogHistory.addLog(user.getUserID(), user.getUsername(), ActionType.LOGOUT, TargetType.ACCOUNT);
                     } else {
@@ -92,6 +85,10 @@ public class AccountManager {
         }
     }
 
+    /**
+     * Displays the registration menu and handles account creation.
+     * Allows creating Customer or Admin accounts.
+     */
     public void register() {
         String[] choices = {"🔙 Go Back", "👤 Create customer account", "🧑‍💼 Create admin account"};
         while (true) {
@@ -114,10 +111,9 @@ public class AccountManager {
     }
 
     /**
-     * Prompt the models.users for credentials and validate if it is existing or not
+     * Validates user credentials by checking against the loaded account list.
      *
-     * @return {@link User} object that matches all the entered credentials; {@code null} if at least one credential is
-     * wrong
+     * @return the {@link User} object if credentials match, or null if invalid
      */
     private User validateCredentials() {
         int id;
@@ -151,15 +147,10 @@ public class AccountManager {
     }
 
     /**
-     * Creates a new account of the specified {@link AccountType}
-     * <p>
-     * This method collects {@link #generalInformation()} and create a User object of either {@link Admin}
-     * or {@link Customer} and save it to {@code accountLists}. It also appends the newly created account details to the
-     * user accounts file path defined in {@link FilePaths#USER_ACCOUNTS}
-     * </p>
+     * Creates a new account of the specified type and adds it to the system.
+     * Prompts for user information, creates the account, and logs the action.
      *
-     * @param accountType should be either "Customer" or "Admin"
-     * @see AccountType
+     * @param accountType the type of account to create (CUSTOMER or ADMIN)
      */
     private void createAccount(AccountType accountType) {
         Utility.centralizeHeading("REGISTER " + accountType + " ACCOUNT");

@@ -1,5 +1,10 @@
 package data;
 
+/**
+ * Contains constant file paths used throughout the project for data storage and retrieval.
+ * These paths point to CSV files for user accounts, products, orders, logs, and archives.
+ * All paths are relative to the project root.
+ */
 public class FilePaths {
     public static final String USER_ACCOUNTS = "src\\data\\repositories\\user_accounts.csv";
     public static final String PRODUCTS = "src\\data\\repositories\\products.csv";

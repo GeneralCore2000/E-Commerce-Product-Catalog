@@ -25,14 +25,8 @@ public class ProductManager {
     private int adminUserID;
 
     /**
-     * Construct a {@code ProductManager} and initializes the {@code productLists} from the file {@code models.products.txt}
-     * path defined in {@link FilePaths#PRODUCTS}
-     * <p>
-     * Each line inside the file represents a product in format: <br>
-     * {@code Category ## Product ID ## Name ## Price ## Stock ## Description}
-     * </p>
-     *
-     * @see FileManager#readFile(String)
+     * Constructs a ProductManager and loads products from the file, filtering out expired ones.
+     * Active products are added to the list, and expired ones are archived.
      */
     public ProductManager() {
         ArrayList<ArrayList<String>> products = FileManager.readFile(FilePaths.PRODUCTS);
@@ -75,23 +69,29 @@ public class ProductManager {
         FileManager.updateFile(FilePaths.PRODUCTS, FileManager.productHeader, activeProducts);
     }
 
-
+    /**
+     * Sets the admin username for logging purposes.
+     *
+     * @param adminUsername the admin's username
+     */
     public void setAdminUsername(String adminUsername) {
         this.adminUsername = adminUsername;
     }
-
+    /**
+     * Sets the admin user ID for logging purposes.
+     *
+     * @param adminUserID the admin's user ID
+     */
     public void setAdminUserID(int adminUserID) {
         this.adminUserID = adminUserID;
     }
 
     /**
-     * Return a list of product object in an arraylist that belongs to the specified group.
+     * Returns a list of products filtered by the specified category.
      *
-     * @param categoryChoice the name of the category to filter the models.products
-     * @return an {@code ArrayList} containing all the models.products in {@code productLists} that matches the
-     * {@code categoryChoice}; an empty list if none.
+     * @param categoryChoice the category to filter by
+     * @return a ProductLinkedList of products in the category
      */
-
     public ProductLinkedList getProductByCategory(ProductCategory categoryChoice) {
         ProductLinkedList filteredProducts = new ProductLinkedList();
         ProductLinkedList.Node current = productLists.getHead();
@@ -106,10 +106,10 @@ public class ProductManager {
     }
 
     /**
-     * Searches for a specific product inside {@code productLists} by its name ignoring case sensitivity.
+     * Finds a product by name (case-insensitive).
      *
-     * @param productName the name of the product to find
-     * @return {@code Product} object if is existing; {@code null} if non-existing
+     * @param productName the name to search for
+     * @return the Product if found, null otherwise
      */
     public Product findProduct(String productName) {
         ProductLinkedList.Node current = productLists.getHead();
@@ -122,6 +122,12 @@ public class ProductManager {
         return null;
     }
 
+    /**
+     * Finds a product by ID.
+     *
+     * @param productID the ID to search for
+     * @return the Product if found, null otherwise
+     */
     public Product findProduct(int productID) {
         ProductLinkedList.Node current = productLists.getHead();
         while (current != null) {
@@ -133,26 +139,30 @@ public class ProductManager {
         return null;
     }
 
+    /**
+     * Searches for all products containing the given name using linear search.
+     *
+     * @param productName the name to search for
+     */
     public void findAllProduct(String productName) {
         Search.linearSearch(productName, productLists);
     }
 
+    /**
+     * Searches for a product by SKU using binary search after sorting by ID.
+     *
+     * @param productSKU the SKU to search for
+     */
     public void findProductSKU(int productSKU) {
         Sort.bubbleSortByID(productLists);
         Search.binarySearch(productSKU, productLists);
     }
 
     /**
-     * Prints out the models.products filtered by the chosen category. This method is used in {@link models.users.Admin} to include
-     * product IDs at print.
-     * <p>
-     * If {@code showID} is {@code true}, each models.products is displayed using {@link Product#adminDisplay()}, otherwise
-     * {@link Product#customerDisplay()}.
-     * </p>
+     * Prints products from the filtered list, with or without IDs.
      *
-     * @param filteredProduct the list of models.products to display specified by category
-     * @param showID          {@code true} to include product IDs, otherwise {@code false} for customer display
-     * @see #printProductByCategory(ProductLinkedList)
+     * @param filteredProduct the list of products to print
+     * @param showID true to show product IDs, false otherwise
      */
     public void printProductByCategory(ProductLinkedList filteredProduct, boolean showID) {
         if (productLists.isEmpty()) {
@@ -174,6 +184,11 @@ public class ProductManager {
         }
     }
 
+    /**
+     * Displays all products with pagination and sorting options.
+     *
+     * @param showID true to show product IDs, false otherwise
+     */
     public void displayAllProduct(boolean showID) {
         ProductLinkedList.Node current = productLists.getHead();
         int pageNumber = 1;
@@ -235,31 +250,19 @@ public class ProductManager {
     }
 
     /**
-     * This is an overload method of {@link #printProductByCategory(ProductLinkedList, boolean)} and is use for Customer menu
-     * hiding the product IDs.
-     *
-     * <p>
-     * This is a convenience method that calls {@link #printProductByCategory(ProductLinkedList)} with {@code showID}
-     * is set to {@code false}.
-     * </p>
-     *
-     * @param filteredProduct arraylist of models.products of a specified category to be printed
+     * Prints products from the filtered list without IDs.
+     * This is used with {@link models.users.Customer} print product menu as customer does not often need
+     * technical information.
+     * @param filteredProduct the list of products to print
      */
     public void printProductByCategory(ProductLinkedList filteredProduct) {
         printProductByCategory(filteredProduct, false);
     }
 
     /**
-     * Add product to a specified category,
-     * <p>
-     * Calls {@link #addProductQuestions()} internally to gather the product information.
-     * </p>
-     * <p>
-     * If the adding process is successful, the new Product will be added to the {@code productLists} as well as to
-     * the {@code models.products.txt}
-     * </p>
+     * Adds a new product to the specified category after prompting for details.
      *
-     * @param addToProductCategory represents the product category
+     * @param addToProductCategory the category number to add to
      */
     public void addProducts(int addToProductCategory) {
         if (!addProductQuestions()) {
@@ -301,12 +304,11 @@ public class ProductManager {
     }
 
     /**
-     * Allows the user to update the details of a given product
-     * <p>
-     * The user can choose to update the Product's name, description, price, category, or stock.
-     * </p>
+     * Updates the details of the specified product.
      *
-     * @param updateIndex the {@link Product} object to be updated
+     * @param updateIndex the product to update
+     * @param userID the ID of the user performing the update
+     * @param username the username of the user performing the update
      */
     public void updateProducts(Product updateIndex, int userID, String username) {
         while (true) {
@@ -380,12 +382,9 @@ public class ProductManager {
     }
 
     /**
-     * This method converts {@code productLists} into 2D ArrayList.
-     * <p>
-     * This is use in combination of {@link FileManager#updateFile(String, String, ArrayList)} as it has an param of 2D arraylist.
-     * </p>
-     *
-     * @return 2D arraylist version of productLists
+     * Converts the product list to a 2D ArrayList for file updates.
+     * This is use with {@link FileManager#updateFile(String, String, ArrayList)}
+     * @return a 2D ArrayList representation of the products
      */
     public ArrayList<ArrayList<String>> convertProductListTo2D() {
         ArrayList<ArrayList<String>> data = new ArrayList<>();
@@ -406,9 +405,11 @@ public class ProductManager {
     }
 
     /**
-     * Delete the product from the specified category.
+     * Deletes the specified product and archives it.
      *
-     *
+     * @param deleteIndex the product to delete
+     * @param userID the ID of the user performing the deletion
+     * @param username the username of the user performing the deletion
      */
     public void deleteProducts(Product deleteIndex, int userID, String username) {
         LogHistory.addLog(userID, username, ActionType.PRODUCT_DELETE, TargetType.PRODUCT, deleteIndex.getProductID() + "", null, null);
@@ -425,10 +426,10 @@ public class ProductManager {
     }
 
     /**
-     * This method is used to ask whether the user would like to continue to add the product if it is existing, or stop.
+     * Prompts the user to continue adding a product if it already exists.
      *
-     * @param product the existing product that conflicts with the new product to be created.
-     * @return {@code true} to continue adding the product; {@code false} to discontinue
+     * @param product the existing product
+     * @return {@code true} to continue, {@code false} to cancel
      */
     private boolean continueAddProduct(Product product) {
         while (true) {
@@ -452,18 +453,9 @@ public class ProductManager {
     }
 
     /**
-     * Queries the user for the information of the product to be added and performs input validation.
-     * <p>
-     * If product name entered already exist {@link #continueAddProduct(Product)} is called to ask the user whether
-     * to continue. Will return {@code false} if the user chooses not to.
-     * </p>
-     * <p>
-     * The price must be positive number and cannot be set to {@code 0}.
-     * If invalid, the user is prompted to enter a valid price.
-     * </p>
+     * Prompts for product details and validates input.
      *
-     * @return {@code true} to continue the adding process;
-     * {@code false} to discontinue the adding process
+     * @return {@code true} if input is valid, {@code false} otherwise
      */
     private boolean addProductQuestions() {
         System.out.print("Enter product name >>: ");
@@ -525,16 +517,11 @@ public class ProductManager {
     }
 
     /**
-     * Checks whether an inputted product index is within the allowed range.
-     * <p>
-     * A product index is considered invalid if it is less than 1, or exceed the specified maximum index.
-     * If it exceeds the maximum index, a warning is prompted and {@link Utility#stopper()} is called to pause the
-     * program.
-     * </p>
+     * Validates the input if it is within the range of available products.
      *
-     * @param productIndex the product number to validate
-     * @param maxIndex     the size of an arraylist
-     * @return {@code true} if the product index is valid; {@code false} if invalid
+     * @param productIndex the chosen index of the product
+     * @param maxIndex the number of products in a specific category
+     * @return {@code true} if the input is valid, otherwise {@code false}.
      */
     public boolean isProductNumberValid(int productIndex, int maxIndex) {
         if (productIndex < 0) {

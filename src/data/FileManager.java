@@ -83,7 +83,6 @@ public class FileManager {
      * if it does not already exist.
      * </p>
      */
-
     public static void initializeFiles() {
         for (String path : FilePaths.ALL_FILES) {
             try {
@@ -153,6 +152,10 @@ public class FileManager {
         }
     }
 
+    /**
+     * This method initialize the columns name of each file to make it more comprehensible when viewing the CSV files
+     * @param filePath the
+     */
     private static void initializeTxtHeaders(String filePath) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath, false))) {
             if (filePath.equals(FilePaths.PRODUCTS)) {

@@ -1,9 +1,9 @@
 package models.users;
 
-import data.ActionType;
-import data.LogHistory;
-import data.TargetType;
-
+/**
+ * Abstract base class for users Admin and Customer, providing common attributes and methods.
+ * Subclasses must implement menu display, product printing, and user info display.
+ */
 abstract public class User {
 
     protected static int NEXT_ID = 1000;

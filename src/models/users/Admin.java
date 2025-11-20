@@ -19,6 +19,16 @@ public class Admin extends User implements AdminPrivilege {
     private final OrderManager orderManager;
     private final Scanner in = new Scanner(System.in);
 
+    /**
+     * Constructs an Admin with the given credentials and managers.
+     *
+     * @param username the admin's username
+     * @param password the admin's password
+     * @param address the admin's address
+     * @param productManager the ProductManager instance
+     * @param queueOrders the QueueOrders instance
+     * @param orderManager the OrderManager instance
+     */
     public Admin(String username, String password, String address, ProductManager productManager, QueueOrders queueOrders, OrderManager orderManager) {
         super(username, password, address);
         this.productManager = productManager;

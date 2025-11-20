@@ -16,6 +16,16 @@ public class Customer extends User {
     private final QueueOrders queueOrders;
     private final OrderManager orderManager;
 
+    /**
+     * Constructs a Customer with the given credentials and managers.
+     *
+     * @param username the customer's username
+     * @param password the customer's password
+     * @param address the customer's address
+     * @param productManager the ProductManager instance
+     * @param queueOrders the QueueOrders instance
+     * @param orderManager the OrderManager instance
+     */
     public Customer(String username, String password, String address, ProductManager productManager, QueueOrders queueOrders, OrderManager orderManager) {
         super(username, password, address);
         this.productManager = productManager;
@@ -68,6 +78,12 @@ public class Customer extends User {
         }
     }
 
+    /**
+     * Handles user actions on the filtered product list, such as buying.
+     *
+     * @param filteredProduct the list of products to show
+     */
+
     private void userAction(ProductLinkedList filteredProduct) {
         String[] choices = {"🔙 Go Back", "Buy Product"};
         if (filteredProduct.isEmpty()) {
@@ -89,6 +105,11 @@ public class Customer extends User {
         }
     }
 
+    /**
+     * Handles the product selection and purchase process.
+     *
+     * @param filteredProduct the list of products to choose from
+     */
     private void buyProduct(ProductLinkedList filteredProduct) {
         while (true) {
             Utility.centralizeHeading("Choose item to checkout");
@@ -112,6 +133,11 @@ public class Customer extends User {
         }
     }
 
+    /**
+     * Handles the purchase process for the selected product, including quantity and confirmation.
+     *
+     * @param chosenProduct the product to purchase
+     */
     private void purchaseProcess(Product chosenProduct) {
         while (true) {
             Utility.centralizeHeading("Purchasing Process");
@@ -145,6 +171,13 @@ public class Customer extends User {
         }
     }
 
+    /**
+     * Confirms the purchase with the user.
+     *
+     * @param chosenProduct the product to confirm
+     * @param quantity the quantity to confirm
+     * @return {@code true} if confirmed, {@code false} otherwise
+     */
     private boolean isPurchasedConfirm(Product chosenProduct, int quantity) {
         while (true) {
             Utility.centralizeHeading("Purchase Confirmation");
