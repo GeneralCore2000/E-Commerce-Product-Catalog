@@ -134,22 +134,6 @@ public class Admin extends User implements AdminPrivilege {
     @Override
     protected void printProducts() {
         productManager.displayAllProduct(true);
-//        while (true) {
-//            Utility.centralizeHeading("📝📦 PRODUCTS CATALOG");
-//            Utility.printUserChoices(Utility.productChoices);
-//            int userChoice = Utility.isInputInteger();
-//            ProductCategory categoryChoice = productManager.categoryChoices(userChoice);
-//            if (categoryChoice == null) {
-//                continue;
-//            }
-//            if (categoryChoice == ProductCategory.NULL) {
-//                return;
-//            }
-//            Utility.centralizeHeading(String.valueOf(categoryChoice));
-//            ProductLinkedList filteredProduct = productManager.getProductByCategory(categoryChoice);
-//            productManager.printProductByCategory(filteredProduct, true);
-//            Utility.stopper();
-//        }
     }
 
     @Override
@@ -194,6 +178,7 @@ public class Admin extends User implements AdminPrivilege {
                 continue;
             }
             Product deleteIndex = filteredProduct.get(deleteProduct - 1);
+            System.out.println("Deleting: " + " " + deleteIndex);
             productManager.deleteProducts(deleteIndex, userID, username);
             return;
         }

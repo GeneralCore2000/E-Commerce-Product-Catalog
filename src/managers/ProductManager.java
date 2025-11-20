@@ -7,15 +7,18 @@ import data_structures.Sort;
 import models.products.*;
 import utils.Utility;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class ProductManager {
     private final ProductLinkedList productLists = new ProductLinkedList();
     private final Scanner in = new Scanner(System.in);
+    private DateTimeFormatter dtf;
     private double productPrice;
     private int productStock;
+    private LocalDate unavailableDate;
     private String productName, productDescription;
     private String adminUsername;
     private int adminUserID;
@@ -32,7 +35,7 @@ public class ProductManager {
      */
     public ProductManager() {
         ArrayList<ArrayList<String>> products = FileManager.readFile(FilePaths.PRODUCTS);
-        int NAME = 2, PRICE = 3, STOCK = 4, DESCRIPTION = 5;
+        int NAME = 2, PRICE = 3, STOCK = 4, DESCRIPTION = 5, UNAVAILABLE_DATE = 6;
 
         for (ArrayList<String> row : products) {
             String category = row.getFirst();
@@ -40,12 +43,12 @@ public class ProductManager {
             String desc = row.get(DESCRIPTION);
             double price = Double.parseDouble(row.get(PRICE));
             int stock = Integer.parseInt(row.get(STOCK));
-
+            LocalDate unavailableDate = LocalDate.parse(row.get(UNAVAILABLE_DATE));
             switch (category.toLowerCase()) {
-                case "accessories" -> productLists.add(new Accessories(name, desc, price, stock));
-                case "laptops" -> productLists.add(new Laptops(name, desc, price, stock));
-                case "smartphones" -> productLists.add(new Smartphones(name, desc, price, stock));
-                case "tablets" -> productLists.add(new Tablets(name, desc, price, stock));
+                case "accessories" -> productLists.add(new Accessories(name, desc, price, stock, unavailableDate));
+                case "laptops" -> productLists.add(new Laptops(name, desc, price, stock, unavailableDate));
+                case "smartphones" -> productLists.add(new Smartphones(name, desc, price, stock, unavailableDate));
+                case "tablets" -> productLists.add(new Tablets(name, desc, price, stock, unavailableDate));
             }
         }
     }
@@ -112,20 +115,8 @@ public class ProductManager {
     }
 
     public void findProductSKU(int productSKU) {
-        sortByID();
-        Search.binarySearch(productSKU, productLists);
-    }
-
-    public void sortByName() {
-        Sort.bubbleSortByName(productLists);
-    }
-
-    public void sortByID() {
         Sort.bubbleSortByID(productLists);
-    }
-
-    public void sortByPrice() {
-        Sort.bubbleSortByPrice(productLists);
+        Search.binarySearch(productSKU, productLists);
     }
 
     /**
@@ -145,7 +136,6 @@ public class ProductManager {
         if (productLists.isEmpty()) {
             System.out.println("There is nothing to see here. 🫣");
             return;
-
         }
 
         int productNumber = 0;
@@ -197,19 +187,19 @@ public class ProductManager {
                             pageNumber++;
                             break outerloop;
                         case 2:
-                            sortByName();
+                            Sort.bubbleSortByName(productLists);
                             current = productLists.getHead();
                             productNumber = 0;
                             pageNumber = 1;
                             break outerloop;
                         case 3:
-                            sortByID();
+                            Sort.bubbleSortByID(productLists);
                             current = productLists.getHead();
                             productNumber = 0;
                             pageNumber = 1;
                             break outerloop;
                         case 4:
-                            sortByPrice();
+                            Sort.bubbleSortByPrice(productLists);
                             current = productLists.getHead();
                             productNumber = 0;
                             pageNumber = 1;
@@ -256,19 +246,19 @@ public class ProductManager {
         String category;
         switch (addToProductCategory) {
             case 1 -> {
-                product = new Accessories(productName, productDescription, productPrice, productStock);
+                product = new Accessories(productName, productDescription, productPrice, productStock, unavailableDate);
                 category = "Accessories";
             }
             case 2 -> {
-                product = new Laptops(productName, productDescription, productPrice, productStock);
+                product = new Laptops(productName, productDescription, productPrice, productStock, unavailableDate);
                 category = "Laptops";
             }
             case 3 -> {
-                product = new Smartphones(productName, productDescription, productPrice, productStock);
+                product = new Smartphones(productName, productDescription, productPrice, productStock, unavailableDate);
                 category = "Smartphones";
             }
             case 4 -> {
-                product = new Tablets(productName, productDescription, productPrice, productStock);
+                product = new Tablets(productName, productDescription, productPrice, productStock, unavailableDate);
                 category = "Tablets";
             }
             default -> {
@@ -398,8 +388,14 @@ public class ProductManager {
      *
      */
     public void deleteProducts(Product deleteIndex, int userID, String username) {
-        System.out.println("Deleting: " + " " + deleteIndex);
         LogHistory.addLog(userID, username, ActionType.PRODUCT_DELETE, TargetType.PRODUCT, deleteIndex.getProductID() + "", null, null);
+        FileManager.appendToFile(FilePaths.ARCHIVE,
+                deleteIndex.getProductCategory() + ","
+        + deleteIndex.getProductID() + ","
+        + deleteIndex.getProductName() + ","
+        + deleteIndex.getProductPrice() + ","
+        + deleteIndex.getProductDescription() + ","
+        + deleteIndex.getUnavailableDate());
         productLists.remove((deleteIndex));
         FileManager.updateFile(FilePaths.PRODUCTS, FileManager.productHeader, convertProductTo2DList());
         Utility.stopper();
@@ -485,6 +481,22 @@ public class ProductManager {
                 System.out.println("\n" + "~".repeat(42));
                 in.nextLine();
             }
+        }
+        while (true) {
+            unavailableDate = null;
+            dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            System.out.print("Enter deactivation date (yyyy-MM-dd) >>: ");
+            String date = in.nextLine();
+            try {
+                unavailableDate = LocalDate.parse(date, dtf);
+                break;
+            } catch (Exception e) {
+                System.out.println("\n" + "~".repeat(42));
+                System.out.println("Invalid input: Date format is not correct.\nPress any key to continue...");
+                System.out.println("\n" + "~".repeat(42));
+                in.nextLine();
+            }
+
         }
         return true;
     }
