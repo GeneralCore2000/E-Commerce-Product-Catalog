@@ -15,10 +15,12 @@ import java.util.Scanner;
 public class ProductManager {
     private final ProductLinkedList productLists = new ProductLinkedList();
     private final Scanner in = new Scanner(System.in);
+
     private double productPrice;
     private int productStock;
     private LocalDate unavailableDate;
     private String productName, productDescription;
+
     private String adminUsername;
     private int adminUserID;
 
@@ -36,7 +38,7 @@ public class ProductManager {
         ArrayList<ArrayList<String>> products = FileManager.readFile(FilePaths.PRODUCTS);
         ArrayList<ArrayList<String>> activeProducts = new ArrayList<>();
 
-        int NAME = 2, PRICE = 3, STOCK = 4, DESCRIPTION = 5, UNAVAILABLE_DATE = 6;
+        int ID = 1, NAME = 2, PRICE = 3, STOCK = 4, DESCRIPTION = 5, UNAVAILABLE_DATE = 6;
 
         for (ArrayList<String> row : products) {
             LocalDate unavailableDate = LocalDate.parse(row.get(UNAVAILABLE_DATE));
@@ -46,27 +48,29 @@ public class ProductManager {
             String desc = row.get(DESCRIPTION);
             double price = Double.parseDouble(row.get(PRICE));
             int stock = Integer.parseInt(row.get(STOCK));
+            int id = Integer.parseInt(row.get(ID));
 
+            Product tempProduct = null;
+            switch (category.toLowerCase()) {
+                case "accessories" -> tempProduct = new Accessories(id, name, desc, price, stock, unavailableDate);
+                case "laptops" -> tempProduct = new Laptops(id, name, desc, price, stock, unavailableDate);
+                case "smartphones" -> tempProduct = new Smartphones(id, name, desc, price, stock, unavailableDate);
+                case "tablets" -> tempProduct = new Tablets(id, name, desc, price, stock, unavailableDate);
+            }
+            productLists.add(tempProduct);
             if (!LocalDate.now().isBefore(unavailableDate)) {
                 FileManager.appendToFile(FilePaths.ARCHIVE,
                         category + "," +
-                                row.get(1) + "," +
+                                id + "," +
                                 name + "," +
                                 price + "," +
                                 stock + "," +
                                 desc + "," +
                                 unavailableDate);
+                productLists.remove(tempProduct);
                 continue;
             }
-
             activeProducts.add(row);
-
-            switch (category.toLowerCase()) {
-                case "accessories" -> productLists.add(new Accessories(name, desc, price, stock, unavailableDate));
-                case "laptops" -> productLists.add(new Laptops(name, desc, price, stock, unavailableDate));
-                case "smartphones" -> productLists.add(new Smartphones(name, desc, price, stock, unavailableDate));
-                case "tablets" -> productLists.add(new Tablets(name, desc, price, stock, unavailableDate));
-            }
         }
         FileManager.updateFile(FilePaths.PRODUCTS, FileManager.productHeader, activeProducts);
     }
@@ -151,11 +155,11 @@ public class ProductManager {
      * @see #printProductByCategory(ProductLinkedList)
      */
     public void printProductByCategory(ProductLinkedList filteredProduct, boolean showID) {
-        ProductLinkedList.Node current = filteredProduct.getHead();
         if (productLists.isEmpty()) {
             System.out.println("There is nothing to see here. 🫣");
             return;
         }
+        ProductLinkedList.Node current = filteredProduct.getHead();
 
         int productNumber = 0;
 
@@ -291,7 +295,8 @@ public class ProductManager {
                 + "\"" + productName + "\"" + Utility.DIVIDER
                 + productPrice + Utility.DIVIDER
                 + productStock + Utility.DIVIDER
-                + "\"" + productDescription + "\"");
+                + "\"" + productDescription + "\"" + Utility.DIVIDER
+                + unavailableDate);
         productLists.add(product);
     }
 
@@ -325,7 +330,7 @@ public class ProductManager {
                     updateProductStock(updateIndex);
                 }
             }
-            FileManager.updateFile(FilePaths.PRODUCTS, FileManager.productHeader, convertProductTo2DList());
+            FileManager.updateFile(FilePaths.PRODUCTS, FileManager.productHeader, convertProductListTo2D());
 
         }
     }
@@ -382,10 +387,9 @@ public class ProductManager {
      *
      * @return 2D arraylist version of productLists
      */
-    private ArrayList<ArrayList<String>> convertProductTo2DList() {
+    public ArrayList<ArrayList<String>> convertProductListTo2D() {
         ArrayList<ArrayList<String>> data = new ArrayList<>();
         ProductLinkedList.Node current = productLists.getHead();
-
         while (current != null) {
             ArrayList<String> row = new ArrayList<>();
             row.add(current.product.getProductCategory() + "");
@@ -394,6 +398,7 @@ public class ProductManager {
             row.add(current.product.getProductPrice() + "");
             row.add(current.product.getProductStock() + "");
             row.add(current.product.getProductDescription());
+            row.add(current.product.getUnavailableDate() + "");
             data.add(row);
             current = current.next;
         }
@@ -415,7 +420,7 @@ public class ProductManager {
                         + deleteIndex.getProductDescription() + ","
                         + deleteIndex.getUnavailableDate());
         productLists.remove((deleteIndex));
-        FileManager.updateFile(FilePaths.PRODUCTS, FileManager.productHeader, convertProductTo2DList());
+        FileManager.updateFile(FilePaths.PRODUCTS, FileManager.productHeader, convertProductListTo2D());
         Utility.stopper();
     }
 
@@ -557,22 +562,5 @@ public class ProductManager {
 
     public ProductLinkedList getProductLists() {
         return productLists;
-    }
-
-    public ArrayList<ArrayList<String>> convertProductListTo2D() {
-        ArrayList<ArrayList<String>> data = new ArrayList<>();
-        ProductLinkedList.Node current = productLists.getHead();
-        while (current != null) {
-            ArrayList<String> row = new ArrayList<>();
-            row.add(current.product.getProductCategory() + "");
-            row.add(current.product.getProductID() + "");
-            row.add(current.product.getProductName());
-            row.add(current.product.getProductPrice() + "");
-            row.add(current.product.getProductStock() + "");
-            row.add(current.product.getProductDescription());
-            data.add(row);
-            current = current.next;
-        }
-        return data;
     }
 }

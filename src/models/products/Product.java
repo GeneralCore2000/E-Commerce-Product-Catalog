@@ -5,7 +5,7 @@ import java.time.LocalDate;
 public abstract class Product {
 
     private static int PRODUCT_ID = 5000;
-    private final int productID;
+    private int productID;
     private int productStock;
     private String productName;
     private String productDescription;
@@ -21,6 +21,11 @@ public abstract class Product {
         this.productStock = productStock;
         this.unavailableDate = unavailableDate;
         productID = PRODUCT_ID++;
+    }
+
+    public Product(int productID, String productName, String productDescription, double productPrice, ProductCategory productCategory, int productStock, LocalDate unavailableDate) {
+        this(productName, productDescription, productPrice, productCategory, productStock, unavailableDate);
+        this.productID = productID;
     }
 
     public String customerDisplay() {

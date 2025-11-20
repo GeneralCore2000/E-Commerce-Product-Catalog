@@ -3,13 +3,15 @@ package managers;
 import data.*;
 import data_structures.ProductLinkedList;
 import data_structures.QueueOrders;
+import data_structures.UndoStack;
+import models.products.Product;
 import utils.Utility;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class OrderManager {
     private final QueueOrders queueOrders = new QueueOrders();
+    private final UndoStack undoStack = new UndoStack();
     private ProductManager productManager;
     private String adminUsername;
     private int adminUserID;
@@ -57,27 +59,46 @@ public class OrderManager {
         boolean enoughStock = validateStock(currentQueueOrder);
         int productStock = productManager.findProduct(currentQueueOrder.productID).getProductStock();
         if (!enoughStock) {
-            System.out.println("Uh oh! Unable to fulfill order: Not enough stock for quantity [" + currentQueueOrder.quantity + "]");
-            System.out.println("Product ID: " + currentQueueOrder.productID + " only has [" + productStock + "]");
-            Utility.stopper();
+
             return;
         }
-        LogHistory.addLog(adminUserID, adminUsername, ActionType.ORDER_FULFILLED, TargetType.ORDER, queueOrders.getOrder().orderID + "", null, null);
+        undoStack.push(new UndoStack.UndoAction(currentQueueOrder, productStock));
         queueOrders.dequeue();
         updateProductStock(currentQueueOrder);
         FileManager.updateFile(FilePaths.PENDING_ORDERS, FileManager.pendingOrderHeader, convertQueueOrderTo2D());
         FileManager.updateFile(FilePaths.PRODUCTS, FileManager.productHeader, productManager.convertProductListTo2D());
     }
 
-    private boolean validateStock(QueueOrders.Queue current) {
-        ArrayList<ArrayList<String>> products = FileManager.readFile(FilePaths.PENDING_ORDERS);
-        for (ArrayList<String> row : products) {
-            if (Integer.parseInt(row.get(2)) == current.productID) {
-                int stock = productManager.findProduct(current.productID).getProductStock();
-                return stock >= current.quantity;
-            }
+    public void undoFulfillOrder() {
+        if (undoStack.isEmpty()) {
+            System.out.println("No recent fulfillments to undo.");
+            Utility.stopper();
+            return;
         }
-        return false;
+
+        UndoStack.UndoAction lastAction = undoStack.pop();
+        QueueOrders.Queue orderToRestore = lastAction.getFulfilledOrder();
+
+        Product product = productManager.findProduct(orderToRestore.productID);
+        if (product != null) {
+            product.setProductStock(lastAction.getPreviousStock());
+        }
+
+        queueOrders.enqueue(orderToRestore.customerID, orderToRestore.productID,
+                orderToRestore.productPrice, orderToRestore.quantity, orderToRestore.subtotal);
+
+        FileManager.updateFile(FilePaths.PENDING_ORDERS, FileManager.pendingOrderHeader, convertQueueOrderTo2D());
+        FileManager.updateFile(FilePaths.PRODUCTS, FileManager.productHeader, productManager.convertProductListTo2D());
+
+        LogHistory.addLog(adminUserID, adminUsername, ActionType.ORDER_FULFILLED, TargetType.ORDER,
+                orderToRestore.orderID + " (UNDONE)", null, null);
+        System.out.println("Last fulfillment undone. Order restored to queue.");
+        Utility.stopper();
+    }
+
+    private boolean validateStock(QueueOrders.Queue current) {
+        Product product = productManager.findProduct(current.productID);
+        return product != null && product.getProductStock() >= current.quantity;
     }
 
     public void seeFrontOrder() {

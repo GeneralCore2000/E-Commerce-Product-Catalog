@@ -74,7 +74,7 @@ public class Admin extends User implements AdminPrivilege {
     }
 
     private void fulfillOrders() {
-        String[] choices = {"Go back", "Continue fulfill order"};
+        String[] choices = {"Go back", "Continue fulfill order", "Undo Last Fulfillment"};
         while (true) {
             Utility.centralizeHeading("FULFILL ORDERS");
             orderManager.seeOrders();
@@ -90,6 +90,10 @@ public class Admin extends User implements AdminPrivilege {
                     return;
                 case 1:
                     orderManager.fulfillOrder();
+                    break;
+                case 2:
+                    orderManager.undoFulfillOrder();
+                    break;
             }
         }
     }

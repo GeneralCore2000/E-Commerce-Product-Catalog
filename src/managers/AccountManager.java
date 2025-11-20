@@ -28,7 +28,7 @@ public class AccountManager {
      *
      * <p>
      * The {@code user_accounts.txt} is expected to have rows containing the information of the models.users with
-     * {@code ##} as dividers.
+     * {@code ,} as dividers.
      * </p>
      *  <ul>
      *      <li>Index 0: Account type ("Customer" or "Admin")</li>

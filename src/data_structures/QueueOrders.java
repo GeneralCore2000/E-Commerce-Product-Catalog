@@ -42,7 +42,7 @@ public class QueueOrders {
         int orderNumber = 1;
         while (temp != null) {
             System.out.println(orderNumber + ". " + temp.orderID + " | " + temp.customerID + " | " + temp.productID
-                    + " | " + temp.productPrice + " | " + temp.quantity + " | " + temp.productPrice * temp.quantity);
+                    + " | " + temp.productPrice + " | " + temp.quantity + " | " + temp.subtotal);
             temp = temp.next;
             orderNumber++;
         }
