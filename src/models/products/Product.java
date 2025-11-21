@@ -33,7 +33,7 @@ public abstract class Product {
     }
 
     public String adminDisplay() {
-        return productName + " - " + productDescription + "\n" + "\t₱ " + productPrice + "\n" + "\tStock: " + productStock + "x\n" + "\tProduct ID: " + productID + "\n\tAvailable until: " + unavailableDate;
+        return productName + " - " + productDescription + "\n" + "\t₱ " + productPrice + "\n" + "\tStock: " + productStock + "x - "+ stockFlag() + "\n" + "\tProduct ID: " + productID + "\n\tAvailable until: " + unavailableDate;
     }
 
 
@@ -93,8 +93,15 @@ public abstract class Product {
         return LocalDate.now().isBefore(unavailableDate);
     }
 
+    public String stockFlag(){
+        if(productStock < 20){
+            return "LOW ON STOCK";
+        }
+        return "";
+    }
+
     @Override
     public String toString() {
-        return productName + " - " + productDescription + "\n" + "\t₱ " + productPrice + "\n" + "\tStock: " + productStock + "x\n" + "\tProduct ID: " + productID + "\n\tAvailable until: " + unavailableDate;
+        return productName + " - " + productDescription + "\n" + "\t₱ " + productPrice + "\n" + "\tStock: " + productStock + "x - "+ stockFlag() + "\n" + "\tProduct ID: " + productID + "\n\tAvailable until: " + unavailableDate;
     }
 }
